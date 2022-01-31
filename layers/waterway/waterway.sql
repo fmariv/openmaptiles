@@ -178,138 +178,147 @@ FROM ne_50m_rivers_lake_centerlines_gen_z5
 -- etldoc: waterway_relation_gen_z6 ->  waterway_z6
 CREATE OR REPLACE VIEW waterway_z6 AS
 (
-SELECT geometry,
-       class,
-       name,
-       name_en,
-       name_de,
-       tags,
-       is_bridge,
-       is_tunnel,
-       is_intermittent
-FROM waterway_relation_gen_z6
+SELECT w.geometry,
+       w.class,
+       w.name,
+       w.name_en,
+       w.name_de,
+       w.tags,
+       w.is_bridge,
+       w.is_tunnel,
+       w.is_intermittent
+FROM waterway_relation_gen_z6 w, admin.cat
+WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
     );
 
 -- etldoc: waterway_relation_gen_z7 ->  waterway_z7
 CREATE OR REPLACE VIEW waterway_z7 AS
 (
-SELECT geometry,
-       class,
-       name,
-       name_en,
-       name_de,
-       tags,
-       is_bridge,
-       is_tunnel,
-       is_intermittent
-FROM waterway_relation_gen_z7
+SELECT w.geometry,
+       w.class,
+       w.name,
+       w.name_en,
+       w.name_de,
+       w.tags,
+       w.is_bridge,
+       w.is_tunnel,
+       w.is_intermittent
+FROM waterway_relation_gen_z7 w, admin.cat
+WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
     );
 
 -- etldoc: waterway_relation_gen_z8 ->  waterway_z8
 CREATE OR REPLACE VIEW waterway_z8 AS
 (
-SELECT geometry,
-       class,
-       name,
-       name_en,
-       name_de,
-       tags,
-       is_bridge,
-       is_tunnel,
-       is_intermittent
-FROM waterway_relation_gen_z8
+SELECT w.geometry,
+       w.class,
+       w.name,
+       w.name_en,
+       w.name_de,
+       w.tags,
+       w.is_bridge,
+       w.is_tunnel,
+       w.is_intermittent
+FROM waterway_relation_gen_z8 w, admin.cat
+WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
     );
 
 -- etldoc: osm_important_waterway_linestring_gen_z9 ->  waterway_z9
 CREATE OR REPLACE VIEW waterway_z9 AS
 (
-SELECT geometry,
+SELECT w.geometry,
        'river'::text AS class,
-       name,
-       name_en,
-       name_de,
-       tags,
+       w.name,
+       w.name_en,
+       w.name_de,
+       w.tags,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        NULL::boolean AS is_intermittent
-FROM osm_important_waterway_linestring_gen_z9
+FROM osm_important_waterway_linestring_gen_z9 w, admin.cat
+WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
     );
 
 -- etldoc: osm_important_waterway_linestring_gen_z10 ->  waterway_z10
 CREATE OR REPLACE VIEW waterway_z10 AS
 (
-SELECT geometry,
+SELECT w.geometry,
        'river'::text AS class,
-       name,
-       name_en,
-       name_de,
-       tags,
+       w.name,
+       w.name_en,
+       w.name_de,
+       w.tags,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        NULL::boolean AS is_intermittent
-FROM osm_important_waterway_linestring_gen_z10
+FROM osm_important_waterway_linestring_gen_z10 w, admin.cat
+WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
     );
 
 -- etldoc:osm_important_waterway_linestring_gen_z11 ->  waterway_z11
 CREATE OR REPLACE VIEW waterway_z11 AS
 (
-SELECT geometry,
+SELECT w.geometry,
        'river'::text AS class,
-       name,
-       name_en,
-       name_de,
-       tags,
+       w.name,
+       w.name_en,
+       w.name_de,
+       w.tags,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        NULL::boolean AS is_intermittent
-FROM osm_important_waterway_linestring_gen_z11
+FROM osm_important_waterway_linestring_gen_z11 w, admin.cat
+WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
     );
 
 -- etldoc: osm_waterway_linestring ->  waterway_z12
 CREATE OR REPLACE VIEW waterway_z12 AS
 (
-SELECT geometry,
+SELECT w.geometry,
        waterway::text AS class,
-       name,
-       name_en,
-       name_de,
-       tags,
-       is_bridge,
-       is_tunnel,
-       is_intermittent
-FROM osm_waterway_linestring
-WHERE waterway IN ('river', 'canal')
+       w.name,
+       w.name_en,
+       w.name_de,
+       w.tags,
+       w.is_bridge,
+       w.is_tunnel,
+       w.is_intermittent
+FROM osm_waterway_linestring w, admin.cat
+WHERE w.waterway IN ('river', 'canal') 
+AND ST_DISJOINT(admin.cat.geometry, w.geometry)
     );
 
 -- etldoc: osm_waterway_linestring ->  waterway_z13
 CREATE OR REPLACE VIEW waterway_z13 AS
 (
-SELECT geometry,
-       waterway::text AS class,
-       name,
-       name_en,
-       name_de,
-       tags,
-       is_bridge,
-       is_tunnel,
-       is_intermittent
-FROM osm_waterway_linestring
-WHERE waterway IN ('river', 'canal', 'stream', 'drain', 'ditch')
+SELECT w.geometry,
+       w.waterway::text AS class,
+       w.name,
+       w.name_en,
+       w.name_de,
+       w.tags,
+       w.is_bridge,
+       w.is_tunnel,
+       w.is_intermittent
+FROM osm_waterway_linestring w, admin.cat
+WHERE w.waterway IN ('river', 'canal', 'stream', 'drain', 'ditch')
+AND ST_DISJOINT(admin.cat.geometry, w.geometry)
     );
 
 -- etldoc: osm_waterway_linestring ->  waterway_z14
 CREATE OR REPLACE VIEW waterway_z14 AS
 (
-SELECT geometry,
-       waterway::text AS class,
-       name,
-       name_en,
-       name_de,
-       tags,
-       is_bridge,
-       is_tunnel,
-       is_intermittent
-FROM osm_waterway_linestring
+SELECT w.geometry,
+       w.waterway::text AS class,
+       w.name,
+       w.name_en,
+       w.name_de,
+       w.tags,
+       w.is_bridge,
+       w.is_tunnel,
+       w.is_intermittent
+FROM osm_waterway_linestring w, admin.cat
+WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
     );
 
 -- etldoc: layer_waterway[shape=record fillcolor=lightpink, style="rounded,filled",

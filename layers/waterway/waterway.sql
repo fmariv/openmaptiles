@@ -406,6 +406,48 @@ FROM (
          SELECT *
          FROM waterway_z14
          WHERE zoom_level >= 14
+         UNION
+         -- icgc waterway_z_7_8_carto
+         SELECT 
+                w.geom,
+                w.class,
+                w.name,
+                w.name_en,
+                w.name_de,
+                w.tags,
+                w.is_bridge,
+                w.is_tunnel,
+                w.is_intermittent
+         FROM waterway_z_7_8_carto w
+         WHERE (zoom_level BETWEEN 7 AND 8) AND w.geom && bbox
+         UNION
+         -- waterway_z_9_10_carto
+         SELECT 
+                w.geom,
+                w.class,
+                w.name,
+                w.name_en,
+                w.name_de,
+                w.tags,
+                w.is_bridge,
+                w.is_tunnel,
+                w.is_intermittent 
+         FROM waterway_z_9_10_carto w
+         WHERE (zoom_level = 9) AND w.geom && bbox
+         UNION
+         -- waterway_z_10_11_carto
+         SELECT 
+                w.geom,
+                w.class,
+                w.name,
+                w.name_en,
+                w.name_de,
+                w.tags,
+                w.is_bridge,
+                w.is_tunnel,
+                w.is_intermittent 
+         FROM waterway_z_10_11_carto w
+         WHERE (zoom_level BETWEEN 10 AND 11) AND w.geom && bbox
      ) AS zoom_levels
 WHERE geometry && bbox;
 $$ LANGUAGE SQL STABLE

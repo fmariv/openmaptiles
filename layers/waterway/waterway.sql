@@ -292,7 +292,7 @@ AND ST_DISJOINT(admin.cat.geometry, w.geometry)
 CREATE OR REPLACE VIEW waterway_z13 AS
 (
 SELECT w.geometry,
-       w.waterway::text AS class,
+       waterway::text AS class,
        w.name,
        w.name_en,
        w.name_de,
@@ -309,7 +309,7 @@ AND ST_DISJOINT(admin.cat.geometry, w.geometry)
 CREATE OR REPLACE VIEW waterway_z14 AS
 (
 SELECT w.geometry,
-       w.waterway::text AS class,
+       waterway::text AS class,
        w.name,
        w.name_en,
        w.name_de,

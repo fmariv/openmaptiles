@@ -38,9 +38,12 @@ layer:
       description: |
         Mark with `1` if it is an [intermittent](http://wiki.openstreetmap.org/wiki/Key:intermittent) waterway.
       values: [0, 1]
+    icgc_id:
+      description:
+        Identificador de l'ICGC.
   datasource:
     geometry_field: geometry
-    query: (SELECT geometry, name, name_en, name_de, {name_languages}, class, brunnel, intermittent FROM layer_waterway(!bbox!, z(!scale_denominator!))) AS t
+    query: (SELECT geometry, name, name_en, name_de, {name_languages}, class, brunnel, intermittent, icgc_id FROM layer_waterway(!bbox!, z(!scale_denominator!))) AS t
 schema:
   - ./update_waterway_linestring.sql
   - ./update_important_waterway.sql

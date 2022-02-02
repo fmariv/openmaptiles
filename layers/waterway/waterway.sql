@@ -141,7 +141,8 @@ SELECT geometry,
        tags,
        is_bridge,
        is_tunnel,
-       is_intermittent
+       is_intermittent,
+       0::INT AS icgc_id
 FROM ne_110m_rivers_lake_centerlines_gen_z3
     );
 
@@ -156,7 +157,8 @@ SELECT geometry,
        tags,
        is_bridge,
        is_tunnel,
-       is_intermittent
+       is_intermittent,
+       0::INT AS icgc_id
 FROM ne_50m_rivers_lake_centerlines_gen_z4
     );
 
@@ -171,7 +173,8 @@ SELECT geometry,
        tags,
        is_bridge,
        is_tunnel,
-       is_intermittent
+       is_intermittent,
+       0::INT AS icgc_id
 FROM ne_50m_rivers_lake_centerlines_gen_z5
     );
 
@@ -186,7 +189,8 @@ SELECT w.geometry,
        w.tags,
        w.is_bridge,
        w.is_tunnel,
-       w.is_intermittent
+       w.is_intermittent,
+       0::INT AS icgc_id
 FROM waterway_relation_gen_z6 w, admin.cat
 WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
     );
@@ -202,7 +206,8 @@ SELECT w.geometry,
        w.tags,
        w.is_bridge,
        w.is_tunnel,
-       w.is_intermittent
+       w.is_intermittent,
+       0::INT AS icgc_id
 FROM waterway_relation_gen_z7 w, admin.cat
 WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
     );
@@ -218,7 +223,8 @@ SELECT w.geometry,
        w.tags,
        w.is_bridge,
        w.is_tunnel,
-       w.is_intermittent
+       w.is_intermittent,
+       0::INT AS icgc_id
 FROM waterway_relation_gen_z8 w, admin.cat
 WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
     );
@@ -234,7 +240,8 @@ SELECT w.geometry,
        w.tags,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
-       NULL::boolean AS is_intermittent
+       NULL::boolean AS is_intermittent,
+       0::INT AS icgc_id
 FROM osm_important_waterway_linestring_gen_z9 w, admin.cat
 WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
     );
@@ -250,7 +257,8 @@ SELECT w.geometry,
        w.tags,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
-       NULL::boolean AS is_intermittent
+       NULL::boolean AS is_intermittent,
+       0::INT AS icgc_id
 FROM osm_important_waterway_linestring_gen_z10 w, admin.cat
 WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
     );
@@ -266,7 +274,8 @@ SELECT w.geometry,
        w.tags,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
-       NULL::boolean AS is_intermittent
+       NULL::boolean AS is_intermittent,
+       0::INT AS icgc_id
 FROM osm_important_waterway_linestring_gen_z11 w, admin.cat
 WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
     );
@@ -282,7 +291,8 @@ SELECT w.geometry,
        w.tags,
        w.is_bridge,
        w.is_tunnel,
-       w.is_intermittent
+       w.is_intermittent,
+       0::INT AS icgc_id
 FROM osm_waterway_linestring w, admin.cat
 WHERE w.waterway IN ('river', 'canal') 
 AND ST_DISJOINT(admin.cat.geometry, w.geometry)
@@ -299,7 +309,8 @@ SELECT w.geometry,
        w.tags,
        w.is_bridge,
        w.is_tunnel,
-       w.is_intermittent
+       w.is_intermittent,
+       0::INT AS icgc_id
 FROM osm_waterway_linestring w, admin.cat
 WHERE w.waterway IN ('river', 'canal', 'stream', 'drain', 'ditch')
 AND ST_DISJOINT(admin.cat.geometry, w.geometry)
@@ -316,7 +327,8 @@ SELECT w.geometry,
        w.tags,
        w.is_bridge,
        w.is_tunnel,
-       w.is_intermittent
+       w.is_intermittent,
+       0::INT AS icgc_id
 FROM osm_waterway_linestring w, admin.cat
 WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
     );
@@ -334,7 +346,8 @@ CREATE OR REPLACE FUNCTION layer_waterway(bbox geometry, zoom_level int)
                 name_de      text,
                 brunnel      text,
                 intermittent int,
-                tags         hstore
+                tags         hstore,
+                icgc_id      bigint
             )
 AS
 $$
@@ -345,109 +358,127 @@ SELECT geometry,
        COALESCE(NULLIF(name_de, ''), NULLIF(name, ''), NULLIF(name_en, '')) AS name_de,
        waterway_brunnel(is_bridge, is_tunnel) AS brunnel,
        is_intermittent::int AS intermittent,
-       tags
+       tags,
+       NULLIF(icgc_id, 0) AS icgc_id
 FROM (
          -- etldoc: waterway_z3 ->  layer_waterway:z3
          SELECT *
          FROM waterway_z3
          WHERE zoom_level = 3
          UNION ALL
+
          -- etldoc: waterway_z4 ->  layer_waterway:z4
          SELECT *
          FROM waterway_z4
          WHERE zoom_level = 4
          UNION ALL
+
          -- etldoc: waterway_z5 ->  layer_waterway:z5
          SELECT *
          FROM waterway_z5
          WHERE zoom_level = 5
          UNION ALL
+
          -- etldoc: waterway_z6 ->  layer_waterway:z6
          SELECT *
          FROM waterway_z6
          WHERE zoom_level = 6
          UNION ALL
+
          -- etldoc: waterway_z7 ->  layer_waterway:z7
          SELECT *
          FROM waterway_z7
          WHERE zoom_level = 7
          UNION ALL
+
          -- etldoc: waterway_z8 ->  layer_waterway:z8
          SELECT *
          FROM waterway_z8
          WHERE zoom_level = 8
          UNION ALL
+
          -- etldoc: waterway_z9 ->  layer_waterway:z9
          SELECT *
          FROM waterway_z9
          WHERE zoom_level = 9
          UNION ALL
+
          -- etldoc: waterway_z10 ->  layer_waterway:z10
          SELECT *
          FROM waterway_z10
          WHERE zoom_level = 10
          UNION ALL
+
          -- etldoc: waterway_z11 ->  layer_waterway:z11
          SELECT *
          FROM waterway_z11
          WHERE zoom_level = 11
          UNION ALL
+
          -- etldoc: waterway_z12 ->  layer_waterway:z12
          SELECT *
          FROM waterway_z12
          WHERE zoom_level = 12
          UNION ALL
+
          -- etldoc: waterway_z13 ->  layer_waterway:z13
          SELECT *
          FROM waterway_z13
          WHERE zoom_level = 13
          UNION ALL
+
          -- etldoc: waterway_z14 ->  layer_waterway:z14
          SELECT *
          FROM waterway_z14
          WHERE zoom_level >= 14
-         UNION
+         UNION ALL
+
          -- icgc waterway_z_7_8_carto
          SELECT 
-                w.geom,
-                w.class,
-                w.name,
-                w.name_en,
-                w.name_de,
-                w.tags,
-                w.is_bridge,
-                w.is_tunnel,
-                w.is_intermittent
-         FROM waterway_z_7_8_carto w
-         WHERE (zoom_level BETWEEN 7 AND 8) AND w.geom && bbox
-         UNION
+                geom,
+                class,
+                name,
+                name_en,
+                name_de,
+                tags,
+                is_bridge,
+                is_tunnel,
+                is_intermittent,
+                icgc_id
+         FROM waterway_z_7_8_carto
+         WHERE (zoom_level BETWEEN 7 AND 8) AND geom && bbox
+         UNION ALL
+
          -- waterway_z_9_10_carto
          SELECT 
-                w.geom,
-                w.class,
-                w.name,
-                w.name_en,
-                w.name_de,
-                w.tags,
-                w.is_bridge,
-                w.is_tunnel,
-                w.is_intermittent 
+                geom,
+                class,
+                name,
+                name_en,
+                name_de,
+                tags,
+                is_bridge,
+                is_tunnel,
+                is_intermittent,
+                icgc_id
          FROM waterway_z_9_10_carto w
-         WHERE (zoom_level = 9) AND w.geom && bbox
-         UNION
+         WHERE (zoom_level = 9) AND geom && bbox
+         UNION ALL
+
          -- waterway_z_10_11_carto
          SELECT 
-                w.geom,
-                w.class,
-                w.name,
-                w.name_en,
-                w.name_de,
-                w.tags,
-                w.is_bridge,
-                w.is_tunnel,
-                w.is_intermittent 
+                geom,
+                class,
+                name,
+                name_en,
+                name_de,
+                tags,
+                is_bridge,
+                is_tunnel,
+                is_intermittent,
+                icgc_id
          FROM waterway_z_10_11_carto w
-         WHERE (zoom_level BETWEEN 10 AND 11) AND w.geom && bbox
+         WHERE (zoom_level BETWEEN 10 AND 11) AND geom && bbox
      ) AS zoom_levels
 WHERE geometry && bbox;
 $$ LANGUAGE SQL STABLE

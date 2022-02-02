@@ -35,6 +35,8 @@ tables:
     - name: is_intermittent
       key: intermittent
       type: bool
+    - name: icgc_id
+      type: integer
     mapping:
       waterway:
       - stream
@@ -63,5 +65,7 @@ tables:
       type: string
     - name: tags
       type: hstore_tags
+    - name: icgc_id
+      type: integer
     mapping:
       waterway: [river]

@@ -10,6 +10,8 @@ tables:
       type: area
     - name: subclass
       type: mapping_value
+    - name: icgc_id
+      type: integer
     - name: mapping_key
       type: mapping_key
     mapping:

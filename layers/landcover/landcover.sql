@@ -255,118 +255,197 @@ CREATE OR REPLACE FUNCTION layer_landcover(bbox geometry, zoom_level int)
             (
                 geometry geometry,
                 class    text,
-                subclass text
+                subclass text,
+                icgc_id  bigint
             )
 AS
 $$
 SELECT geometry,
        landcover_class(subclass) AS class,
-       subclass
+       subclass,
+       NULLIF(icgc_id, 0) AS icgc_id
 FROM (
          -- etldoc:  landcover_z0 -> layer_landcover:z0
          SELECT geometry, 
-                subclass
+                subclass,
+                0::int as icgc_id
          FROM landcover_z0
          WHERE zoom_level = 0
            AND geometry && bbox
          UNION ALL
+
          -- etldoc:  landcover_z1 -> layer_landcover:z1
          SELECT geometry,
-                subclass
+                subclass,
+                0::int as icgc_id
          FROM landcover_z1
          WHERE zoom_level = 1
            AND geometry && bbox
          UNION ALL
+
          -- etldoc:  landcover_z2 -> layer_landcover:z2
          SELECT geometry, 
-                subclass
+                subclass,
+                0::int as icgc_id
          FROM landcover_z2
          WHERE zoom_level = 2
            AND geometry && bbox
          UNION ALL
+
          -- etldoc:  landcover_z3 -> layer_landcover:z3
          SELECT geometry,
-                subclass
+                subclass,
+                0::int as icgc_id
          FROM landcover_z3
          WHERE zoom_level = 3
            AND geometry && bbox
          UNION ALL
+
          -- etldoc:  landcover_z4 -> layer_landcover:z4
          SELECT geometry,
-                subclass
+                subclass,
+                0::int as icgc_id
          FROM landcover_z4
          WHERE zoom_level = 4
            AND geometry && bbox
          UNION ALL
+
          -- etldoc:  landcover_z5 -> layer_landcover:z5
          SELECT geometry, 
-                subclass
+                subclass,
+                0::int as icgc_id
          FROM landcover_z5
          WHERE zoom_level = 5
            AND geometry && bbox
          UNION ALL
+
          -- etldoc:  landcover_z6 -> layer_landcover:z6
          SELECT geometry,
-                subclass
+                subclass,
+                0::int as icgc_id
          FROM landcover_z6
          WHERE zoom_level = 6
            AND geometry && bbox
          UNION ALL
+
          -- etldoc:  osm_landcover_gen_z7 -> layer_landcover:z7
-         SELECT geometry, 
-                subclass
-         FROM osm_landcover_gen_z7
+         SELECT l.geometry, 
+                l.subclass,
+                0::int as icgc_id
+         FROM osm_landcover_gen_z7 l, admin.cat c
          WHERE zoom_level = 7
-           AND geometry && bbox
+           AND ST_Disjoint(c.geometry, l.geometry)
+           AND l.geometry && bbox
          UNION ALL
+
          -- etldoc:  osm_landcover_gen_z8 -> layer_landcover:z8
-         SELECT geometry, 
-                subclass
-         FROM osm_landcover_gen_z8
+         SELECT l.geometry, 
+                l.subclass,
+                0::int as icgc_id
+         FROM osm_landcover_gen_z8 l, admin.cat c
          WHERE zoom_level = 8
-           AND geometry && bbox
+           AND ST_Disjoint(c.geometry, l.geometry)
+           AND l.geometry && bbox
          UNION ALL
+
          -- etldoc:  osm_landcover_gen_z9 -> layer_landcover:z9
-         SELECT geometry, 
-                subclass
-         FROM osm_landcover_gen_z9
+         SELECT l.geometry, 
+                l.subclass,
+                0::int as icgc_id
+         FROM osm_landcover_gen_z9 l, admin.cat c
          WHERE zoom_level = 9
-           AND geometry && bbox
+           AND ST_Disjoint(c.geometry, l.geometry)
+           AND l.geometry && bbox
          UNION ALL
+
          -- etldoc:  osm_landcover_gen_z10 -> layer_landcover:z10
-         SELECT geometry, 
-                subclass
-         FROM osm_landcover_gen_z10
+         SELECT l.geometry, 
+                l.subclass,
+                0::int as icgc_id
+         FROM osm_landcover_gen_z10 l, admin.cat c
          WHERE zoom_level = 10
-           AND geometry && bbox
+           AND ST_Disjoint(c.geometry, l.geometry)
+           AND l.geometry && bbox
          UNION ALL
+
          -- etldoc:  osm_landcover_gen_z11 -> layer_landcover:z11
-         SELECT geometry, 
-                subclass
-         FROM osm_landcover_gen_z11
+         SELECT l.geometry, 
+                l.subclass,
+                0::int as icgc_id
+         FROM osm_landcover_gen_z11 l, admin.cat c
          WHERE zoom_level = 11
-           AND geometry && bbox
+           AND ST_Disjoint(c.geometry, l.geometry)
+           AND l.geometry && bbox
          UNION ALL
+
          -- etldoc:  osm_landcover_gen_z12 -> layer_landcover:z12
-         SELECT geometry, 
-                subclass
-         FROM osm_landcover_gen_z12
+         SELECT l.geometry, 
+                l.subclass,
+                0::int as icgc_id
+         FROM osm_landcover_gen_z12 l, admin.cat c
          WHERE zoom_level = 12
-           AND geometry && bbox
+           AND ST_Disjoint(c.geometry, l.geometry)
+           AND l.geometry && bbox
          UNION ALL
+
          -- etldoc:  osm_landcover_gen_z13 -> layer_landcover:z13
-         SELECT geometry, 
-                subclass
-         FROM osm_landcover_gen_z13
+         SELECT l.geometry, 
+                l.subclass,
+                0::int as icgc_id
+         FROM osm_landcover_gen_z13 l, admin.cat c
          WHERE zoom_level = 13
-           AND geometry && bbox
+           AND ST_Disjoint(c.geometry, l.geometry)
+           AND l.geometry && bbox
          UNION ALL
+
          -- etldoc:  osm_landcover_polygon -> layer_landcover:z14_
-         SELECT geometry, 
-                subclass
-         FROM osm_landcover_polygon
+         SELECT l.geometry, 
+                l.subclass,
+                0::int as icgc_id
+         FROM osm_landcover_polygon l, admin.cat c
          WHERE zoom_level >= 14
-           AND geometry && bbox
+           AND ST_Disjoint(c.geometry, l.geometry)
+           AND l.geometry && bbox
+         UNION ALL
+
+         -- landcover_z7_z8
+         SELECT geom,
+                class,
+                icgc_id
+         FROM landcover_z7_z8
+         WHERE (zoom_level <= 8 AND geom && bbox )
+         UNION ALL
+ 
+         -- landcover_z9_z10
+         SELECT geom,
+                class,
+                icgc_id
+         FROM landcover_z9_z10
+         WHERE (zoom_level BETWEEN 9 AND 10 AND geom && bbox )
+         UNION ALL
+ 
+         -- landcover_z11_z12
+         SELECT geom,
+                class,
+                icgc_id
+         FROM landcover_z11_z12
+         WHERE (zoom_level BETWEEN 11 AND 12 AND geom && bbox )
+         UNION ALL
+ 
+         -- landcover_ini
+         SELECT geom,
+                class,
+                icgc_id
+         FROM landcover_ini
+         WHERE (zoom_level BETWEEN 13 AND 14 AND geom && bbox )
+         UNION ALL
+ 
+         -- landcover_bt5m
+         SELECT geom,
+                class,
+                icgc_id
+         FROM landcover_bt5m
+         WHERE (zoom_level > 14 AND geom && bbox )
      ) AS zoom_levels;
 $$ LANGUAGE SQL STABLE
                 -- STRICT

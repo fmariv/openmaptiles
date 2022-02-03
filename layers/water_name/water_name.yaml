@@ -9,6 +9,7 @@ layer:
       This is based of the [osm-lakelines](https://github.com/lukasmartinelli/osm-lakelines) project
       which derives nice centerlines from OSM water bodies. Only the most important lakes contain labels.
   fields:
+    icgc_id: Identificador únic de l'ICGC.
     name: The OSM [`name`](http://wiki.openstreetmap.org/wiki/Key:name) value of the water body.
     name_en: English name `name:en` if available, otherwise `name`.
     name_de: German name `name:de` if available, otherwise `name` or `name:en`.
@@ -21,6 +22,18 @@ layer:
       description: |
         Mark with `1` if it is an [intermittent](http://wiki.openstreetmap.org/wiki/Key:intermittent) lake.
       values: [0, 1]
+    zoom:
+       description:
+        Pendent d'informar.
+    rank:
+        description:
+        Pendent d'informar.
+    codi_geo:
+        description:
+        Pendent d'informar.
+    font_size:
+        description:
+        Pendent d'informar.
   buffer_size: 256
   srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
   datasource:
@@ -28,7 +41,7 @@ layer:
     key_field: osm_id
     key_field_as_attribute: no
     srid: 900913
-    query: (SELECT osm_id, geometry, name, name_en, name_de, {name_languages}, class, intermittent FROM layer_water_name(!bbox!, z(!scale_denominator!))) AS t
+    query: (SELECT osm_id, icgc_id, geometry, name, name_en, name_de, {name_languages}, class, intermittent, zoom, rank, cogi_geo, font_size FROM layer_water_name(!bbox!, z(!scale_denominator!))) AS t
 schema:
   - ./update_marine_point.sql
   - ./update_water_lakeline.sql

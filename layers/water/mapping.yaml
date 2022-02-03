@@ -81,6 +81,8 @@ tables:
     - name: is_intermittent
       key: intermittent
       type: bool
+    - name: icgc_id
+      type: integer
     - *tunnel
     - *bridge
     filters:

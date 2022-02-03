@@ -461,7 +461,7 @@ FROM (
                 is_tunnel,
                 is_intermittent,
                 icgc_id
-         FROM waterway_z_9_10_carto w
+         FROM waterway_z_9_10_carto 
          WHERE (zoom_level = 9) AND geom && bbox
          UNION ALL
 
@@ -477,7 +477,7 @@ FROM (
                 is_tunnel,
                 is_intermittent,
                 icgc_id
-         FROM waterway_z_10_11_carto w
+         FROM waterway_z_10_11_carto 
          WHERE (zoom_level BETWEEN 10 AND 11) AND geom && bbox
      ) AS zoom_levels
 WHERE geometry && bbox;

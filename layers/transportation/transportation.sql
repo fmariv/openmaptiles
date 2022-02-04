@@ -34,8 +34,8 @@ CREATE OR REPLACE FUNCTION layer_transportation(bbox geometry, zoom_level int)
             )
 AS
 $$
-SELECT osm_id,
-       geometry,
+SELECT zoom_levels.osm_id,
+       zoom_levels.geometry,
        CASE
            WHEN highway <> '' OR public_transport <> ''
                THEN highway_class(highway, public_transport, construction)
@@ -60,7 +60,7 @@ SELECT osm_id,
        CASE WHEN is_oneway <> 0 THEN is_oneway::int END AS oneway,
        brunnel(is_bridge, is_tunnel, is_ford) AS brunnel,
        NULLIF(service, '') AS service,
-       access,
+       zoom_levels.access,
        CASE WHEN toll = TRUE THEN 1 END AS toll,
        CASE WHEN highway NOT IN ('', 'motorway') AND expressway = TRUE THEN 1 END AS expressway,
        NULLIF(layer, 0) AS layer,
@@ -818,9 +818,114 @@ FROM (
                  man_made IN ('bridge', 'pier')
                  OR (is_area AND COALESCE(layer, 0) >= 0)
              )
-     ) AS zoom_levels
-WHERE geometry && bbox
-ORDER BY z_order ASC;
+     ) AS zoom_levels, admin.cat c
+WHERE zoom_levels.geometry && bbox
+  -- Filter by Catalonia extend
+  AND ST_Disjoint(c.geometry, zoom_levels.geometry)
+UNION ALL
+
+-- Add ICGC Transportation data
+-- z_7mtc_vials
+SELECT  NULL AS osm_id,
+        geom,
+        NULL AS class,
+        NULL AS subclass,
+        NULL AS network,
+        NULL AS ramp,
+        NULL AS oneway,
+        NULL AS brunnel,
+        NULL AS service,
+        NULL AS access,
+        NULL AS toll,
+        NULL AS expressway,
+        null as layer,
+        NULL::int AS level,
+        NULL AS indoor,
+        NULL AS bicycle,
+        NULL AS foot,
+        NULL AS horse,
+        NULL AS mtb_scale,
+        NULL AS surface
+FROM z_7mtc_vials 
+WHERE zoom_level < 8 AND geom && bbox
+UNION ALL
+
+-- z_8mtc_vials
+SELECT  NULL AS osm_id,
+        geom,
+        NULL AS class,
+        NULL AS subclass,
+        NULL AS network,
+        NULL AS ramp,
+        NULL AS oneway,
+        NULL AS brunnel,
+        NULL AS service,
+        NULL AS access,
+        NULL AS toll,
+        NULL AS expressway,
+        null as layer,
+        NULL::int AS level,
+        NULL AS indoor,
+        NULL AS bicycle,
+        NULL AS foot,
+        NULL AS horse,
+        NULL AS mtb_scale,
+        NULL AS surface
+FROM z_8mtc_vials 
+WHERE (zoom_level BETWEEN 8 AND 9) AND geom && bbox
+UNION ALL
+
+-- z_11_13_transportation_contextmaps
+SELECT  NULL AS osm_id,
+        geom,
+        NULL AS class,
+        NULL AS subclass,
+        NULL AS network,
+        NULL AS ramp,
+        NULL AS oneway,
+        NULL AS brunnel,
+        NULL AS service,
+        NULL AS access,
+        NULL AS toll,
+        NULL AS expressway,
+        null as layer,
+        NULL::int AS level,
+        NULL AS indoor,
+        NULL AS bicycle,
+        NULL AS foot,
+        NULL AS horse,
+        NULL AS mtb_scale,
+        NULL AS surface
+FROM z_11_13_transportation_contextmaps 
+WHERE (zoom_level BETWEEN 9 AND 13) AND geom && bbox
+UNION ALL
+
+-- z_13_18_transportation_contextmaps
+SELECT  NULL AS osm_id,
+        geom,
+        NULL AS class,
+        NULL AS subclass,
+        NULL AS network,
+        NULL AS ramp,
+        NULL AS oneway,
+        NULL AS brunnel,
+        NULL AS service,
+        NULL AS access,
+        NULL AS toll,
+        NULL AS expressway,
+        null as layer,
+        NULL::int AS level,
+        NULL AS indoor,
+        NULL AS bicycle,
+        NULL AS foot,
+        NULL AS horse,
+        NULL AS mtb_scale,
+        NULL AS surface
+FROM z_13_18_transportation_contextmaps 
+WHERE (zoom_level >= 13) AND geom && bbox;
+
+-- ORDER BY z_order ASC;
+
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

@@ -54,7 +54,8 @@ CREATE OR REPLACE FUNCTION layer_building(bbox geometry, zoom_level int)
                 render_height     int,
                 render_min_height int,
                 colour            text,
-                hide_3d           boolean
+                hide_3d           boolean,
+                icgc_id           bigint
             )
 AS
 $$
@@ -82,7 +83,8 @@ SELECT geometry,
                             WHEN 'sandstone' THEN '#b4a995' -- same as stone
                             WHEN 'clay' THEN '#9d8b75' -- same as mud
            END) AS colour,
-       CASE WHEN hide_3d THEN TRUE END AS hide_3d
+       CASE WHEN hide_3d THEN TRUE END AS hide_3d,
+       NULLIF(icgc_id, 0) AS icgc_id
 FROM (
          -- etldoc: osm_building_block_gen_z13 -> layer_building:z13
          SELECT
@@ -92,7 +94,8 @@ FROM (
              NULL::int AS render_min_height,
              NULL::text AS material,
              NULL::text AS colour,
-             FALSE AS hide_3d
+             FALSE AS hide_3d,
+             0::int AS icgc_id
          FROM osm_building_block_gen_z13 obp, admin.cat c
          WHERE zoom_level = 13
            AND obp.geometry && bbox
@@ -107,7 +110,8 @@ FROM (
                                   floor(COALESCE(min_height, min_level * 3.66, 0))::int AS render_min_height,
                                   material,
                                   colour,
-                                  hide_3d
+                                  hide_3d,
+                                  0::int AS icgc_id
          FROM osm_all_buildings
          WHERE (levels IS NULL OR levels < 1000)
            AND (min_level IS NULL OR min_level < 1000)
@@ -119,91 +123,98 @@ FROM (
 
         -- z_9_10mtc_poblament_poligon
         SELECT
-             icgc_id,
+             NULL::int AS osm_id,
              geom,
              NULL::int as render_height,
              NULL::int AS render_min_height,
              NULL::text AS material,
              NULL::text AS colour,
-             NULL::boolean AS hide_3d
+             NULL::boolean AS hide_3d,
+             icgc_id
          FROM z_9_10mtc_poblament_poligon
          WHERE (zoom_level BETWEEN 7 AND 10) AND geom && bbox
          UNION ALL
 
         -- poblament
         SELECT
-             icgc_id,
+             NULL::int AS osm_id,
              geom,
              NULL::int as render_height,
              NULL::int AS render_min_height,
              NULL::text AS material,
              NULL::text AS colour,
-             NULL::boolean AS hide_3d
+             NULL::boolean AS hide_3d,
+             icgc_id
          FROM poblament
          WHERE zoom_level = 11 AND geom && bbox
          UNION ALL
 
          -- building_z12
          SELECT
-             icgc_id,
+             NULL::int AS osm_id,
              geom,
              NULL::int as render_height,
              NULL::int AS render_min_height,
              NULL::text AS material,
              NULL::text AS colour,
-             NULL::boolean AS hide_3d
+             NULL::boolean AS hide_3d,
+             icgc_id
          FROM building_z12
          WHERE zoom_level = 12 AND geom && bbox
          UNION ALL
 
          -- building
          SELECT
-             icgc_id,
+             NULL::int AS osm_id,
              geom,
              NULL::int as render_height,
              NULL::int AS render_min_height,
              NULL::text AS material,
              NULL::text AS colour,
-             NULL::boolean AS hide_3d
+             NULL::boolean AS hide_3d,
+             icgc_id
          FROM building
          WHERE zoom_level = 13 AND geom && bbox
          UNION ALL
 
          -- building_bt5m
          SELECT
-             icgc_id,
+             NULL::int AS osm_id,
              geom,
              NULL::int as render_height,
              NULL::int AS render_min_height,
              NULL::text AS material,
              NULL::text AS colour,
-             NULL::boolean AS hide_3d
+             NULL::boolean AS hide_3d,
+             icgc_id
          FROM building
          WHERE zoom_level > 13 AND building IN ('industrial', 'cns-XE', 'dip') AND geom && bbox
          UNION ALL
 
          -- building_bt5m
          SELECT
-             icgc_id,
+             NULL::int AS osm_id,
              geom,
              NULL::int as render_height,
              NULL::int AS render_min_height,
              NULL::text AS material,
              NULL::text AS colour,
-             NULL::boolean AS hide_3d
+             NULL::boolean AS hide_3d,
+             icgc_id
          FROM building
          WHERE zoom_level > 13 AND building NOT IN ('industrial', 'cns-XE', 'dip') AND geom && bbox
          UNION ALL
 
          -- ascensors
          SELECT
-             icgc_id,
+             NULL::int AS osm_id,
              geom,
              NULL::int as render_height,
              NULL::int AS render_min_height,
              NULL::text AS material,
              NULL::text AS colour,
-             NULL::boolean AS hide_3d
+             NULL::boolean AS hide_3d,
+             icgc_id
          FROM ascensors
          WHERE zoom_level > 13 AND geom && bbox
      ) AS zoom_levels

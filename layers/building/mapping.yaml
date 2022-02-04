@@ -51,6 +51,8 @@ tables:
     - name: min_level
       key: min_level
       type: string
+    - name: icgc_id
+      type: integer
     mapping:
       building:part:
       - __any__
@@ -158,6 +160,8 @@ tables:
       from_member: true
     - name: type
       type: member_type
+    - name: icgc_id
+      type: integer
     mapping:
       type: [building]
     type: relation_member

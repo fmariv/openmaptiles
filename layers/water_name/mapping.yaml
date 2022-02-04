@@ -31,12 +31,10 @@ tables:
       type: bool
     - name: zoom
       type: integer
-    - name: rank
-      type: integer
     - name: codi_geo
       type: integer
     - name: font_size
-      type: float
+      type: integer
     filters:
       require:
         name: ["__any__"]

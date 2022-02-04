@@ -23,16 +23,16 @@ layer:
         Mark with `1` if it is an [intermittent](http://wiki.openstreetmap.org/wiki/Key:intermittent) lake.
       values: [0, 1]
     zoom:
-       description:
+      description:
         Pendent d'informar.
     rank:
-        description:
+      description:
         Pendent d'informar.
     codi_geo:
-        description:
+      description:
         Pendent d'informar.
     font_size:
-        description:
+      description:
         Pendent d'informar.
   buffer_size: 256
   srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over

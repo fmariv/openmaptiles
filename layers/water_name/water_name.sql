@@ -38,7 +38,7 @@ SELECT
     NULL::INT AS zoom,
     NULL::INT AS rank,
     NULL::INT AS codi_geo,
-    NULL::FLOAT AS font_size
+    NULL::FLOAT AS fontsize
 FROM osm_water_lakeline w, admin.cat c
 WHERE w.geometry && bbox
   AND ST_Disjoint(c.geometry, w.geometry)
@@ -64,7 +64,7 @@ SELECT
     NULL::INT AS zoom,
     NULL::INT AS rank,
     NULL::INT AS codi_geo,
-    NULL::FLOAT AS font_size
+    NULL::FLOAT AS fontsize
 FROM osm_water_point w, admin.cat c
 WHERE w.geometry && bbox
   AND ST_Disjoint(c.geometry, w.geometry)
@@ -114,8 +114,8 @@ SELECT
      NULL::INT AS intermittent,
      w.zoom,
      w.rank,
-     w.codig_geo,
-     w.font_size
+     w.codigeo,
+     w.fontsize
 FROM water_name w
 WHERE zoom_level >= w.zoom AND w.geom && bbox
 UNION ALL
@@ -133,8 +133,8 @@ SELECT
      NULL::INT AS intermittent,
      w.zoom,
      w.rank,
-     w.codig_geo,
-     w.font_size
+     w.codigeo,
+     w.fontsize
 FROM waterway w
 WHERE zoom_level >= w.zoom AND w.geom && bbox
     ;

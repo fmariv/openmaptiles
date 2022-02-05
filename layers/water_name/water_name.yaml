@@ -28,10 +28,10 @@ layer:
     rank:
       description:
         Pendent d'informar.
-    codi_geo:
+    codigeo:
       description:
         Pendent d'informar.
-    font_size:
+    fontsize:
       description:
         Pendent d'informar.
   buffer_size: 256
@@ -41,7 +41,7 @@ layer:
     key_field: osm_id
     key_field_as_attribute: no
     srid: 900913
-    query: (SELECT osm_id, icgc_id, geometry, name, name_en, name_de, {name_languages}, class, intermittent, zoom, rank, cogi_geo, font_size FROM layer_water_name(!bbox!, z(!scale_denominator!))) AS t
+    query: (SELECT osm_id, icgc_id, geometry, name, name_en, name_de, {name_languages}, class, intermittent, zoom, rank, codigeo, fontsize FROM layer_water_name(!bbox!, z(!scale_denominator!))) AS t
 schema:
   - ./update_marine_point.sql
   - ./update_water_lakeline.sql

@@ -31,9 +31,9 @@ tables:
       type: bool
     - name: zoom
       type: integer
-    - name: codi_geo
+    - name: codigeo
       type: integer
-    - name: font_size
+    - name: fontsize
       type: integer
     filters:
       require:

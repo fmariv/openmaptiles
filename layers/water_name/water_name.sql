@@ -15,8 +15,8 @@ CREATE OR REPLACE FUNCTION layer_water_name(bbox geometry, zoom_level integer)
                 intermittent int,
                 zoom         int,
                 rank         int,
-                cogi_geo     int,
-                font_size    float
+                codigeo     int,
+                fontsize    float
             )
 AS
 $$
@@ -37,7 +37,7 @@ SELECT
     is_intermittent::int AS intermittent,
     NULL::INT AS zoom,
     NULL::INT AS rank,
-    NULL::INT AS codi_geo,
+    NULL::INT AS codigeo,
     NULL::FLOAT AS fontsize
 FROM osm_water_lakeline w, admin.cat c
 WHERE w.geometry && bbox
@@ -63,7 +63,7 @@ SELECT
     is_intermittent::int AS intermittent,
     NULL::INT AS zoom,
     NULL::INT AS rank,
-    NULL::INT AS codi_geo,
+    NULL::INT AS codigeo,
     NULL::FLOAT AS fontsize
 FROM osm_water_point w, admin.cat c
 WHERE w.geometry && bbox
@@ -89,8 +89,8 @@ SELECT
     is_intermittent::int AS intermittent,
     NULL::INT AS zoom,
     NULL::INT AS rank,
-    NULL::INT AS codi_geo,
-    NULL::FLOAT AS font_size
+    NULL::INT AS codigeo,
+    NULL::FLOAT AS fontsize
 FROM osm_marine_point w, admin.cat c
 WHERE w.geometry && bbox
   AND ST_Disjoint(c.geometry, w.geometry)

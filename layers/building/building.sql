@@ -112,6 +112,7 @@ FROM (
                                   colour,
                                   hide_3d,
                                   0::int AS icgc_id
+         -- Don't need to filter by extent because the view it's already filtered on its creation
          FROM osm_all_buildings
          WHERE (levels IS NULL OR levels < 1000)
            AND (min_level IS NULL OR min_level < 1000)
@@ -153,8 +154,8 @@ FROM (
          SELECT
              NULL::int AS osm_id,
              geom,
-             NULL::int as render_height,
-             NULL::int AS render_min_height,
+             render_height,
+             render_min_height,
              NULL::text AS material,
              NULL::text AS colour,
              NULL::boolean AS hide_3d,
@@ -167,8 +168,8 @@ FROM (
          SELECT
              NULL::int AS osm_id,
              geom,
-             NULL::int as render_height,
-             NULL::int AS render_min_height,
+             render_height,
+             render_min_height,
              NULL::text AS material,
              NULL::text AS colour,
              NULL::boolean AS hide_3d,
@@ -181,8 +182,8 @@ FROM (
          SELECT
              NULL::int AS osm_id,
              geom,
-             NULL::int as render_height,
-             NULL::int AS render_min_height,
+             render_height,
+             render_min_height,
              NULL::text AS material,
              NULL::text AS colour,
              NULL::boolean AS hide_3d,
@@ -195,8 +196,8 @@ FROM (
          SELECT
              NULL::int AS osm_id,
              geom,
-             NULL::int as render_height,
-             NULL::int AS render_min_height,
+             render_height,
+             render_min_height,
              NULL::text AS material,
              NULL::text AS colour,
              NULL::boolean AS hide_3d,

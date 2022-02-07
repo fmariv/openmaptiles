@@ -508,119 +508,127 @@ WHERE admin_level <= 4
 -- etldoc: osm_border_linestring_gen_z6 -> boundary_z6
 CREATE OR REPLACE VIEW boundary_z6 AS
 (
-SELECT geometry,
-       admin_level,
-       adm0_l,
-       adm0_r,
-       disputed,
+SELECT obl.geometry,
+       obl.admin_level,
+       obl.adm0_l,
+       obl.adm0_r,
+       obl.disputed,
        CASE WHEN disputed THEN edit_name(name) END AS disputed_name,
-       claimed_by,
-       maritime
-FROM osm_border_linestring_gen_z6
-WHERE admin_level <= 4
+       obl.claimed_by,
+       obl.maritime
+FROM osm_border_linestring_gen_z6 obl, admin.cat c
+WHERE admin_level <= 4 
+   AND ST_Disjoint(c.geometry, obl.geometry)
     );
 
 -- etldoc: osm_border_linestring_gen_z7 -> boundary_z7
 CREATE OR REPLACE VIEW boundary_z7 AS
 (
-SELECT geometry,
-       admin_level,
-       adm0_l,
-       adm0_r,
-       disputed,
+SELECT obl.geometry,
+       obl.admin_level,
+       obl.adm0_l,
+       obl.adm0_r,
+       obl.disputed,
        CASE WHEN disputed THEN edit_name(name) END AS disputed_name,
-       claimed_by,
-       maritime
-FROM osm_border_linestring_gen_z7
+       obl.claimed_by,
+       obl.maritime
+FROM osm_border_linestring_gen_z7 obl, admin.cat c
 WHERE admin_level <= 6
+   AND ST_Disjoint(c.geometry, obl.geometry)
     );
 
 -- etldoc: osm_border_linestring_gen_z8 -> boundary_z8
 CREATE OR REPLACE VIEW boundary_z8 AS
 (
-SELECT geometry,
-       admin_level,
-       adm0_l,
-       adm0_r,
-       disputed,
+SELECT obl.geometry,
+       obl.admin_level,
+       obl.adm0_l,
+       obl.adm0_r,
+       obl.disputed,
        CASE WHEN disputed THEN edit_name(name) END AS disputed_name,
-       claimed_by,
-       maritime
-FROM osm_border_linestring_gen_z8
+       obl.claimed_by,
+       obl.maritime
+FROM osm_border_linestring_gen_z8 obl, admin.cat c
 WHERE admin_level <= 6
+   AND ST_Disjoint(c.geometry, obl.geometry)
     );
 
 -- etldoc: osm_border_linestring_gen_z9 -> boundary_z9
 CREATE OR REPLACE VIEW boundary_z9 AS
 (
-SELECT geometry,
-       admin_level,
-       adm0_l,
-       adm0_r,
-       disputed,
+SELECT obl.geometry,
+       obl.admin_level,
+       obl.adm0_l,
+       obl.adm0_r,
+       obl.disputed,
        CASE WHEN disputed THEN edit_name(name) END AS disputed_name,
-       claimed_by,
-       maritime
-FROM osm_border_linestring_gen_z9
+       obl.claimed_by,
+       obl.maritime
+FROM osm_border_linestring_gen_z9 obl, admin.cat c
 WHERE admin_level <= 6
+   AND ST_Disjoint(c.geometry, obl.geometry)
     );
 
 -- etldoc: osm_border_linestring_gen_z10 -> boundary_z10
 CREATE OR REPLACE VIEW boundary_z10 AS
 (
-SELECT geometry,
-       admin_level,
-       adm0_l,
-       adm0_r,
-       disputed,
+SELECT obl.geometry,
+       obl.admin_level,
+       obl.adm0_l,
+       obl.adm0_r,
+       obl.disputed,
        CASE WHEN disputed THEN edit_name(name) END AS disputed_name,
-       claimed_by,
-       maritime
-FROM osm_border_linestring_gen_z10
+       obl.claimed_by,
+       obl.maritime
+FROM osm_border_linestring_gen_z10 obl, admin.cat c
 WHERE admin_level <= 6
+   AND ST_Disjoint(c.geometry, obl.geometry)
     );
 
 -- etldoc: osm_border_linestring_gen_z11 -> boundary_z11
 CREATE OR REPLACE VIEW boundary_z11 AS
 (
-SELECT geometry,
-       admin_level,
-       adm0_l,
-       adm0_r,
-       disputed,
+SELECT obl.geometry,
+       obl.admin_level,
+       obl.adm0_l,
+       obl.adm0_r,
+       obl.disputed,
        CASE WHEN disputed THEN edit_name(name) END AS disputed_name,
-       claimed_by,
-       maritime
-FROM osm_border_linestring_gen_z11
+       obl.claimed_by,
+       obl.maritime
+FROM osm_border_linestring_gen_z11 obl, admin.cat c
 WHERE admin_level <= 8
+   AND ST_Disjoint(c.geometry, obl.geometry)
     );
 
 -- etldoc: osm_border_linestring_gen_z12 -> boundary_z12
 CREATE OR REPLACE VIEW boundary_z12 AS
 (
-SELECT geometry,
-       admin_level,
-       adm0_l,
-       adm0_r,
-       disputed,
+SELECT obl.geometry,
+       obl.admin_level,
+       obl.adm0_l,
+       obl.adm0_r,
+       obl.disputed,
        CASE WHEN disputed THEN edit_name(name) END AS disputed_name,
-       claimed_by,
-       maritime
-FROM osm_border_linestring_gen_z12
+       obl.claimed_by,
+       obl.maritime
+FROM osm_border_linestring_gen_z12 obl, admin.cat c
+WHERE ST_Disjoint(c.geometry, obl.geometry)
     );
 
 -- etldoc: osm_border_linestring_gen_z13 -> boundary_z13
 CREATE OR REPLACE VIEW boundary_z13 AS
 (
-SELECT geometry,
-       admin_level,
-       adm0_l,
-       adm0_r,
-       disputed,
+SELECT obl.geometry,
+       obl.admin_level,
+       obl.adm0_l,
+       obl.adm0_r,
+       obl.disputed,
        CASE WHEN disputed THEN edit_name(name) END AS disputed_name,
-       claimed_by,
-       maritime
-FROM osm_border_linestring_gen_z13
+       obl.claimed_by,
+       obl.maritime
+FROM osm_border_linestring_gen_z13 obl, admin.cat c
+WHERE ST_Disjoint(c.geometry, obl.geometry)
     );
 
 -- etldoc: layer_boundary[shape=record fillcolor=lightpink, style="rounded,filled",
@@ -647,84 +655,112 @@ FROM (
          WHERE geometry && bbox
            AND zoom_level = 0
          UNION ALL
+
          -- etldoc: boundary_z1 ->  layer_boundary:z1
          SELECT *
          FROM boundary_z1
          WHERE geometry && bbox
            AND zoom_level = 1
          UNION ALL
+
          -- etldoc: boundary_z2 ->  layer_boundary:z2
          SELECT *
          FROM boundary_z2
          WHERE geometry && bbox
            AND zoom_level = 2
          UNION ALL
+
          -- etldoc: boundary_z3 ->  layer_boundary:z3
          SELECT *
          FROM boundary_z3
          WHERE geometry && bbox
            AND zoom_level = 3
          UNION ALL
+
          -- etldoc: boundary_z4 ->  layer_boundary:z4
          SELECT *
          FROM boundary_z4
          WHERE geometry && bbox
            AND zoom_level = 4
          UNION ALL
+
          -- etldoc: boundary_z5 ->  layer_boundary:z5
          SELECT *
          FROM boundary_z5
          WHERE geometry && bbox
            AND zoom_level = 5
          UNION ALL
+
          -- etldoc: boundary_z6 ->  layer_boundary:z6
          SELECT *
          FROM boundary_z6
          WHERE geometry && bbox
            AND zoom_level = 6
          UNION ALL
+
          -- etldoc: boundary_z7 ->  layer_boundary:z7
          SELECT *
          FROM boundary_z7
          WHERE geometry && bbox
            AND zoom_level = 7
          UNION ALL
+
          -- etldoc: boundary_z8 ->  layer_boundary:z8
          SELECT *
          FROM boundary_z8
          WHERE geometry && bbox
            AND zoom_level = 8
          UNION ALL
+
          -- etldoc: boundary_z9 ->  layer_boundary:z9
          SELECT *
          FROM boundary_z9
          WHERE geometry && bbox
            AND zoom_level = 9
          UNION ALL
+
          -- etldoc: boundary_z10 ->  layer_boundary:z10
          SELECT *
          FROM boundary_z10
          WHERE geometry && bbox
            AND zoom_level = 10
          UNION ALL
+
          -- etldoc: boundary_z11 ->  layer_boundary:z11
          SELECT *
          FROM boundary_z11
          WHERE geometry && bbox
            AND zoom_level = 11
          UNION ALL
+
          -- etldoc: boundary_z12 ->  layer_boundary:z12
          SELECT *
          FROM boundary_z12
          WHERE geometry && bbox
            AND zoom_level = 12
          UNION ALL
+
          -- etldoc: boundary_z13 -> layer_boundary:z13
          SELECT *
          FROM boundary_z13
          WHERE geometry && bbox
            AND zoom_level >= 13
+         UNION ALL
+
+         -- icgc boundary
+         SELECT 
+                geom,
+                admin_level,
+                NULL::text AS adm0_l,
+                NULL::text AS adm9_r,
+                disputed::bool AS disputed,
+                NULL::text AS disputed_name,
+                NULL::text AS claimed_by,
+                maritime::bool AS maritime
+         FROM boundary
+         WHERE (zoom_level BETWEEN minzoom AND maxzoom) AND geom && bbox
      ) AS zoom_levels;
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;
+

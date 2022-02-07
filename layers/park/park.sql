@@ -24,17 +24,17 @@ SELECT osm_id,
        tags,
        rank
 FROM (
-         SELECT osm_id,
-                geometry,
+         SELECT park_polygon.osm_id,
+                park_polygon.geometry,
                 COALESCE(
                         LOWER(REPLACE(NULLIF(protection_title, ''), ' ', '_')),
                         NULLIF(boundary, ''),
                         NULLIF(leisure, '')
                     ) AS class,
-                name,
-                name_en,
-                name_de,
-                tags,
+                park_polygon.name,
+                park_polygon.name_en,
+                park_polygon.name_de,
+                park_polygon.tags,
                 NULL::int AS rank
          FROM (
                   -- etldoc: osm_park_polygon_dissolve_z4 -> layer_park:z4
@@ -190,20 +190,21 @@ FROM (
                   FROM osm_park_polygon
                   WHERE zoom_level >= 14
                     AND geometry && bbox
-              ) AS park_polygon
+              ) AS park_polygon, admin.cat c
+         WHERE ST_Disjoint(c.geometry, park_polygon.geometry)
 
          UNION ALL
-         SELECT osm_id,
+         SELECT park_point.osm_id,
                 geometry_point AS geometry,
                 COALESCE(
                         LOWER(REPLACE(NULLIF(protection_title, ''), ' ', '_')),
                         NULLIF(boundary, ''),
                         NULLIF(leisure, '')
                     ) AS class,
-                name,
-                name_en,
-                name_de,
-                tags,
+                park_point.name,
+                park_point.name_en,
+                park_point.name_de,
+                park_point.tags,
                 row_number() OVER (
                     PARTITION BY LabelGrid(geometry_point, 100 * pixel_width)
                     ORDER BY
@@ -379,7 +380,20 @@ FROM (
                   FROM osm_park_polygon
                   WHERE zoom_level >= 14
                     AND geometry_point && bbox
-              ) AS park_point
+              ) AS park_point, admin.cat c
+         WHERE ST_Disjoint(c.geometry, park_point.geometry_point) 
+         UNION ALL
+
+         SELECT NULL::int AS osm_id,
+                geom,
+                class,
+                NULL::text AS name,
+                NULL::text AS name_en,
+                NULL::text AS name_de,
+                NULL::hstore AS tags,
+                NULL::int AS rank
+         FROM park
+         WHERE zoom_level >= 6 AND geom && bbox
      ) AS park_all;
 $$ LANGUAGE SQL STABLE
                 PARALLEL SAFE;

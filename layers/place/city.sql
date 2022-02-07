@@ -17,7 +17,7 @@ CREATE OR REPLACE FUNCTION layer_city(bbox geometry, zoom_level int, pixel_width
             )
 AS
 $$
-SELECT *
+SELECT city_all.*
 FROM (
          SELECT osm_id,
                 geometry,
@@ -73,7 +73,9 @@ FROM (
             OR (zoom_level = 10 AND (gridrank <= 12 OR "rank" IS NOT NULL))
             OR (zoom_level BETWEEN 11 AND 12 AND (gridrank <= 14 OR "rank" IS NOT NULL))
             OR (zoom_level >= 13)
-     ) AS city_all;
+     ) AS city_all, admin.cat c
+     WHERE ST_Disjoint(c.geometry, city_all.geometry)
+     ;
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

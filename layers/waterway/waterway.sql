@@ -440,10 +440,10 @@ FROM (
                 name,
                 name_en,
                 name_de,
-                tags,
-                is_bridge,
-                is_tunnel,
-                is_intermittent,
+                NULL::hstore AS tags,
+                NULL::boolean AS is_bridge,
+                NULL::boolean AS is_tunnel,
+                NULL::boolean AS is_intermittent,
                 icgc_id
          FROM waterway_z_7_8_carto
          WHERE (zoom_level BETWEEN 7 AND 8) AND geom && bbox
@@ -456,10 +456,10 @@ FROM (
                 name,
                 name_en,
                 name_de,
-                tags,
-                is_bridge,
-                is_tunnel,
-                is_intermittent,
+                NULL::hstore AS tags,
+                NULL::boolean AS is_bridge,
+                NULL::boolean AS is_tunnel,
+                NULL::boolean AS is_intermittent,
                 icgc_id
          FROM waterway_z_9_10_carto 
          WHERE (zoom_level = 9) AND geom && bbox
@@ -472,10 +472,10 @@ FROM (
                 name,
                 name_en,
                 name_de,
-                tags,
-                is_bridge,
-                is_tunnel,
-                is_intermittent,
+                NULL::hstore AS tags,
+                NULL::boolean AS is_bridge,
+                NULL::boolean AS is_tunnel,
+                NULL::boolean AS is_intermittent,
                 icgc_id
          FROM waterway_z_10_11_carto 
          WHERE (zoom_level BETWEEN 10 AND 11) AND geom && bbox

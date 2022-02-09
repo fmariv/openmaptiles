@@ -80,20 +80,20 @@ SELECT
     -- etldoc: osm_marine_point ->  layer_water_name:z14_
     osm_id * 10 AS osm_id_hash,
     NULL::INT AS icgc_id,
-    w.geometry,
-    w.name,
+    omp.geometry,
+    omp.name,
     COALESCE(NULLIF(name_en, ''), name) AS name_en,
     COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
-    w.tags,
+    omp.tags,
     place::text AS class,
     is_intermittent::int AS intermittent,
     NULL::INT AS zoom,
     NULL::INT AS rank,
     NULL::INT AS codigeo,
     NULL::FLOAT AS fontsize
-FROM osm_marine_point w, admin.cat c
-WHERE w.geometry && bbox
-  AND ST_Disjoint(c.geometry, w.geometry)
+FROM osm_marine_point omp, ocean_d15 od
+WHERE omp.geometry && bbox
+  AND ST_Disjoint(od.geom, omp.geometry)
   AND (
         place = 'ocean'
         OR (zoom_level >= "rank" AND "rank" IS NOT NULL)

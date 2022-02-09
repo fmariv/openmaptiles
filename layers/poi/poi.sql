@@ -92,6 +92,34 @@ FROM (
          FROM osm_poi_polygon
          WHERE geometry && bbox
            AND zoom_level >= 14
+         union all 
+         
+         -- icgc POI
+         SELECT 
+         		null::int as id,
+                icgc_id,
+                name,
+                NULL::text AS name_en,
+                NULL::text AS name_de,
+                NULL::hstore AS tags,
+                subclass,
+                null::text as mapping_key,
+                null::text as station,
+                null::text as funicular,
+                null::text as information,
+                null::text as uic_ref,
+                null::text as religion,
+                null::int as level,
+                null::boolean as indoor,
+                null::int as layer,
+                null::text as sport,
+                geom,
+                null::int as agg_stop,
+                null::int as osm_id_hash
+         FROM poi
+         WHERE geom && bbox
+           AND zoom_level >= zoom
+           AND zoom > 0
      ) AS poi_union
 ORDER BY "rank"
 $$ LANGUAGE SQL STABLE

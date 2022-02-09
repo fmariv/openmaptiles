@@ -12,12 +12,24 @@ AS
 $$
 SELECT
     -- etldoc: osm_housenumber_point -> layer_housenumber:z14_
-    osm_id,
-    geometry,
-    housenumber
-FROM osm_housenumber_point
+    ohp.osm_id,
+    ohp.geometry,
+    ohp.housenumber
+FROM osm_housenumber_point ohp, admin.cat c
 WHERE zoom_level >= 14
-  AND geometry && bbox;
+  AND ohp.geometry && bbox
+  AND ST_Disjoint(c.geometry, ohp.geometry)
+
+UNION ALL 
+
+-- icgc housenumber
+SELECT 
+     icgc_id,
+     geom, 
+     housenumber
+FROM housenumber
+WHERE geom && bbox AND zoom_level >= 14 
+  ;
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

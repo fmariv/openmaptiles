@@ -14,10 +14,7 @@ CREATE OR REPLACE FUNCTION layer_place(bbox geometry, zoom_level int, pixel_widt
                 class          text,
                 "rank"         integer,
                 capital        integer,
-                iso_a2         text,
-                codigeo        integer,
-                zoom           integer,
-                icgc_id_match  bigint
+                iso_a2         text
             )
 AS
 $$
@@ -35,10 +32,7 @@ FROM (
              'continent' AS class,
              1 AS "rank",
              NULL::int AS capital,
-             NULL::text AS iso_a2,
-             NULL::int AS codigeo,
-             NULL::int AS zoom,
-             NULL::int AS icgc_id_match 
+             NULL::text AS iso_a2
          FROM osm_continent_point ocp, admin.cat c
          WHERE ocp.geometry && bbox
            AND ST_Disjoint(c.geometry, ocp.geometry)
@@ -61,10 +55,7 @@ FROM (
              'country' AS class,
              "rank",
              NULL::int AS capital,
-             iso3166_1_alpha_2 AS iso_a2,
-             NULL::int AS codigeo,
-             NULL::int AS zoom,
-             NULL::int AS icgc_id_match 
+             iso3166_1_alpha_2 AS iso_a2
          FROM osm_country_point ocp, admin.cat c
          WHERE ocp.geometry && bbox
            AND ST_Disjoint(c.geometry, ocp.geometry)
@@ -88,10 +79,7 @@ FROM (
              place::text AS class,
              "rank",
              NULL::int AS capital,
-             NULL::text AS iso_a2,
-             NULL::int AS codigeo,
-             NULL::int AS zoom,
-             NULL::int AS icgc_id_match 
+             NULL::text AS iso_a2
          FROM osm_state_point osp, admin.cat c
          WHERE osp.geometry && bbox
            AND ST_Disjoint(c.geometry, osp.geometry)
@@ -112,10 +100,7 @@ FROM (
              'island' AS class,
              7 AS "rank",
              NULL::int AS capital,
-             NULL::text AS iso_a2,
-             NULL::int AS codigeo,
-             NULL::int AS zoom,
-             NULL::int AS icgc_id_match 
+             NULL::text AS iso_a2
          FROM osm_island_point oip, admin.cat c
          WHERE zoom_level >= 12
            AND ST_Disjoint(c.geometry, oip.geometry)
@@ -136,10 +121,7 @@ FROM (
              'island' AS class,
              island_rank(area) AS "rank",
              NULL::int AS capital,
-             NULL::text AS iso_a2,
-             NULL::int AS codigeo,
-             NULL::int AS zoom,
-             NULL::int AS icgc_id_match 
+             NULL::text AS iso_a2
          FROM osm_island_polygon oip, admin.cat c
          WHERE oip.geometry && bbox
            AND ST_Disjoint(c.geometry, oip.geometry)
@@ -161,10 +143,7 @@ FROM (
              class,
              rank,
              NULL::int AS capital,
-             NULL::text AS iso_a2,
-             codigeo,
-             zoom,
-             icgc_id_match
+             NULL::text AS iso_a2
          FROM place
          WHERE zoom <= zoom_level and geom && bbox
 
@@ -186,10 +165,7 @@ FROM (
              place::text AS class,
              "rank",
              capital,
-             NULL::text AS iso_a2,
-             NULL::int AS codigeo,
-             NULL::int AS zoom,
-             NULL::int AS icgc_id_match 
+             NULL::text AS iso_a2
          -- The city layer is already filtered by extend
          FROM layer_city(bbox, zoom_level, pixel_width)
          ORDER BY "rank" ASC

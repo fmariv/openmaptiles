@@ -138,6 +138,13 @@ layer:
           Original value of [`indoor`](http://wiki.openstreetmap.org/wiki/Key:indoor) tag.
       values:
       - 1
+    icgc_id:
+      description:
+        Identificador únic de l'ICGC.
+    layer_type: Pendent d'informar.
+    zoom: Pendent d'informar.
+    icgc_id_match: Pendent d'informar.
+    classicgc: Pendent d'informar.
   datasource:
     geometry_field: geometry
     key_field: osm_id

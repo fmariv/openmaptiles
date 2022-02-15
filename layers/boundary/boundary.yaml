@@ -55,10 +55,15 @@ layer:
       description: |
           Mark with `1` if it is a maritime border.
       values: [0, 1]
+    icgc_id:
+      description:
+          Identificador únic de l'ICGC.
+    minzoom: Pendent d'informar.
+    maxzoom: Pendent d'informar.
   buffer_size: 4
   datasource:
     geometry_field: geometry
-    query: (SELECT geometry, admin_level, adm0_l, adm0_r, disputed, disputed_name, claimed_by, maritime FROM layer_boundary(!bbox!, z(!scale_denominator!))) AS t
+    query: (SELECT geometry, admin_level, adm0_l, adm0_r, disputed, disputed_name, claimed_by, maritime, icgc_id, minzoom, maxzoom FROM layer_boundary(!bbox!, z(!scale_denominator!))) AS t
 schema:
   - ./boundary_name.sql
   - ./boundary.sql

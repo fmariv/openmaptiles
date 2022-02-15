@@ -4,23 +4,29 @@
 CREATE OR REPLACE FUNCTION layer_poi(bbox geometry, zoom_level integer, pixel_width numeric)
     RETURNS TABLE
             (
-                osm_id   bigint,
-                geometry geometry,
-                name     text,
-                name_en  text,
-                name_de  text,
-                tags     hstore,
-                class    text,
-                subclass text,
-                agg_stop integer,
-                layer    integer,
-                level    integer,
-                indoor   integer,
-                "rank"   int
+                osm_id         bigint,
+                icgc_id        bigint,
+                geometry       geometry,
+                name           text,
+                name_en        text,
+                name_de        text,
+                tags           hstore,
+                class          text,
+                subclass       text,
+                agg_stop       integer,
+                layer          integer,
+                level          integer,
+                indoor         integer,
+                "rank"         int,
+                zoom           integer,
+                layer_type     text,
+                classicgc      text,
+                icgc_id_match  integer
             )
 AS
 $$
 SELECT osm_id_hash AS osm_id,
+       icgc_id,
        geometry,
        NULLIF(name, '') AS name,
        COALESCE(NULLIF(name_en, ''), name) AS name_en,
@@ -43,12 +49,21 @@ SELECT osm_id_hash AS osm_id,
        row_number() OVER (
            PARTITION BY LabelGrid(geometry, 100 * pixel_width)
            ORDER BY CASE WHEN name = '' THEN 2000 ELSE poi_class_rank(poi_class(subclass, mapping_key)) END ASC
-           )::int AS "rank"
+           )::int AS "rank",
+       zoom,
+       layer_type,
+       classicgc,
+       icgc_id_match
 FROM (
          -- etldoc: osm_poi_point ->  layer_poi:z12
          -- etldoc: osm_poi_point ->  layer_poi:z13
          SELECT *,
-                osm_id * 10 AS osm_id_hash
+                osm_id * 10 AS osm_id_hash,
+                NULL::int AS icgc_id,
+                NULL::int AS zoom,
+                NULL::text AS layer_type,
+                NULL::text AS classicgc,
+                NULL::int AS icgc_id_match
          FROM osm_poi_point
          WHERE geometry && bbox
            AND zoom_level BETWEEN 12 AND 13
@@ -59,7 +74,12 @@ FROM (
 
          -- etldoc: osm_poi_point ->  layer_poi:z14_
          SELECT *,
-                osm_id * 10 AS osm_id_hash
+                osm_id * 10 AS osm_id_hash,
+                NULL::int AS icgc_id,
+                NULL::int AS zoom,
+                NULL::text AS layer_type,
+                NULL::text AS classicgc,
+                NULL::int AS icgc_id_match
          FROM osm_poi_point
          WHERE geometry && bbox
            AND zoom_level >= 14
@@ -73,7 +93,12 @@ FROM (
                 CASE
                     WHEN osm_id < 0 THEN -osm_id * 10 + 4
                     ELSE osm_id * 10 + 1
-                    END AS osm_id_hash
+                    END AS osm_id_hash,
+                NULL::int AS icgc_id,
+                NULL::int AS zoom,
+                NULL::text AS layer_type,
+                NULL::text AS classicgc,
+                NULL::int AS icgc_id_match
          FROM osm_poi_polygon
          WHERE geometry && bbox
            AND zoom_level BETWEEN 12 AND 13
@@ -88,7 +113,12 @@ FROM (
                 CASE
                     WHEN osm_id < 0 THEN -osm_id * 10 + 4
                     ELSE osm_id * 10 + 1
-                    END AS osm_id_hash
+                    END AS osm_id_hash,
+                NULL::int AS icgc_id,
+                NULL::int AS zoom,
+                NULL::text AS layer_type,
+                NULL::text AS classicgc,
+                NULL::int AS icgc_id_match
          FROM osm_poi_polygon
          WHERE geometry && bbox
            AND zoom_level >= 14
@@ -97,7 +127,6 @@ FROM (
          -- icgc POI
          SELECT 
          		null::int as id,
-                icgc_id,
                 name,
                 NULL::text AS name_en,
                 NULL::text AS name_de,
@@ -115,7 +144,12 @@ FROM (
                 null::text as sport,
                 geom,
                 null::int as agg_stop,
-                null::int as osm_id_hash
+                null::int as osm_id_hash,
+                icgc_id,
+                zoom,
+                layer AS layer_type,
+                classicgc,
+                icgc_id_match
          FROM poi
          WHERE geom && bbox
            AND zoom_level >= zoom

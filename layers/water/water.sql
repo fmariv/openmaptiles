@@ -620,31 +620,6 @@ FROM (
                 icgc_id
          FROM water
          WHERE zoom_level >= 12 AND geom && bbox
-         UNION ALL
-
-         --
-         -- MAR
-         --
-         SELECT 
-                geom,
-                'ocean'::text AS class,
-                NULL::BOOLEAN AS is_intermittent,
-                NULL::BOOLEAN AS is_bridge,
-                null::BOOLEAN as is_tunnel,
-                icgc_id
-         FROM ocean_d15
-         WHERE zoom_level <= 13 AND geom && bbox
-         UNION ALL
-
-         SELECT 
-                geom,
-                'ocean'::text AS class,
-                NULL::BOOLEAN AS is_intermittent,
-                NULL::BOOLEAN AS is_bridge,
-                null::BOOLEAN as is_tunnel,
-                icgc_id
-         FROM ocean_z15
-         WHERE zoom_level >= 14 AND geom && bbox
      ) AS zoom_levels
 WHERE geometry && bbox;
 $$ LANGUAGE SQL STABLE

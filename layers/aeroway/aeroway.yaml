@@ -20,9 +20,15 @@ layer:
       - taxiway
       - apron
       - gate
+    icgc_id:
+      description:
+        Identificador únic de l'ICGC.
+    tipus:
+      description:
+        Pendent d'informar.
   datasource:
     geometry_field: geometry
-    query: (SELECT geometry, ref, class FROM layer_aeroway(!bbox!, z(!scale_denominator!))) AS t
+    query: (SELECT icgc_id, geometry, ref, class, tipus FROM layer_aeroway(!bbox!, z(!scale_denominator!))) AS t
 schema:
   - ./aeroway.sql
 datasources:

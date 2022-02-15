@@ -636,6 +636,7 @@ WHERE ST_Disjoint(c.geometry, obl.geometry)
 CREATE OR REPLACE FUNCTION layer_boundary(bbox geometry, zoom_level int)
     RETURNS TABLE
             (
+                icgc_id       bigint,
                 geometry      geometry,
                 admin_level   int,
                 adm0_l        text,
@@ -643,105 +644,107 @@ CREATE OR REPLACE FUNCTION layer_boundary(bbox geometry, zoom_level int)
                 disputed      int,
                 disputed_name text,
                 claimed_by    text,
-                maritime      int
+                maritime      int,
+                minzoom       int,
+                maxzoom       int
             )
 AS
 $$
-SELECT geometry, admin_level, adm0_l, adm0_r, disputed::int, disputed_name, claimed_by, maritime::int
+SELECT icgc_id, geometry, admin_level, adm0_l, adm0_r, disputed::int, disputed_name, claimed_by, maritime::int, minzoom, maxzoom
 FROM (
          -- etldoc: boundary_z0 ->  layer_boundary:z0
-         SELECT *
+         SELECT *, NULL::int as icgc_id, NULL::int as minzoom, NULL::int as maxzoom
          FROM boundary_z0
          WHERE geometry && bbox
            AND zoom_level = 0
          UNION ALL
 
          -- etldoc: boundary_z1 ->  layer_boundary:z1
-         SELECT *
+         SELECT *, NULL::int as icgc_id, NULL::int as minzoom, NULL::int as maxzoom
          FROM boundary_z1
          WHERE geometry && bbox
            AND zoom_level = 1
          UNION ALL
 
          -- etldoc: boundary_z2 ->  layer_boundary:z2
-         SELECT *
+         SELECT *, NULL::int as icgc_id, NULL::int as minzoom, NULL::int as maxzoom
          FROM boundary_z2
          WHERE geometry && bbox
            AND zoom_level = 2
          UNION ALL
 
          -- etldoc: boundary_z3 ->  layer_boundary:z3
-         SELECT *
+         SELECT *, NULL::int as icgc_id, NULL::int as minzoom, NULL::int as maxzoom
          FROM boundary_z3
          WHERE geometry && bbox
            AND zoom_level = 3
          UNION ALL
 
          -- etldoc: boundary_z4 ->  layer_boundary:z4
-         SELECT *
+         SELECT *, NULL::int as icgc_id, NULL::int as minzoom, NULL::int as maxzoom
          FROM boundary_z4
          WHERE geometry && bbox
            AND zoom_level = 4
          UNION ALL
 
          -- etldoc: boundary_z5 ->  layer_boundary:z5
-         SELECT *
+         SELECT *, NULL::int as icgc_id, NULL::int as minzoom, NULL::int as maxzoom
          FROM boundary_z5
          WHERE geometry && bbox
            AND zoom_level = 5
          UNION ALL
 
          -- etldoc: boundary_z6 ->  layer_boundary:z6
-         SELECT *
+         SELECT *, NULL::int as icgc_id, NULL::int as minzoom, NULL::int as maxzoom
          FROM boundary_z6
          WHERE geometry && bbox
            AND zoom_level = 6
          UNION ALL
 
          -- etldoc: boundary_z7 ->  layer_boundary:z7
-         SELECT *
+         SELECT *, NULL::int as icgc_id, NULL::int as minzoom, NULL::int as maxzoom
          FROM boundary_z7
          WHERE geometry && bbox
            AND zoom_level = 7
          UNION ALL
 
          -- etldoc: boundary_z8 ->  layer_boundary:z8
-         SELECT *
+         SELECT *, NULL::int as icgc_id, NULL::int as minzoom, NULL::int as maxzoom
          FROM boundary_z8
          WHERE geometry && bbox
            AND zoom_level = 8
          UNION ALL
 
          -- etldoc: boundary_z9 ->  layer_boundary:z9
-         SELECT *
+         SELECT *, NULL::int as icgc_id, NULL::int as minzoom, NULL::int as maxzoom
          FROM boundary_z9
          WHERE geometry && bbox
            AND zoom_level = 9
          UNION ALL
 
          -- etldoc: boundary_z10 ->  layer_boundary:z10
-         SELECT *
+         SELECT *, NULL::int as icgc_id, NULL::int as minzoom, NULL::int as maxzoom
          FROM boundary_z10
          WHERE geometry && bbox
            AND zoom_level = 10
          UNION ALL
 
          -- etldoc: boundary_z11 ->  layer_boundary:z11
-         SELECT *
+         SELECT *, NULL::int as icgc_id, NULL::int as minzoom, NULL::int as maxzoom
          FROM boundary_z11
          WHERE geometry && bbox
            AND zoom_level = 11
          UNION ALL
 
          -- etldoc: boundary_z12 ->  layer_boundary:z12
-         SELECT *
+         SELECT *, NULL::int as icgc_id, NULL::int as minzoom, NULL::int as maxzoom
          FROM boundary_z12
          WHERE geometry && bbox
            AND zoom_level = 12
          UNION ALL
 
          -- etldoc: boundary_z13 -> layer_boundary:z13
-         SELECT *
+         SELECT *, NULL::int as icgc_id, NULL::int as minzoom, NULL::int as maxzoom
          FROM boundary_z13
          WHERE geometry && bbox
            AND zoom_level >= 13
@@ -756,7 +759,10 @@ FROM (
                 disputed::bool AS disputed,
                 NULL::text AS disputed_name,
                 NULL::text AS claimed_by,
-                maritime::bool AS maritime
+                maritime::bool AS maritime,
+                icgc_id,
+                minzoom,
+                maxzoom
          FROM boundary
          WHERE (zoom_level BETWEEN minzoom AND maxzoom) AND geom && bbox
      ) AS zoom_levels;

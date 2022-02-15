@@ -6,6 +6,7 @@ CREATE OR REPLACE FUNCTION layer_aerodrome_label(bbox geometry,
     RETURNS TABLE
             (
                 id       bigint,
+                icgc_id  bigint,
                 geometry geometry,
                 name     text,
                 name_en  text,
@@ -23,6 +24,7 @@ SELECT
     -- etldoc: osm_aerodrome_label_point -> layer_aerodrome_label:z8
     -- etldoc: osm_aerodrome_label_point -> layer_aerodrome_label:z9
     ABS(osm_id) AS id, -- mvt feature IDs can't be negative
+    NULL::int as icgc_id,
     oalp.geometry,
     oalp.name,
     COALESCE(NULLIF(name_en, ''), name) AS name_en,
@@ -45,6 +47,7 @@ UNION ALL
 SELECT
     -- etldoc: osm_aerodrome_label_point -> layer_aerodrome_label:z10_
     ABS(osm_id) AS id, -- mvt feature IDs can't be negative
+    NULL::int as icgc_id,
     oalp.geometry,
     oalp.name,
     COALESCE(NULLIF(name_en, ''), name) AS name_en,
@@ -63,15 +66,17 @@ WHERE oalp.geometry && bbox
 UNION ALL
 
 SELECT 
+    -- icgc aerodrome label
     NULL::int AS id,
+    icgc_id,
     geom,
     name,
-    COALESCE(NULLIF(name_en, ''), name) AS name_en,
-    COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
+    name_en,
+    name_de,
     NULL::hstore AS tags,
     class,
-    NULLIF(iata, '') AS iata,
-    NULLIF(icao, '') AS icao,
+    iata,
+    icao,
     CAST(ele AS int) AS ele,
     CAST(ele AS int) AS ele_ft
 FROM aerodrome_label

@@ -5,6 +5,7 @@ CREATE OR REPLACE FUNCTION layer_housenumber(bbox geometry, zoom_level integer)
     RETURNS TABLE
             (
                 osm_id      bigint,
+                icgc_id     bigint,
                 geometry    geometry,
                 housenumber text
             )
@@ -13,6 +14,7 @@ $$
 SELECT
     -- etldoc: osm_housenumber_point -> layer_housenumber:z14_
     ohp.osm_id,
+    NULL::int AS icgc_id,
     ohp.geometry,
     ohp.housenumber
 FROM osm_housenumber_point ohp, admin.cat c
@@ -24,6 +26,7 @@ UNION ALL
 
 -- icgc housenumber
 SELECT 
+     NULL::int AS osm_id,
      icgc_id,
      geom, 
      housenumber

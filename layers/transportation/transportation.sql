@@ -6,8 +6,201 @@ $$ LANGUAGE SQL IMMUTABLE
                 PARALLEL SAFE;
 
 
+---
+--- Transportation views creation
+---
+DROP MATERIALIZED VIEW IF EXISTS transportation_gen_planet_z6 CASCADE;
+CREATE MATERIALIZED VIEW transportation_gen_planet_z6 AS
+(SELECT otml.*
+FROM (
+		SELECT    
+			(ST_Dump(otml.geometry)).geom AS geometry, 
+			osm_id,
+			highway,
+			network,
+			construction,
+			is_bridge,
+			is_tunnel,
+			is_ford,
+			z_order
+	FROM osm_transportation_merge_linestring_gen_z6 otml
+) AS otml, admin.cat c
+WHERE ST_Disjoint(c.geometry, otml.geometry)
+);
+CREATE INDEX IF NOT EXISTS transportation_gen_planet_z6_idx ON transportation_gen_planet_z6 USING gist (geometry);
+
+DROP MATERIALIZED VIEW IF EXISTS transportation_gen_planet_z7 CASCADE;
+CREATE MATERIALIZED VIEW transportation_gen_planet_z7 AS
+(SELECT otml.*
+FROM (
+		SELECT    
+			(ST_Dump(otml.geometry)).geom AS geometry, 
+			osm_id,
+			highway,
+			network,
+			construction,
+			is_bridge,
+			is_tunnel,
+			is_ford,
+			z_order
+	FROM osm_transportation_merge_linestring_gen_z7 otml
+) AS otml, admin.cat c
+WHERE ST_Disjoint(c.geometry, otml.geometry)
+);
+CREATE INDEX IF NOT EXISTS transportation_gen_planet_z7_idx ON transportation_gen_planet_z7 USING gist (geometry);
+
+DROP MATERIALIZED VIEW IF EXISTS transportation_gen_planet_z8 CASCADE;
+CREATE MATERIALIZED VIEW transportation_gen_planet_z8 AS
+(SELECT otml.*
+FROM (
+		SELECT    
+			(ST_Dump(otml.geometry)).geom AS geometry, 
+			osm_id,
+			highway,
+			network,
+			construction,
+			is_bridge,
+			is_tunnel,
+			is_ford,
+			z_order
+	FROM osm_transportation_merge_linestring_gen_z8 otml
+) AS otml, admin.cat c
+WHERE ST_Disjoint(c.geometry, otml.geometry)
+);
+CREATE INDEX IF NOT EXISTS transportation_gen_planet_z8_idx ON transportation_gen_planet_z8 USING gist (geometry);
+
+DROP MATERIALIZED VIEW IF EXISTS transportation_gen_planet_z9 CASCADE;
+CREATE MATERIALIZED VIEW transportation_gen_planet_z9 AS
+(SELECT otml.*
+FROM (
+		SELECT    
+			(ST_Dump(otml.geometry)).geom AS geometry, 
+			osm_id,
+			highway,
+			network,
+			construction,
+			is_bridge,
+			is_tunnel,
+			is_ford,
+			z_order
+	FROM osm_transportation_merge_linestring_gen_z9 otml
+) AS otml, admin.cat c
+WHERE ST_Disjoint(c.geometry, otml.geometry)
+);
+CREATE INDEX IF NOT EXISTS transportation_gen_planet_z9_idx ON transportation_gen_planet_z9 USING gist (geometry);
+
+DROP MATERIALIZED VIEW IF EXISTS transportation_gen_planet_z10 CASCADE;
+CREATE MATERIALIZED VIEW transportation_gen_planet_z10 AS
+(SELECT otml.*
+FROM (
+		SELECT    
+			(ST_Dump(otml.geometry)).geom AS geometry, 
+			osm_id,
+			highway,
+			network,
+			construction,
+			is_bridge,
+			is_tunnel,
+			is_ford,
+			z_order
+	FROM osm_transportation_merge_linestring_gen_z10 otml
+) AS otml, admin.cat c
+WHERE ST_Disjoint(c.geometry, otml.geometry)
+);
+CREATE INDEX IF NOT EXISTS transportation_gen_planet_z10_idx ON transportation_gen_planet_z10 USING gist (geometry);
+
+DROP MATERIALIZED VIEW IF EXISTS transportation_gen_planet_z11 CASCADE;
+CREATE MATERIALIZED VIEW transportation_gen_planet_z11 AS
+(SELECT otml.*
+FROM (
+		SELECT    
+			(ST_Dump(otml.geometry)).geom AS geometry, 
+			osm_id,
+			highway,
+			network,
+			construction,
+			is_bridge,
+			is_tunnel,
+			is_ford,
+			z_order
+	FROM osm_transportation_merge_linestring_gen_z11 otml
+) AS otml, admin.cat c
+WHERE ST_Disjoint(c.geometry, otml.geometry)
+);
+CREATE INDEX IF NOT EXISTS transportation_gen_planet_z11_idx ON transportation_gen_planet_z11 USING gist (geometry);
+
+DROP MATERIALIZED VIEW IF EXISTS transportation_highway_planet CASCADE;
+CREATE MATERIALIZED VIEW transportation_highway_planet AS
+(SELECT ohl.*
+ FROM osm_highway_linestring ohl, admin.cat c
+WHERE ST_Disjoint(c.geometry, ohl.geometry)
+);
+CREATE INDEX IF NOT EXISTS transportation_highway_planet_idx ON transportation_highway_planet USING gist (geometry);
+
+DROP MATERIALIZED VIEW IF EXISTS transportation_railway_planet_z8 CASCADE;
+CREATE MATERIALIZED VIEW transportation_railway_planet_z8 AS
+(SELECT orl.*
+ FROM osm_railway_linestring_gen_z8 orl, admin.cat c
+ WHERE railway = 'rail'
+  AND service IS NULL
+  AND usage = 'main'
+  AND ST_Disjoint(c.geometry, orl.geometry)
+);
+CREATE INDEX IF NOT EXISTS transportation_railway_planet_z8_idx ON transportation_railway_planet_z8 USING gist (geometry);
+
+DROP MATERIALIZED VIEW IF EXISTS transportation_railway_planet_z9 CASCADE;
+CREATE MATERIALIZED VIEW transportation_railway_planet_z9 AS
+(SELECT orl.*
+ FROM osm_railway_linestring_gen_z9 orl, admin.cat c
+ WHERE railway = 'rail'
+  AND service IS NULL
+  AND usage = 'main'
+  AND ST_Disjoint(c.geometry, orl.geometry)
+);
+CREATE INDEX IF NOT EXISTS transportation_railway_planet_z9_idx ON transportation_railway_planet_z9 USING gist (geometry);
+
+DROP MATERIALIZED VIEW IF EXISTS transportation_railway_planet_z10 CASCADE;
+CREATE MATERIALIZED VIEW transportation_railway_planet_z10 AS
+(SELECT orl.*
+ FROM osm_railway_linestring_gen_z10 orl, admin.cat c
+ WHERE railway IN ('rail', 'narrow_gauge')
+  AND service IS NULL
+  AND ST_Disjoint(c.geometry, orl.geometry)
+);
+CREATE INDEX IF NOT EXISTS transportation_railway_planet_z10_idx ON transportation_railway_planet_z10 USING gist (geometry);
+
+DROP MATERIALIZED VIEW IF EXISTS transportation_railway_planet_z11 CASCADE;
+CREATE MATERIALIZED VIEW transportation_railway_planet_z11 AS
+(SELECT orl.*
+ FROM osm_railway_linestring_gen_z11 orl, admin.cat c
+ WHERE railway IN ('rail', 'narrow_gauge', 'light_rail')
+  AND service IS NULL
+  AND ST_Disjoint(c.geometry, orl.geometry)
+);
+CREATE INDEX IF NOT EXISTS transportation_railway_planet_z11_idx ON transportation_railway_planet_z11 USING gist (geometry);
+
+DROP MATERIALIZED VIEW IF EXISTS transportation_railway_planet_z12 CASCADE;
+CREATE MATERIALIZED VIEW transportation_railway_planet_z12 AS
+(SELECT orl.*
+ FROM osm_railway_linestring_gen_z12 orl, admin.cat c
+ WHERE railway IN ('rail', 'narrow_gauge', 'light_rail')
+  AND service IS NULL
+  AND ST_Disjoint(c.geometry, orl.geometry)
+);
+CREATE INDEX IF NOT EXISTS transportation_railway_planet_z12_idx ON transportation_railway_planet_z12 USING gist (geometry);
+
+DROP MATERIALIZED VIEW IF EXISTS transportation_railway_planet_z13_14 CASCADE;
+CREATE MATERIALIZED VIEW transportation_railway_planet_z13_14 AS
+(SELECT orl.*
+ FROM osm_railway_linestring orl, admin.cat c
+ WHERE railway IN ('rail', 'narrow_gauge', 'light_rail')
+  AND service IS NULL
+  AND ST_Disjoint(c.geometry, orl.geometry)
+);
+CREATE INDEX IF NOT EXISTS transportation_railway_planet_z13_14_idx ON transportation_railway_planet_z13_14 USING gist (geometry);
+
 -- etldoc: layer_transportation[shape=record fillcolor=lightpink, style="rounded,filled",
--- etldoc:     label="<sql> layer_transportation |<z4> z4 |<z5> z5 |<z6> z6 |<z7> z7 |<z8> z8 |<z9> z9 |<z10> z10 |<z11> z11 |<z12> z12|<z13> z13|<z14_> z14+" ] ;
+-- etldoc: label="<sql> layer_transportation |<z4> z4 |<z5> z5 |<z6> z6 |<z7> z7 |<z8> z8 |<z9> z9 |<z10> z10 |<z11> z11 |<z12> z12|<z13> z13|<z14_> z14+" ] ;
 CREATE OR REPLACE FUNCTION layer_transportation(bbox geometry, zoom_level int)
     RETURNS TABLE
             (
@@ -72,7 +265,7 @@ SELECT osm_id,
        NULLIF(mtb_scale, '') AS mtb_scale,
        NULLIF(surface, '') AS surface
 FROM (
-         -- etldoc: osm_transportation_merge_linestring_gen_z4 -> layer_transportation:z4
+         -- transportation_gen_planet_z6 -> layer_transportation:z6
          SELECT osm_id,
                 geometry,
                 highway,
@@ -101,11 +294,11 @@ FROM (
                 NULL AS mtb_scale,
                 NULL AS surface,
                 z_order
-         FROM osm_transportation_merge_linestring_gen_z4
-         WHERE zoom_level = 4
-         UNION ALL
-
-         -- etldoc: osm_transportation_merge_linestring_gen_z5 -> layer_transportation:z5
+         FROM transportation_gen_planet_z6
+         WHERE zoom_level = 6 
+         UNION ALL 
+         
+         -- transportation_gen_planet_z7 -> layer_transportation:z7
          SELECT osm_id,
                 geometry,
                 highway,
@@ -134,77 +327,11 @@ FROM (
                 NULL AS mtb_scale,
                 NULL AS surface,
                 z_order
-         FROM osm_transportation_merge_linestring_gen_z5
-         WHERE zoom_level = 5
-         UNION ALL
-
-         -- etldoc: osm_transportation_merge_linestring_gen_z6 -> layer_transportation:z6
-         SELECT osm_id,
-                geometry,
-                highway,
-                construction,
-                network,
-                NULL AS railway,
-                NULL AS aerialway,
-                NULL AS shipway,
-                NULL AS public_transport,
-                NULL AS service,
-                NULL AS access,
-                NULL::boolean AS toll,
-                is_bridge,
-                is_tunnel,
-                is_ford,
-                NULL::boolean AS expressway,
-                NULL::boolean AS is_ramp,
-                NULL::int AS is_oneway,
-                NULL AS man_made,
-                NULL::int AS layer,
-                NULL::int AS level,
-                NULL::boolean AS indoor,
-                NULL AS bicycle,
-                NULL AS foot,
-                NULL AS horse,
-                NULL AS mtb_scale,
-                NULL AS surface,
-                z_order
-         FROM osm_transportation_merge_linestring_gen_z6
-         WHERE zoom_level = 6
-         UNION ALL
-
-         -- etldoc: osm_transportation_merge_linestring_gen_z7  ->  layer_transportation:z7
-         SELECT osm_id,
-                geometry,
-                highway,
-                construction,
-                network,
-                NULL AS railway,
-                NULL AS aerialway,
-                NULL AS shipway,
-                NULL AS public_transport,
-                NULL AS service,
-                NULL AS access,
-                NULL::boolean AS toll,
-                is_bridge,
-                is_tunnel,
-                is_ford,
-                expressway,
-                NULL::boolean AS is_ramp,
-                NULL::int AS is_oneway,
-                NULL AS man_made,
-                NULL::int AS layer,
-                NULL::int AS level,
-                NULL::boolean AS indoor,
-                NULL AS bicycle,
-                NULL AS foot,
-                NULL AS horse,
-                NULL AS mtb_scale,
-                NULL AS surface,
-                z_order
-         FROM osm_transportation_merge_linestring_gen_z7
+         FROM transportation_gen_planet_z7
          WHERE zoom_level = 7
-         UNION ALL
-
-         -- etldoc: osm_transportation_merge_linestring_gen_z8  ->  layer_transportation:z8
+         UNION ALL 
+         
+         -- transportation_gen_planet_z8 -> layer_transportation:z8
          SELECT osm_id,
                 geometry,
                 highway,
@@ -220,7 +347,7 @@ FROM (
                 is_bridge,
                 is_tunnel,
                 is_ford,
-                expressway,
+                NULL::boolean AS expressway,
                 NULL::boolean AS is_ramp,
                 NULL::int AS is_oneway,
                 NULL AS man_made,
@@ -233,11 +360,11 @@ FROM (
                 NULL AS mtb_scale,
                 NULL AS surface,
                 z_order
-         FROM osm_transportation_merge_linestring_gen_z8
+         FROM transportation_gen_planet_z8
          WHERE zoom_level = 8
-         UNION ALL
-
-         -- etldoc: osm_transportation_merge_linestring_gen_z9  ->  layer_transportation:z9
+         UNION ALL 
+         
+         -- transportation_gen_planet_z9 -> layer_transportation:z9
          SELECT osm_id,
                 geometry,
                 highway,
@@ -248,29 +375,29 @@ FROM (
                 NULL AS shipway,
                 NULL AS public_transport,
                 NULL AS service,
-                access,
-                toll,
+                NULL AS access,
+                NULL::boolean AS toll,
                 is_bridge,
                 is_tunnel,
                 is_ford,
-                expressway,
+                NULL::boolean AS expressway,
                 NULL::boolean AS is_ramp,
                 NULL::int AS is_oneway,
                 NULL AS man_made,
-                layer,
+                NULL::int AS layer,
                 NULL::int AS level,
                 NULL::boolean AS indoor,
-                bicycle,
-                foot,
-                horse,
-                mtb_scale,
+                NULL AS bicycle,
+                NULL AS foot,
+                NULL AS horse,
+                NULL AS mtb_scale,
                 NULL AS surface,
                 z_order
-         FROM osm_transportation_merge_linestring_gen_z9
+         FROM transportation_gen_planet_z9
          WHERE zoom_level = 9
-         UNION ALL
-
-         -- etldoc: osm_transportation_merge_linestring_gen_z10  ->  layer_transportation:z10
+         UNION ALL 
+         
+         -- transportation_gen_planet_z10 -> layer_transportation:z10
          SELECT osm_id,
                 geometry,
                 highway,
@@ -281,29 +408,29 @@ FROM (
                 NULL AS shipway,
                 NULL AS public_transport,
                 NULL AS service,
-                access,
-                toll,
+                NULL AS access,
+                NULL::boolean AS toll,
                 is_bridge,
                 is_tunnel,
                 is_ford,
-                expressway,
+                NULL::boolean AS expressway,
                 NULL::boolean AS is_ramp,
                 NULL::int AS is_oneway,
                 NULL AS man_made,
-                layer,
+                NULL::int AS layer,
                 NULL::int AS level,
                 NULL::boolean AS indoor,
-                bicycle,
-                foot,
-                horse,
-                mtb_scale,
+                NULL AS bicycle,
+                NULL AS foot,
+                NULL AS horse,
+                NULL AS mtb_scale,
                 NULL AS surface,
                 z_order
-         FROM osm_transportation_merge_linestring_gen_z10
+         FROM transportation_gen_planet_z10
          WHERE zoom_level = 10
-         UNION ALL
-
-         -- etldoc: osm_transportation_merge_linestring_gen_z11  ->  layer_transportation:z11
+         UNION ALL 
+         
+         -- transportation_gen_planet_z11 -> layer_transportation:z11
          SELECT osm_id,
                 geometry,
                 highway,
@@ -314,31 +441,31 @@ FROM (
                 NULL AS shipway,
                 NULL AS public_transport,
                 NULL AS service,
-                access,
-                toll,
+                NULL AS access,
+                NULL::boolean AS toll,
                 is_bridge,
                 is_tunnel,
                 is_ford,
-                expressway,
+                NULL::boolean AS expressway,
                 NULL::boolean AS is_ramp,
                 NULL::int AS is_oneway,
                 NULL AS man_made,
-                layer,
+                NULL::int AS layer,
                 NULL::int AS level,
                 NULL::boolean AS indoor,
-                bicycle,
-                foot,
-                horse,
-                mtb_scale,
+                NULL AS bicycle,
+                NULL AS foot,
+                NULL AS horse,
+                NULL AS mtb_scale,
                 NULL AS surface,
                 z_order
-         FROM osm_transportation_merge_linestring_gen_z11
+         FROM transportation_gen_planet_z11
          WHERE zoom_level = 11
          UNION ALL
 
-         -- etldoc: osm_highway_linestring  ->  layer_transportation:z12
-         -- etldoc: osm_highway_linestring  ->  layer_transportation:z13
-         -- etldoc: osm_highway_linestring  ->  layer_transportation:z14_
+         -- transportation_highway_planet  ->  layer_transportation:z12
+         -- transportation_highway_planet  ->  layer_transportation:z13
+         -- transportation_highway_planet  ->  layer_transportation:z14_
          -- etldoc: osm_transportation_name_network  ->  layer_transportation:z12
          -- etldoc: osm_transportation_name_network  ->  layer_transportation:z13
          -- etldoc: osm_transportation_name_network  ->  layer_transportation:z14_
@@ -370,7 +497,7 @@ FROM (
                 mtb_scale,
                 surface_value(surface) AS "surface",
                 hl.z_order
-         FROM osm_highway_linestring hl
+         FROM transportation_highway_planet hl
          LEFT OUTER JOIN osm_transportation_name_network n ON hl.osm_id = n.osm_id
          WHERE NOT is_area
            AND
@@ -393,7 +520,7 @@ FROM (
                END
          UNION ALL
 
-         -- etldoc: osm_railway_linestring_gen_z8  ->  layer_transportation:z8
+         -- transportation_railway_planet_z8
          SELECT osm_id,
                 geometry,
                 NULL AS highway,
@@ -404,7 +531,7 @@ FROM (
                 NULL AS shipway,
                 NULL AS public_transport,
                 service_value(service) AS service,
-                NULL::text AS access,
+                NULL AS access,
                 NULL::boolean AS toll,
                 NULL::boolean AS is_bridge,
                 NULL::boolean AS is_tunnel,
@@ -422,14 +549,11 @@ FROM (
                 NULL AS mtb_scale,
                 NULL AS surface,
                 z_order
-         FROM osm_railway_linestring_gen_z8
+         FROM transportation_railway_planet_z8
          WHERE zoom_level = 8
-           AND railway = 'rail'
-           AND service = ''
-           AND usage = 'main'
          UNION ALL
 
-         -- etldoc: osm_railway_linestring_gen_z9  ->  layer_transportation:z9
+         -- transportation_railway_planet_z9
          SELECT osm_id,
                 geometry,
                 NULL AS highway,
@@ -440,7 +564,7 @@ FROM (
                 NULL AS shipway,
                 NULL AS public_transport,
                 service_value(service) AS service,
-                NULL::text AS access,
+                NULL AS access,
                 NULL::boolean AS toll,
                 NULL::boolean AS is_bridge,
                 NULL::boolean AS is_tunnel,
@@ -458,14 +582,11 @@ FROM (
                 NULL AS mtb_scale,
                 NULL AS surface,
                 z_order
-         FROM osm_railway_linestring_gen_z9
+         FROM transportation_railway_planet_z9
          WHERE zoom_level = 9
-           AND railway = 'rail'
-           AND service = ''
-           AND usage = 'main'
          UNION ALL
 
-         -- etldoc: osm_railway_linestring_gen_z10  ->  layer_transportation:z10
+         -- transportation_railway_planet_z10
          SELECT osm_id,
                 geometry,
                 NULL AS highway,
@@ -476,7 +597,7 @@ FROM (
                 NULL AS shipway,
                 NULL AS public_transport,
                 service_value(service) AS service,
-                NULL::text AS access,
+                NULL AS access,
                 NULL::boolean AS toll,
                 is_bridge,
                 is_tunnel,
@@ -494,13 +615,11 @@ FROM (
                 NULL AS mtb_scale,
                 NULL AS surface,
                 z_order
-         FROM osm_railway_linestring_gen_z10
+         FROM transportation_railway_planet_z10
          WHERE zoom_level = 10
-           AND railway IN ('rail', 'narrow_gauge')
-           AND service = ''
          UNION ALL
 
-         -- etldoc: osm_railway_linestring_gen_z11  ->  layer_transportation:z11
+         -- transportation_railway_planet_z11
          SELECT osm_id,
                 geometry,
                 NULL AS highway,
@@ -511,7 +630,7 @@ FROM (
                 NULL AS shipway,
                 NULL AS public_transport,
                 service_value(service) AS service,
-                NULL::text AS access,
+                NULL AS access,
                 NULL::boolean AS toll,
                 is_bridge,
                 is_tunnel,
@@ -529,13 +648,11 @@ FROM (
                 NULL AS mtb_scale,
                 NULL AS surface,
                 z_order
-         FROM osm_railway_linestring_gen_z11
+         FROM transportation_railway_planet_z11
          WHERE zoom_level = 11
-           AND railway IN ('rail', 'narrow_gauge', 'light_rail')
-           AND service = ''
          UNION ALL
 
-         -- etldoc: osm_railway_linestring_gen_z12  ->  layer_transportation:z12
+         -- transportation_railway_planet_z12
          SELECT osm_id,
                 geometry,
                 NULL AS highway,
@@ -546,7 +663,7 @@ FROM (
                 NULL AS shipway,
                 NULL AS public_transport,
                 service_value(service) AS service,
-                NULL::text AS access,
+                NULL AS access,
                 NULL::boolean AS toll,
                 is_bridge,
                 is_tunnel,
@@ -564,14 +681,11 @@ FROM (
                 NULL AS mtb_scale,
                 NULL AS surface,
                 z_order
-         FROM osm_railway_linestring_gen_z12
+         FROM transportation_railway_planet_z12
          WHERE zoom_level = 12
-           AND railway IN ('rail', 'narrow_gauge', 'light_rail')
-           AND service = ''
          UNION ALL
 
-         -- etldoc: osm_railway_linestring ->  layer_transportation:z13
-         -- etldoc: osm_railway_linestring ->  layer_transportation:z14_
+         -- transportation_railway_planet_z13_14
          SELECT osm_id,
                 geometry,
                 NULL AS highway,
@@ -582,7 +696,7 @@ FROM (
                 NULL AS shipway,
                 NULL AS public_transport,
                 service_value(service) AS service,
-                NULL::text AS access,
+                NULL AS access,
                 NULL::boolean AS toll,
                 is_bridge,
                 is_tunnel,
@@ -602,32 +716,31 @@ FROM (
                 z_order
          FROM osm_railway_linestring
          WHERE zoom_level = 13
-           AND railway IN ('rail', 'narrow_gauge', 'light_rail')
-           AND service = ''
            OR zoom_level >= 14
          UNION ALL
 
-         -- etldoc: osm_aerialway_linestring_gen_z12  ->  layer_transportation:z12
-         SELECT osm_id,
-                geometry,
+         --z_7mtc_vials
+         SELECT
+                icgc_id AS osm_id,
+                geom,
                 NULL AS highway,
                 NULL AS construction,
                 NULL AS network,
-                NULL AS railway,
-                aerialway,
+                NULL ASrailway,
+                NULL AS aerialway,
                 NULL AS shipway,
                 NULL AS public_transport,
-                service_value(service) AS service,
-                NULL::text AS access,
+                null as service,
+                NULL AS access,
                 NULL::boolean AS toll,
-                is_bridge,
-                is_tunnel,
-                is_ford,
+                NULL::boolean AS is_bridge,
+                NULL::boolean as is_tunnel,
+                NULL::boolean as is_ford,
                 NULL::boolean AS expressway,
-                is_ramp,
-                is_oneway,
+                NULL::boolean as is_ramp,
+                NULL::int as is_oneway,
                 NULL AS man_made,
-                layer,
+                NULL::int AS layer,
                 NULL::int AS level,
                 NULL::boolean AS indoor,
                 NULL AS bicycle,
@@ -635,174 +748,33 @@ FROM (
                 NULL AS horse,
                 NULL AS mtb_scale,
                 NULL AS surface,
-                z_order
-         FROM osm_aerialway_linestring_gen_z12
-         WHERE zoom_level = 12
+                0::int AS z_order
+         FROM z_7mtc_vials t
+            WHERE zoom_level BETWEEN 6 AND 8
          UNION ALL
 
-         -- etldoc: osm_aerialway_linestring ->  layer_transportation:z13
-         -- etldoc: osm_aerialway_linestring ->  layer_transportation:z14_
-         SELECT osm_id,
-                geometry,
+         -- z_8mtc_vials
+         SELECT
+                icgc_id AS osm_id,
+                geom,
                 NULL AS highway,
-                NULL AS construction,
-                NULL AS network,
-                NULL AS railway,
-                aerialway,
-                NULL AS shipway,
-                NULL AS public_transport,
-                service_value(service) AS service,
-                NULL::text AS access,
-                NULL::boolean AS toll,
-                is_bridge,
-                is_tunnel,
-                is_ford,
-                NULL::boolean AS expressway,
-                is_ramp,
-                is_oneway,
-                NULL AS man_made,
-                layer,
-                NULL::int AS level,
-                NULL::boolean AS indoor,
-                NULL AS bicycle,
-                NULL AS foot,
-                NULL AS horse,
-                NULL AS mtb_scale,
-                NULL AS surface,
-                z_order
-         FROM osm_aerialway_linestring
-         WHERE zoom_level >= 13
-         UNION ALL
-
-         -- etldoc: osm_shipway_linestring_gen_z11  ->  layer_transportation:z11
-         SELECT osm_id,
-                geometry,
-                NULL AS highway,
-                NULL AS construction,
-                NULL AS network,
-                NULL AS railway,
-                NULL AS aerialway,
-                shipway,
-                NULL AS public_transport,
-                service_value(service) AS service,
-                NULL::text AS access,
-                NULL::boolean AS toll,
-                is_bridge,
-                is_tunnel,
-                is_ford,
-                NULL::boolean AS expressway,
-                is_ramp,
-                is_oneway,
-                NULL AS man_made,
-                layer,
-                NULL::int AS level,
-                NULL::boolean AS indoor,
-                NULL AS bicycle,
-                NULL AS foot,
-                NULL AS horse,
-                NULL AS mtb_scale,
-                NULL AS surface,
-                z_order
-         FROM osm_shipway_linestring_gen_z11
-         WHERE zoom_level = 11
-         UNION ALL
-
-         -- etldoc: osm_shipway_linestring_gen_z12  ->  layer_transportation:z12
-         SELECT osm_id,
-                geometry,
-                NULL AS highway,
-                NULL AS construction,
-                NULL AS network,
-                NULL AS railway,
-                NULL AS aerialway,
-                shipway,
-                NULL AS public_transport,
-                service_value(service) AS service,
-                NULL::text AS access,
-                NULL::boolean AS toll,
-                is_bridge,
-                is_tunnel,
-                is_ford,
-                NULL::boolean AS expressway,
-                is_ramp,
-                is_oneway,
-                NULL AS man_made,
-                layer,
-                NULL::int AS level,
-                NULL::boolean AS indoor,
-                NULL AS bicycle,
-                NULL AS foot,
-                NULL AS horse,
-                NULL AS mtb_scale,
-                NULL AS surface,
-                z_order
-         FROM osm_shipway_linestring_gen_z12
-         WHERE zoom_level = 12
-         UNION ALL
-
-         -- etldoc: osm_shipway_linestring ->  layer_transportation:z13
-         -- etldoc: osm_shipway_linestring ->  layer_transportation:z14_
-         SELECT osm_id,
-                geometry,
-                NULL AS highway,
-                NULL AS construction,
-                NULL AS network,
-                NULL AS railway,
-                NULL AS aerialway,
-                shipway,
-                NULL AS public_transport,
-                service_value(service) AS service,
-                NULL::text AS access,
-                NULL::boolean AS toll,
-                is_bridge,
-                is_tunnel,
-                is_ford,
-                NULL::boolean AS expressway,
-                is_ramp,
-                is_oneway,
-                NULL AS man_made,
-                layer,
-                NULL::int AS level,
-                NULL::boolean AS indoor,
-                NULL AS bicycle,
-                NULL AS foot,
-                NULL AS horse,
-                NULL AS mtb_scale,
-                NULL AS surface,
-                z_order
-         FROM osm_shipway_linestring
-         WHERE zoom_level >= 13
-         UNION ALL
-
-         -- NOTE: We limit the selection of polys because we need to be
-         -- careful to net get false positives here because
-         -- it is possible that closed linestrings appear both as
-         -- highway linestrings and as polygon
-         -- etldoc: osm_highway_polygon ->  layer_transportation:z13
-         -- etldoc: osm_highway_polygon ->  layer_transportation:z14_
-         SELECT osm_id,
-                geometry,
-                highway,
                 NULL AS construction,
                 NULL AS network,
                 NULL AS railway,
                 NULL AS aerialway,
                 NULL AS shipway,
-                public_transport,
-                NULL AS service,
-                NULL::text AS access,
+                NULL AS public_transport,
+                null as service,
+                NULL AS access,
                 NULL::boolean AS toll,
-                CASE
-                    WHEN man_made IN ('bridge') THEN TRUE
-                    ELSE FALSE
-                    END AS is_bridge,
-                FALSE AS is_tunnel,
-                FALSE AS is_ford,
+                NULL::boolean AS is_bridge,
+                NULL::boolean as is_tunnel,
+                NULL::boolean as is_ford,
                 NULL::boolean AS expressway,
-                FALSE AS is_ramp,
-                FALSE::int AS is_oneway,
-                man_made,
-                layer,
+                NULL::boolean as is_ramp,
+                NULL::int as is_oneway,
+                NULL AS man_made,
+                NULL::int AS layer,
                 NULL::int AS level,
                 NULL::boolean AS indoor,
                 NULL AS bicycle,
@@ -810,14 +782,77 @@ FROM (
                 NULL AS horse,
                 NULL AS mtb_scale,
                 NULL AS surface,
-                z_order
-         FROM osm_highway_polygon
-              -- We do not want underground pedestrian areas for now
+                0::int AS z_order
+         FROM z_8mtc_vials 
+            WHERE zoom_level BETWEEN 8 AND 9
+         UNION ALL
+
+         -- z_11_13_transportation_contextmaps
+         SELECT
+                icgc_id AS osm_id,
+                geom,
+                NULL AS highway,
+                NULL AS construction,
+                NULL AS network,
+                NULL AS railway,
+                NULL AS aerialway,
+                NULL AS shipway,
+                NULL AS public_transport,
+                null as service,
+                NULL AS access,
+                NULL::boolean AS toll,
+                NULL::boolean AS is_bridge,
+                NULL::boolean as is_tunnel,
+                NULL::boolean as is_ford,
+                NULL::boolean AS expressway,
+                NULL::boolean as is_ramp,
+                NULL::int as is_oneway,
+                NULL AS man_made,
+                NULL::int AS layer,
+                NULL::int AS level,
+                NULL::boolean AS indoor,
+                NULL AS bicycle,
+                NULL AS foot,
+                NULL AS horse,
+                NULL AS mtb_scale,
+                NULL AS surface,
+                0::int AS z_order
+         FROM z_11_13_transportation_contextmaps
+            WHERE zoom_level BETWEEN 9 AND 13
+         UNION ALL
+
+         -- z_13_18_transportation_contextmaps
+         SELECT
+                icgc_id AS osm_id,
+                geom,
+                NULL AS highway,
+                NULL AS construction,
+                NULL AS network,
+                NULL AS railway,
+                NULL AS aerialway,
+                NULL AS shipway,
+                NULL AS public_transport,
+                null as service,
+                NULL AS access,
+                NULL::boolean AS toll,
+                NULL::boolean AS is_bridge,
+                NULL::boolean as is_tunnel,
+                NULL::boolean as is_ford,
+                NULL::boolean AS expressway,
+                NULL::boolean as is_ramp,
+                NULL::int as is_oneway,
+                NULL AS man_made,
+                NULL::int AS layer,
+                NULL::int AS level,
+                NULL::boolean AS indoor,
+                NULL AS bicycle,
+                NULL AS foot,
+                NULL AS horse,
+                NULL AS mtb_scale,
+                NULL AS surface,
+                0::int AS z_order
+         FROM z_13_18_transportation_contextmaps 
          WHERE zoom_level >= 13
-           AND (
-                 man_made IN ('bridge', 'pier')
-                 OR (is_area AND COALESCE(layer, 0) >= 0)
-             )
      ) AS zoom_levels
 WHERE geometry && bbox
 ORDER BY z_order ASC;

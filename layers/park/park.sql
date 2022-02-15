@@ -27,8 +27,8 @@ SELECT osm_id,
        rank
 FROM (
          SELECT park_polygon.osm_id,
+         		park_polygon.icgc_id,
                 park_polygon.geometry,
-                park_polygon.icgc_id
                 COALESCE(
                         LOWER(REPLACE(NULLIF(protection_title, ''), ' ', '_')),
                         NULLIF(boundary, ''),

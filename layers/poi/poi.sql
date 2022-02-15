@@ -21,7 +21,7 @@ CREATE OR REPLACE FUNCTION layer_poi(bbox geometry, zoom_level integer, pixel_wi
                 zoom           integer,
                 layer_type     text,
                 classicgc      text,
-                icgc_id_match  integer
+                icgc_id_match  bigint
             )
 AS
 $$

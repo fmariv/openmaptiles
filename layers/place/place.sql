@@ -17,7 +17,7 @@ CREATE OR REPLACE FUNCTION layer_place(bbox geometry, zoom_level int, pixel_widt
                 iso_a2         text,
                 codigeo        integer,
                 zoom           integer,
-                icgc_id_match  integer
+                icgc_id_match  bigint
             )
 AS
 $$

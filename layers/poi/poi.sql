@@ -127,6 +127,7 @@ FROM (
          -- icgc POI
          SELECT 
          		null::int as id,
+                null::int as osm_id,
                 name,
                 NULL::text AS name_en,
                 NULL::text AS name_de,

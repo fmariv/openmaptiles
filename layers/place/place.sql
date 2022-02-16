@@ -8,31 +8,44 @@ CREATE OR REPLACE FUNCTION layer_place(bbox geometry, zoom_level int, pixel_widt
                 icgc_id        bigint,
                 geometry       geometry,
                 name           text,
-                name_en        text,
-                name_de        text,
-                tags           hstore,
                 class          text,
                 "rank"         integer,
-                capital        integer,
-                iso_a2         text
+                codigeo        integer,
+                icgc_id_match  bigint
             )
 AS
 $$
-SELECT place_all.*
+SELECT 
+    -- icgc place
+    NULL::int AS osm_id,
+    icgc_id,
+    geom,
+    name,
+    class,
+    rank,
+    codigeo,
+    icgc_id_match
+FROM place
+WHERE zoom <= zoom_level and geom && bbox
+
+UNION ALL
+
+SELECT osm_id,
+       NULL::int AS icgc_id,
+       geometry,
+       name,
+       class,
+       rank,
+       NULL::int AS codigeo,
+       NULL::int AS icgc_id_match
 FROM (
          SELECT
              -- etldoc: osm_continent_point -> layer_place:z0_3
              osm_id * 10 AS osm_id,
-             NULL::int AS icgc_id,
              geometry,
              name,
-             COALESCE(NULLIF(name_en, ''), name) AS name_en,
-             COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
-             tags,
              'continent' AS class,
-             1 AS "rank",
-             NULL::int AS capital,
-             NULL::text AS iso_a2
+             1 AS "rank"
          FROM osm_continent_point 
          WHERE geometry && bbox
            AND zoom_level < 4
@@ -45,16 +58,10 @@ FROM (
              -- etldoc: osm_country_point -> layer_place:z8_11
              -- etldoc: osm_country_point -> layer_place:z12_14
              osm_id * 10 AS osm_id,
-             NULL::int AS icgc_id,
              geometry,
              name,
-             COALESCE(NULLIF(name_en, ''), name) AS name_en,
-             COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
-             tags,
              'country' AS class,
-             "rank",
-             NULL::int AS capital,
-             iso3166_1_alpha_2 AS iso_a2
+             "rank"
          FROM osm_country_point 
          WHERE geometry && bbox
            AND "rank" <= zoom_level + 1
@@ -68,16 +75,10 @@ FROM (
              -- etldoc: osm_state_point  -> layer_place:z8_11
              -- etldoc: osm_state_point  -> layer_place:z12_14
              osm_id * 10 AS osm_id,
-             NULL::int AS icgc_id,
              geometry,
              name,
-             COALESCE(NULLIF(name_en, ''), name) AS name_en,
-             COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
-             tags,
              place::text AS class,
-             "rank",
-             NULL::int AS capital,
-             NULL::text AS iso_a2
+             "rank"
          FROM osm_state_point osp
          WHERE geometry && bbox
            AND name <> ''
@@ -90,16 +91,10 @@ FROM (
              -- There is only one feature in the osm_island_point layer that is contained by Catalonia.
              -- So, perform the filter or delete the feature?
              osm_id * 10 AS osm_id,
-             NULL::int AS icgc_id,
              oip.geometry,
              name,
-             COALESCE(NULLIF(name_en, ''), name) AS name_en,
-             COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
-             tags,
              'island' AS class,
-             7 AS "rank",
-             NULL::int AS capital,
-             NULL::text AS iso_a2
+             7 AS "rank"
          FROM osm_island_point oip, admin.cat c
          WHERE zoom_level >= 12
             AND oip.geometry && bbox
@@ -110,40 +105,16 @@ FROM (
              -- etldoc: osm_island_polygon  -> layer_place:z8_11
              -- etldoc: osm_island_polygon  -> layer_place:z12_14
              osm_id * 10 AS osm_id,
-             NULL::int AS icgc_id,
              oip.geometry,
              oip.name,
-             COALESCE(NULLIF(name_en, ''), name) AS name_en,
-             COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
-             oip.tags,
              'island' AS class,
-             island_rank(area) AS "rank",
-             NULL::int AS capital,
-             NULL::text AS iso_a2
+             island_rank(area) AS "rank"
          FROM osm_island_polygon oip, admin.cat c
          WHERE oip.geometry && bbox
            AND ST_Disjoint(c.geometry, oip.geometry)
            AND ((zoom_level = 8 AND island_rank(area) <= 3)
              OR (zoom_level = 9 AND island_rank(area) <= 4)
              OR (zoom_level >= 10))
-
-         UNION ALL
-
-         -- icgc place
-         SELECT 
-             NULL::int AS osm_id,
-             icgc_id,
-             geom,
-             name,
-             NULL::text AS name_en,
-             NULL::text AS name_de,
-             NULL::hstore AS tags,
-             class,
-             rank,
-             NULL::int AS capital,
-             NULL::text AS iso_a2
-         FROM place
-         WHERE zoom <= zoom_level and geom && bbox
 
          UNION ALL
 
@@ -154,16 +125,10 @@ FROM (
              -- etldoc: layer_city          -> layer_place:z8_11
              -- etldoc: layer_city          -> layer_place:z12_14
              osm_id * 10 AS osm_id,
-             NULL::int AS icgc_id,
              geometry,
              name,
-             name_en,
-             name_de,
-             tags,
              place::text AS class,
-             "rank",
-             capital,
-             NULL::text AS iso_a2
+             "rank"
          -- The city layer is already filtered by extend
          FROM layer_city(bbox, zoom_level, pixel_width)
          ORDER BY "rank" ASC

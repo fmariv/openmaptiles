@@ -1,6 +1,11 @@
 
+/*
 --- Transportation views creation
---- The total creation time expected is about 2:30h
+ The total creation time expected is about 2:30h
+
+The features of the origin tables are multilinestring, which are impossible to filter by the Catalonia extend. In order to
+be able to perform a spatial filter, we had to convert those multilinestrings into single linestrings.
+*/
 
 -- DROP TABLE IF EXISTS transportation_gen_planet_z6;
 CREATE TABLE transportation_gen_planet_z6 AS

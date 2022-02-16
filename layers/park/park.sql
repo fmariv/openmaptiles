@@ -27,7 +27,7 @@ SELECT osm_id,
        rank
 FROM (
          SELECT park_polygon.osm_id,
-         		park_polygon.icgc_id,
+         		    park_polygon.icgc_id,
                 park_polygon.geometry,
                 COALESCE(
                         LOWER(REPLACE(NULLIF(protection_title, ''), ' ', '_')),
@@ -420,7 +420,7 @@ FROM (
                 NULL::hstore AS tags,
                 NULL::int AS rank
          FROM park
-         WHERE zoom_level >= 6 AND geom && bbox
+         WHERE zoom_level >= 4 AND geom && bbox
      ) AS park_all;
 $$ LANGUAGE SQL STABLE
                 PARALLEL SAFE;

@@ -12,29 +12,129 @@ CREATE OR REPLACE FUNCTION layer_transportation(bbox geometry, zoom_level int)
     RETURNS TABLE
             (
                 osm_id     bigint,
+                icgc_id    bigint,
                 geometry   geometry,
                 class      text,
                 subclass   text,
-                network    text,
                 ramp       int,
                 oneway     int,
                 brunnel    text,
                 service    text,
-                access     text,
-                toll       int,
-                expressway int,
                 layer      int,
                 level      int,
                 indoor     int,
-                bicycle    text,
-                foot       text,
-                horse      text,
-                mtb_scale  text,
-                surface    text
+                d_categori text,
+                codi_via   text,
+                observacio text
             )
 AS
 $$
 SELECT osm_id,
+       icgc_id,
+       geom,
+       class,
+       subclass,
+       ramp,
+       oneway,
+       brunnel,
+       service,
+       layer,
+       level,
+       indoor,
+       d_categori,
+       codi_via,
+       observacio
+FROM (
+        --z_7mtc_vials
+        SELECT
+            NULL::int AS osm_id,
+            icgc_id,
+            geom,
+            class,
+            NULL::text AS subclass,
+            NULL::int as ramp,
+            NULL::int as oneway,
+            brunnel,
+            NULL::text AS service,
+            NULL::int AS layer,
+            NULL::int AS level,
+            NULL::int AS indoor,
+            layer as d_categori,
+            NULL::text AS codi_via,
+            NULL::text AS observacio
+        FROM z_7mtc_vials t
+        WHERE zoom_level BETWEEN 6 AND 8
+        UNION ALL
+
+        -- z_8mtc_vials
+        SELECT
+            NULL::int AS osm_id,
+            icgc_id,
+            geom,
+            class,
+            NULL::text AS subclass,
+            NULL::int as ramp,
+            NULL::int as oneway,
+            brunnel,
+            NULL::text AS service,
+            NULL::int AS layer,
+            NULL::int AS level,
+            NULL::int AS indoor,
+            layer as d_categori,
+            NULL::text AS codi_via,
+            NULL::text AS observacio
+        FROM z_8mtc_vials 
+        WHERE zoom_level BETWEEN 8 AND 9
+        UNION ALL
+
+        -- z_11_13_transportation_contextmaps
+        SELECT
+            NULL::int AS osm_id,
+            icgc_id,
+            geom,
+            class,
+            subclass,
+            ramp,
+            oneway,
+            brunnel,
+            service,
+            layer,
+            level,
+            indoor,
+            d_categori,
+            codi_via,
+            observacio
+        FROM z_11_13_transportation_contextmaps
+        WHERE zoom_level BETWEEN 9 AND 13
+        UNION ALL
+
+        -- z_13_18_transportation_contextmaps
+        SELECT
+            NULL::int AS osm_id,
+            icgc_id,
+            geom,
+            class,
+            subclass,
+            ramp,
+            oneway,
+            brunnel,
+            service,
+            layer,
+            level,
+            indoor,
+            d_categori,
+            codi_via,
+            observacio
+        FROM z_13_18_transportation_contextmaps 
+        WHERE zoom_level >= 13
+) as icgc_zoom_levels
+WHERE geom && bbox
+UNION ALL
+
+select *
+from
+ (SELECT osm_id,
+       NULL::int AS icgc_id,
        geometry,
        CASE
            WHEN highway <> '' OR public_transport <> ''
@@ -51,7 +151,6 @@ SELECT osm_id,
                THEN COALESCE(NULLIF(public_transport, ''), highway)
            WHEN aerialway IS NOT NULL THEN aerialway
            END AS subclass,
-       NULLIF(network, '') AS network,
        -- All links are considered as ramps as well
        CASE
            WHEN highway_is_link(highway)
@@ -60,17 +159,12 @@ SELECT osm_id,
        CASE WHEN is_oneway <> 0 THEN is_oneway::int END AS oneway,
        brunnel(is_bridge, is_tunnel, is_ford) AS brunnel,
        NULLIF(service, '') AS service,
-       access,
-       CASE WHEN toll = TRUE THEN 1 END AS toll,
-       CASE WHEN highway NOT IN ('', 'motorway') AND expressway = TRUE THEN 1 END AS expressway,
-       NULLIF(layer, 0) AS layer,
+       NULLIF(layer, 0) layer,
        "level",
        CASE WHEN indoor = TRUE THEN 1 END AS indoor,
-       NULLIF(bicycle, '') AS bicycle,
-       NULLIF(foot, '') AS foot,
-       NULLIF(horse, '') AS horse,
-       NULLIF(mtb_scale, '') AS mtb_scale,
-       NULLIF(surface, '') AS surface
+       NULL::text AS d_categori,
+       NULL::TEXT AS codi_via,
+       NULL::text AS observacio
 FROM (
          -- transportation_gen_planet_z6 -> layer_transportation:z6
          SELECT osm_id,
@@ -594,145 +688,9 @@ FROM (
                  OR (is_area AND COALESCE(layer, 0) >= 0)
              )
            AND ST_Disjoint(c.geometry, ohp.geometry)
-         UNION ALL
-
-         --z_7mtc_vials
-         SELECT
-                icgc_id AS osm_id,
-                geom,
-                NULL AS highway,
-                NULL AS construction,
-                NULL AS network,
-                NULL AS railway,
-                NULL AS aerialway,
-                NULL AS shipway,
-                NULL AS public_transport,
-                null as service,
-                NULL AS access,
-                NULL::boolean AS toll,
-                NULL::boolean AS is_bridge,
-                NULL::boolean as is_tunnel,
-                NULL::boolean as is_ford,
-                NULL::boolean AS expressway,
-                NULL::boolean as is_ramp,
-                NULL::int as is_oneway,
-                NULL AS man_made,
-                NULL::int AS layer,
-                NULL::int AS level,
-                NULL::boolean AS indoor,
-                NULL AS bicycle,
-                NULL AS foot,
-                NULL AS horse,
-                NULL AS mtb_scale,
-                NULL AS surface,
-                0::int AS z_order
-         FROM z_7mtc_vials t
-            WHERE zoom_level BETWEEN 6 AND 8
-         UNION ALL
-
-         -- z_8mtc_vials
-         SELECT
-                icgc_id AS osm_id,
-                geom,
-                NULL AS highway,
-                NULL AS construction,
-                NULL AS network,
-                NULL AS railway,
-                NULL AS aerialway,
-                NULL AS shipway,
-                NULL AS public_transport,
-                null as service,
-                NULL AS access,
-                NULL::boolean AS toll,
-                NULL::boolean AS is_bridge,
-                NULL::boolean as is_tunnel,
-                NULL::boolean as is_ford,
-                NULL::boolean AS expressway,
-                NULL::boolean as is_ramp,
-                NULL::int as is_oneway,
-                NULL AS man_made,
-                NULL::int AS layer,
-                NULL::int AS level,
-                NULL::boolean AS indoor,
-                NULL AS bicycle,
-                NULL AS foot,
-                NULL AS horse,
-                NULL AS mtb_scale,
-                NULL AS surface,
-                0::int AS z_order
-         FROM z_8mtc_vials 
-            WHERE zoom_level BETWEEN 8 AND 9
-         UNION ALL
-
-         -- z_11_13_transportation_contextmaps
-         SELECT
-                icgc_id AS osm_id,
-                geom,
-                NULL AS highway,
-                NULL AS construction,
-                NULL AS network,
-                NULL AS railway,
-                NULL AS aerialway,
-                NULL AS shipway,
-                NULL AS public_transport,
-                null as service,
-                NULL AS access,
-                NULL::boolean AS toll,
-                NULL::boolean AS is_bridge,
-                NULL::boolean as is_tunnel,
-                NULL::boolean as is_ford,
-                NULL::boolean AS expressway,
-                NULL::boolean as is_ramp,
-                NULL::int as is_oneway,
-                NULL AS man_made,
-                NULL::int AS layer,
-                NULL::int AS level,
-                NULL::boolean AS indoor,
-                NULL AS bicycle,
-                NULL AS foot,
-                NULL AS horse,
-                NULL AS mtb_scale,
-                NULL AS surface,
-                0::int AS z_order
-         FROM z_11_13_transportation_contextmaps
-            WHERE zoom_level BETWEEN 9 AND 13
-         UNION ALL
-
-         -- z_13_18_transportation_contextmaps
-         SELECT
-                icgc_id AS osm_id,
-                geom,
-                NULL AS highway,
-                NULL AS construction,
-                NULL AS network,
-                NULL AS railway,
-                NULL AS aerialway,
-                NULL AS shipway,
-                NULL AS public_transport,
-                null as service,
-                NULL AS access,
-                NULL::boolean AS toll,
-                NULL::boolean AS is_bridge,
-                NULL::boolean as is_tunnel,
-                NULL::boolean as is_ford,
-                NULL::boolean AS expressway,
-                NULL::boolean as is_ramp,
-                NULL::int as is_oneway,
-                NULL AS man_made,
-                NULL::int AS layer,
-                NULL::int AS level,
-                NULL::boolean AS indoor,
-                NULL AS bicycle,
-                NULL AS foot,
-                NULL AS horse,
-                NULL AS mtb_scale,
-                NULL AS surface,
-                0::int AS z_order
-         FROM z_13_18_transportation_contextmaps 
-         WHERE zoom_level >= 13
      ) AS zoom_levels
 WHERE geometry && bbox
-ORDER BY z_order ASC;
+ORDER BY z_order asc) as planet_data;
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

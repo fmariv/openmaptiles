@@ -413,7 +413,7 @@ FROM (
                 class,
                 icgc_id
          FROM landcover_z7_z8
-         WHERE (zoom_level <= 8 AND geom && bbox )
+         WHERE (zoom_level BETWEEN 6 AND 8 AND geom && bbox )
          UNION ALL
  
          -- landcover_z9_z10

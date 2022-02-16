@@ -24,18 +24,17 @@ FROM (
              -- etldoc: osm_continent_point -> layer_place:z0_3
              osm_id * 10 AS osm_id,
              NULL::int AS icgc_id,
-             ocp.geometry,
-             ocp.name,
+             geometry,
+             name,
              COALESCE(NULLIF(name_en, ''), name) AS name_en,
              COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
-             ocp.tags,
+             tags,
              'continent' AS class,
              1 AS "rank",
              NULL::int AS capital,
              NULL::text AS iso_a2
-         FROM osm_continent_point ocp, admin.cat c
-         WHERE ocp.geometry && bbox
-           AND ST_Disjoint(c.geometry, ocp.geometry)
+         FROM osm_continent_point 
+         WHERE geometry && bbox
            AND zoom_level < 4
 
          UNION ALL
@@ -47,18 +46,17 @@ FROM (
              -- etldoc: osm_country_point -> layer_place:z12_14
              osm_id * 10 AS osm_id,
              NULL::int AS icgc_id,
-             ocp.geometry,
-             ocp.name,
+             geometry,
+             name,
              COALESCE(NULLIF(name_en, ''), name) AS name_en,
              COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
-             ocp.tags,
+             tags,
              'country' AS class,
              "rank",
              NULL::int AS capital,
              iso3166_1_alpha_2 AS iso_a2
-         FROM osm_country_point ocp, admin.cat c
-         WHERE ocp.geometry && bbox
-           AND ST_Disjoint(c.geometry, ocp.geometry)
+         FROM osm_country_point 
+         WHERE geometry && bbox
            AND "rank" <= zoom_level + 1
            AND name <> ''
 
@@ -71,18 +69,17 @@ FROM (
              -- etldoc: osm_state_point  -> layer_place:z12_14
              osm_id * 10 AS osm_id,
              NULL::int AS icgc_id,
-             osp.geometry,
-             osp.name,
+             geometry,
+             name,
              COALESCE(NULLIF(name_en, ''), name) AS name_en,
              COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
-             osp.tags,
+             tags,
              place::text AS class,
              "rank",
              NULL::int AS capital,
              NULL::text AS iso_a2
-         FROM osm_state_point osp, admin.cat c
-         WHERE osp.geometry && bbox
-           AND ST_Disjoint(c.geometry, osp.geometry)
+         FROM osm_state_point osp
+         WHERE geometry && bbox
            AND name <> ''
            AND zoom_level > 1
 
@@ -90,21 +87,22 @@ FROM (
 
          SELECT
              -- etldoc: osm_island_point    -> layer_place:z12_14
+             -- There is only one feature in the osm_island_point layer that is contained by Catalonia.
+             -- So, perform the filter or delete the feature?
              osm_id * 10 AS osm_id,
              NULL::int AS icgc_id,
              oip.geometry,
-             oip.name,
+             name,
              COALESCE(NULLIF(name_en, ''), name) AS name_en,
              COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
-             oip.tags,
+             tags,
              'island' AS class,
              7 AS "rank",
              NULL::int AS capital,
              NULL::text AS iso_a2
          FROM osm_island_point oip, admin.cat c
          WHERE zoom_level >= 12
-           AND ST_Disjoint(c.geometry, oip.geometry)
-           AND oip.geometry && bbox
+            AND oip.geometry && bbox
 
          UNION ALL
 

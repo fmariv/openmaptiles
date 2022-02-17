@@ -16,13 +16,13 @@ CREATE OR REPLACE FUNCTION layer_transportation(bbox geometry, zoom_level int)
                 geometry   geometry,
                 class      text,
                 subclass   text,
-                ramp       int,
-                oneway     int,
+                ramp       integer,
+                oneway     integer,
                 brunnel    text,
                 service    text,
-                layer      int,
-                level      int,
-                indoor     int,
+                layer      integer,
+                level      integer,
+                indoor     integer,
                 d_categori text,
                 codi_via   text,
                 observacio text
@@ -364,7 +364,6 @@ FROM
             WHERE zoom_level = 11
             UNION ALL
 
-            /*
             -- transportation_highway_planet  ->  layer_transportation:z12
             -- transportation_highway_planet  ->  layer_transportation:z13
             -- transportation_highway_planet  ->  layer_transportation:z14_
@@ -421,7 +420,6 @@ FROM
                             END
                 END
             UNION ALL
-            */
 
             -- etldoc: osm_railway_linestring_gen_z8  ->  layer_transportation:z8
             SELECT osm_id,
@@ -690,7 +688,7 @@ FROM
             AND ST_Disjoint(c.geometry, ohp.geometry)
      ) AS zoom_levels
 WHERE geometry && bbox
-ORDER BY z_order asc) 
+ORDER BY z_order ASC) 
 AS planet_transportation;
 $$ LANGUAGE SQL STABLE
                 -- STRICT

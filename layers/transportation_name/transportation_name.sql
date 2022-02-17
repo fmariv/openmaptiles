@@ -1,44 +1,3 @@
----
---- Transportation name views creation
----
-
-CREATE OR REPLACE VIEW transportation_name_gen_planet_z6 AS 
-(SELECT otnl.* 
- FROM osm_transportation_name_linestring_gen4 otnl, admin.cat c
- WHERE ST_Disjoint(c.geometry, otnl.geometry)
-);
-
-CREATE OR REPLACE VIEW transportation_name_gen_planet_z7 AS 
-(SELECT otnl.* 
- FROM osm_transportation_name_linestring_gen3 otnl, admin.cat c
- WHERE ST_Disjoint(c.geometry, otnl.geometry)
-);
-
-CREATE OR REPLACE VIEW transportation_name_gen_planet_z8 AS 
-(SELECT otnl.* 
- FROM osm_transportation_name_linestring_gen2 otnl, admin.cat c
- WHERE ST_Disjoint(c.geometry, otnl.geometry)
-);
-
-CREATE OR REPLACE VIEW transportation_name_gen_planet_z9 AS 
-(SELECT otnl.* 
- FROM osm_transportation_name_linestring_gen1 otnl, admin.cat c
- WHERE ST_Disjoint(c.geometry, otnl.geometry)
-);
-
-CREATE OR REPLACE VIEW transportation_name_planet_gen AS 
-(SELECT otnl.* 
- FROM osm_transportation_name_linestring otnl, admin.cat c
- WHERE ST_Disjoint(c.geometry, otnl.geometry)
-);
-
-CREATE OR REPLACE VIEW transportation_name_highway_point_planet AS 
-(SELECT ohp.* 
- FROM osm_highway_point ohp, admin.cat c
- WHERE ST_Disjoint(c.geometry, ohp.geometry)
-);
-
-
 -- etldoc: layer_transportation_name[shape=record fillcolor=lightpink, style="rounded,filled",
 -- etldoc:     label="layer_transportation_name | <z6> z6 | <z7> z7 | <z8> z8 |<z9> z9 |<z10> z10 |<z11> z11 |<z12> z12|<z13> z13|<z14_> z14+" ] ;
 
@@ -99,7 +58,7 @@ FROM (
                 NULL::int AS layer,
                 NULL::int AS level,
                 NULL::boolean AS indoor
-         FROM transportation_name_gen_planet_z6
+         FROM osm_transportation_name_linestring_gen4
          WHERE zoom_level = 6
          UNION ALL
 
@@ -108,7 +67,7 @@ FROM (
                 NULL::int AS layer,
                 NULL::int AS level,
                 NULL::boolean AS indoor
-         FROM transportation_name_gen_planet_z7
+         FROM osm_transportation_name_linestring_gen3
          WHERE zoom_level = 7
          UNION ALL
 
@@ -117,7 +76,7 @@ FROM (
                 NULL::int AS layer,
                 NULL::int AS level,
                 NULL::boolean AS indoor
-         FROM transportation_name_gen_planet_z8
+         FROM osm_transportation_name_linestring_gen2
          WHERE zoom_level = 8
          UNION ALL
 
@@ -128,7 +87,7 @@ FROM (
                 NULL::int AS layer,
                 NULL::int AS level,
                 NULL::boolean AS indoor
-         FROM transportation_name_gen_planet_z9
+         FROM osm_transportation_name_linestring_gen1
          WHERE zoom_level BETWEEN 9 AND 11
          UNION ALL
 
@@ -145,7 +104,7 @@ FROM (
                 layer,
                 "level",
                 indoor
-         FROM transportation_name_planet_gen
+         FROM osm_transportation_name_linestring
          WHERE zoom_level = 12
            AND LineLabel(zoom_level, COALESCE(tags->'name', ref), geometry)
            AND NOT highway_is_link(highway)
@@ -169,7 +128,7 @@ FROM (
                 layer,
                 "level",
                 indoor
-         FROM transportation_name_planet_gen
+         FROM osm_transportation_name_linestring
          WHERE zoom_level = 13
            AND LineLabel(zoom_level, COALESCE(tags->'name', ref), geometry)
            AND
@@ -197,7 +156,7 @@ FROM (
                 layer,
                 "level",
                 indoor
-         FROM transportation_name_planet_gen
+         FROM osm_transportation_name_linestring
          WHERE zoom_level >= 14
          UNION ALL
 
@@ -224,7 +183,7 @@ FROM (
                 layer,
                 NULL::int AS level,
                 NULL::boolean AS indoor
-         FROM transportation_name_highway_point_planet p
+         FROM osm_highway_point p
          WHERE highway = 'motorway_junction' AND zoom_level >= 10
      ) AS zoom_levels
 WHERE geometry && bbox

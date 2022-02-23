@@ -370,6 +370,7 @@ FROM
             -- etldoc: osm_transportation_name_network  ->  layer_transportation:z12
             -- etldoc: osm_transportation_name_network  ->  layer_transportation:z13
             -- etldoc: osm_transportation_name_network  ->  layer_transportation:z14_
+            /*
             SELECT hl.osm_id,
                     hl.geometry,
                     hl.highway,
@@ -420,6 +421,7 @@ FROM
                             END
                 END
             UNION ALL
+            */
 
             -- etldoc: osm_railway_linestring_gen_z8  ->  layer_transportation:z8
             SELECT osm_id,

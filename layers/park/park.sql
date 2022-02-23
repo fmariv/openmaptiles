@@ -420,7 +420,7 @@ FROM (
                 NULL::hstore AS tags,
                 NULL::int AS rank
          FROM park
-         WHERE zoom_level >= 4 AND geom && bbox
+         WHERE zoom_level >= 6 AND geom && bbox
      ) AS park_all;
 $$ LANGUAGE SQL STABLE
                 PARALLEL SAFE;

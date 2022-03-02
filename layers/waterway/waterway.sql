@@ -479,6 +479,26 @@ FROM (
                 icgc_id
          FROM waterway_z_10_11_carto 
          WHERE (zoom_level BETWEEN 10 AND 11) AND geom && bbox
+         UNION ALL
+
+         -- waterway strahler
+         SELECT 
+                geom,
+                class,
+                name,
+                name_en,
+                name_de,
+                NULL::hstore AS tags,
+                NULL::boolean AS is_bridge,
+                NULL::boolean AS is_tunnel,
+                NULL::boolean AS is_intermittent,
+                icgc_id
+         FROM waterway_bt5mv30_strahler w
+         WHERE 
+         (w.entorn <> 'UR' ) AND (
+            ((zoom_level BETWEEN 12 AND 13) AND (w.strahler_order > 2 OR w.jsel in ('3A','3B','3C','2A','2B') ) AND w.geom && bbox) OR
+            ((zoom_level =14)  AND (w.strahler_order >1 OR w.jsel in ('3A','3B','3C','2A','2B') ) AND w.geom && bbox) OR
+            ((zoom_level >14)  AND w.geom && bbox) )
      ) AS zoom_levels
 WHERE geometry && bbox;
 $$ LANGUAGE SQL STABLE

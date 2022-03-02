@@ -13,8 +13,6 @@ layer:
   srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
   fields:
     name: The OSM [`name`](http://wiki.openstreetmap.org/wiki/Highways#Names_and_references) value of the highway.
-    name_en: English name `name:en` if available, otherwise `name`.
-    name_de: German name `name:de` if available, otherwise `name` or `name:en`.
     ref: The OSM [`ref`](http://wiki.openstreetmap.org/wiki/Key:ref) tag of the motorway or its network.
     ref_length: Length of the `ref` field. Useful for having a shield icon as background for labeling motorways.
     network:
@@ -74,13 +72,6 @@ layer:
       - corridor
       - platform
       - junction
-    brunnel:
-      description: |
-          Mark whether way is a bridge, a tunnel or a ford.
-      values:
-      - bridge
-      - tunnel
-      - ford
     level:
       description: |
           Experimental feature! Filled only for steps and footways. Original
@@ -95,16 +86,17 @@ layer:
           value of [`indoor`](http://wiki.openstreetmap.org/wiki/Key:indoor) tag.
       values:
       - 1
-    route_1: 1st route concurrency.
-    route_2: 2nd route concurrency.
-    route_3: 3rd route concurrency.
-    route_4: 4th route concurrency.
-    route_5: 5th route concurrency.
-    route_6: 6th route concurrency.
+    id_via: Pendent d'informar.
+    zoom: Pendent d'informar.
+    mtc25m: Pendent d'informar.
+    colorcaixa: Pendent d'informar.
+    rank: Pendent d'informar.
+    codigeo: Pendent d'informar.
+    z_order: Pendent d'informar.
   datasource:
     geometry_field: geometry
     srid: 900913
-    query: (SELECT geometry, name, name_en, name_de, {name_languages}, ref, ref_length, network::text, class::text, subclass, brunnel, layer, level, indoor, route_1, route_2, route_3, route_4, route_5, route_6 FROM layer_transportation_name(!bbox!, z(!scale_denominator!))) AS t
+    query: (SELECT geometry, name, ref, ref_length, network::text, id_via, class::text, subclass, layer, level, indoor, zoom, mtc25m, colorcaixa, rank, codigeo, z_order  FROM layer_transportation_name(!bbox!, z(!scale_denominator!))) AS t
 schema:
   - ./highway_classification.sql
   - ./update_transportation_name.sql

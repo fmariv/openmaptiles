@@ -14,6 +14,6 @@ layer:
       description: Pendent d'informar.
   datasource:
     geometry_field: geometry
-    query: (SELECT geometry, icgc_id, class, heightFROM layer_contour(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
+    query: (SELECT geometry, icgc_id, class, height FROM layer_contour(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
 schema:
   - ./contour.sql

@@ -31,7 +31,7 @@ CREATE TABLE transportation_gen_planet_z7 AS
 		is_tunnel,
 		is_ford,
 		z_order
-	FROM osm_transportation_merge_linestring_gen_z7 otml
+	FROM osm_transportation_merge_linestring_gen_z7 otml, admin.cat c
 );
 CREATE INDEX IF NOT EXISTS transportation_gen_planet_z7_idx ON transportation_gen_planet_z7 USING gist (geometry);
 
@@ -48,7 +48,7 @@ CREATE TABLE transportation_gen_planet_z8 AS
 		is_tunnel,
 		is_ford,
 		z_order
-	FROM osm_transportation_merge_linestring_gen_z8 otml
+	FROM osm_transportation_merge_linestring_gen_z8 otml, admin.cat c
 );
 CREATE INDEX IF NOT EXISTS transportation_gen_planet_z8_idx ON transportation_gen_planet_z8 USING gist (geometry);
 
@@ -65,7 +65,7 @@ CREATE TABLE transportation_gen_planet_z9 AS
 			is_tunnel,
 			is_ford,
 			z_order
-	FROM osm_transportation_merge_linestring_gen_z9 otml
+	FROM osm_transportation_merge_linestring_gen_z9 otml, admin.cat c
 );
 CREATE INDEX IF NOT EXISTS transportation_gen_planet_z9_idx ON transportation_gen_planet_z9 USING gist (geometry);
 
@@ -82,7 +82,7 @@ CREATE TABLE transportation_gen_planet_z10 AS
 			is_tunnel,
 			is_ford,
 			z_order
-	FROM osm_transportation_merge_linestring_gen_z10 otml
+	FROM osm_transportation_merge_linestring_gen_z10 otml, admin.cat c
 );
 CREATE INDEX IF NOT EXISTS transportation_gen_planet_z10_idx ON transportation_gen_planet_z10 USING gist (geometry);
 
@@ -99,6 +99,6 @@ CREATE TABLE transportation_gen_planet_z11 AS
 			is_tunnel,
 			is_ford,
 			z_order
-	FROM osm_transportation_merge_linestring_gen_z11 otml
+	FROM osm_transportation_merge_linestring_gen_z11 otml, admin.cat c
 );
 CREATE INDEX IF NOT EXISTS transportation_gen_planet_z11_idx ON transportation_gen_planet_z11 USING gist (geometry);

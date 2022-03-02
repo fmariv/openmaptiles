@@ -14,7 +14,7 @@ tileset:
     - layers/housenumber/housenumber.yaml
     - layers/poi/poi.yaml
     - layers/aerodrome_label/aerodrome_label.yaml
-    #- layers/contour/countour.yaml
+    - layers/contour/contour.yaml
   name: ContextMaps
   version: 0.1.0
   id: contextmaps

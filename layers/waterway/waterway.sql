@@ -1,196 +1,46 @@
-CREATE OR REPLACE FUNCTION waterway_brunnel(is_bridge bool, is_tunnel bool) RETURNS text AS
-$$
-SELECT CASE
-           WHEN is_bridge THEN 'bridge'
-           WHEN is_tunnel THEN 'tunnel'
-           END;
-$$ LANGUAGE SQL IMMUTABLE
-                STRICT
-                PARALLEL SAFE;
--- ne_110m_rivers_lake_centerlines
--- etldoc: ne_110m_rivers_lake_centerlines ->  ne_110m_rivers_lake_centerlines_gen_z3
-DROP MATERIALIZED VIEW IF EXISTS ne_110m_rivers_lake_centerlines_gen_z3 CASCADE;
-CREATE MATERIALIZED VIEW ne_110m_rivers_lake_centerlines_gen_z3 AS
-(
-SELECT ST_Simplify(geometry, ZRes(5)) as geometry,
-       'river'::text AS class,
-       NULL::text AS name,
-       NULL::text AS name_en,
-       NULL::text AS name_de,
-       NULL::hstore AS tags,
-       NULL::boolean AS is_bridge,
-       NULL::boolean AS is_tunnel,
-       NULL::boolean AS is_intermittent
-FROM ne_110m_rivers_lake_centerlines
-WHERE featurecla = 'River'
-    ) /* DELAY_MATERIALIZED_VIEW_CREATION */ ;
-CREATE INDEX IF NOT EXISTS ne_110m_rivers_lake_centerlines_gen_z3_idx ON ne_110m_rivers_lake_centerlines_gen_z3 USING gist (geometry);
-
--- ne_50m_rivers_lake_centerlines
--- etldoc: ne_50m_rivers_lake_centerlines ->  ne_50m_rivers_lake_centerlines_gen_z5
-DROP MATERIALIZED VIEW IF EXISTS ne_50m_rivers_lake_centerlines_gen_z5 CASCADE;
-CREATE MATERIALIZED VIEW ne_50m_rivers_lake_centerlines_gen_z5 AS
-(
-SELECT ST_Simplify(geometry, ZRes(7)) as geometry,
-       'river'::text AS class,
-       NULL::text AS name,
-       NULL::text AS name_en,
-       NULL::text AS name_de,
-       NULL::hstore AS tags,
-       NULL::boolean AS is_bridge,
-       NULL::boolean AS is_tunnel,
-       NULL::boolean AS is_intermittent
-FROM ne_50m_rivers_lake_centerlines
-WHERE featurecla = 'River'
-    ) /* DELAY_MATERIALIZED_VIEW_CREATION */ ;
-CREATE INDEX IF NOT EXISTS ne_50m_rivers_lake_centerlines_gen_z5_idx ON ne_50m_rivers_lake_centerlines_gen_z5 USING gist (geometry);
-
--- etldoc: ne_50m_rivers_lake_centerlines_gen_z5 ->  ne_50m_rivers_lake_centerlines_gen_z4
-DROP MATERIALIZED VIEW IF EXISTS ne_50m_rivers_lake_centerlines_gen_z4 CASCADE;
-CREATE MATERIALIZED VIEW ne_50m_rivers_lake_centerlines_gen_z4 AS
-(
-SELECT ST_Simplify(geometry, ZRes(6)) as geometry,
-       class,
-       name,
-       name_en,
-       name_de,
-       tags,
-       is_bridge,
-       is_tunnel,
-       is_intermittent
-FROM ne_50m_rivers_lake_centerlines_gen_z5
-    ) /* DELAY_MATERIALIZED_VIEW_CREATION */ ;
-CREATE INDEX IF NOT EXISTS ne_50m_rivers_lake_centerlines_gen_z4_idx ON ne_50m_rivers_lake_centerlines_gen_z4 USING gist (geometry);
-
--- osm_waterway_relation
--- etldoc: osm_waterway_relation -> waterway_relation
-DROP TABLE IF EXISTS waterway_relation CASCADE;
-CREATE TABLE waterway_relation AS (
-    SELECT ST_Union(geometry) AS geometry,
-           name,
-           slice_language_tags(tags) AS tags
-    FROM osm_waterway_relation
-    WHERE name <> ''
-      AND (role = 'main_stream' OR role = '')
-      AND ST_GeometryType(geometry) = 'ST_LineString'
-      AND ST_IsClosed(geometry) = FALSE
-    GROUP BY name, slice_language_tags(tags)
-);
-CREATE INDEX IF NOT EXISTS waterway_relation_geometry_idx ON waterway_relation USING gist (geometry);
-
--- etldoc: waterway_relation -> waterway_relation_gen_z8
-DROP MATERIALIZED VIEW IF EXISTS waterway_relation_gen_z8 CASCADE;
-CREATE MATERIALIZED VIEW waterway_relation_gen_z8 AS (
-    SELECT ST_Simplify(geometry, ZRes(10)) AS geometry,
-       'river'::text AS class,
-       name,
-       NULL::text AS name_en,
-       NULL::text AS name_de,
-       tags,
-       NULL::boolean AS is_bridge,
-       NULL::boolean AS is_tunnel,
-       NULL::boolean AS is_intermittent
-    FROM waterway_relation
-    WHERE ST_Length(geometry) > 300000
-) /* DELAY_MATERIALIZED_VIEW_CREATION */ ;
-CREATE INDEX IF NOT EXISTS waterway_relation_gen_z8_geometry_idx ON waterway_relation_gen_z8 USING gist (geometry);
-
--- etldoc: waterway_relation_gen_z8 -> waterway_relation_gen_z7
-DROP MATERIALIZED VIEW IF EXISTS waterway_relation_gen_z7 CASCADE;
-CREATE MATERIALIZED VIEW waterway_relation_gen_z7 AS (
-    SELECT ST_Simplify(geometry, ZRes(9)) AS geometry,
-       class,
-       name,
-       name_en,
-       name_de,
-       tags,
-       is_bridge,
-       is_tunnel,
-       is_intermittent
-    FROM waterway_relation_gen_z8
-    WHERE ST_Length(geometry) > 400000
-) /* DELAY_MATERIALIZED_VIEW_CREATION */ ;
-CREATE INDEX IF NOT EXISTS waterway_relation_gen_z7_geometry_idx ON waterway_relation_gen_z7 USING gist (geometry);
-
--- etldoc: waterway_relation_gen_z7 -> waterway_relation_gen_z6
-DROP MATERIALIZED VIEW IF EXISTS waterway_relation_gen_z6 CASCADE;
-CREATE MATERIALIZED VIEW waterway_relation_gen_z6 AS (
-    SELECT ST_Simplify(geometry, ZRes(8)) AS geometry,
-       class,
-       name,
-       name_en,
-       name_de,
-       tags,
-       is_bridge,
-       is_tunnel,
-       is_intermittent
-    FROM waterway_relation_gen_z7
-    WHERE ST_Length(geometry) > 500000
-) /* DELAY_MATERIALIZED_VIEW_CREATION */ ;
-CREATE INDEX IF NOT EXISTS waterway_relation_gen_z6_geometry_idx ON waterway_relation_gen_z6 USING gist (geometry);
 
 
 -- etldoc: ne_110m_rivers_lake_centerlines_gen_z3 ->  waterway_z3
 CREATE OR REPLACE VIEW waterway_z3 AS
 (
-SELECT geometry,
+SELECT NULL::bigint AS icgc_id,
+       geometry,
        class,
        name,
-       name_en,
-       name_de,
-       tags,
-       is_bridge,
-       is_tunnel,
-       is_intermittent,
-       0::INT AS icgc_id
+       NULL::text AS entorn
 FROM ne_110m_rivers_lake_centerlines_gen_z3
     );
 
 -- etldoc: ne_50m_rivers_lake_centerlines_gen_z4 ->  waterway_z4
 CREATE OR REPLACE VIEW waterway_z4 AS
 (
-SELECT geometry,
+SELECT NULL::bigint AS icgc_id,
+       geometry,
        class,
        name,
-       name_en,
-       name_de,
-       tags,
-       is_bridge,
-       is_tunnel,
-       is_intermittent,
-       0::INT AS icgc_id
+       NULL::text AS entorn
 FROM ne_50m_rivers_lake_centerlines_gen_z4
     );
 
 -- etldoc: ne_50m_rivers_lake_centerlines_gen_z5 ->  waterway_z5
 CREATE OR REPLACE VIEW waterway_z5 AS
 (
-SELECT geometry,
+SELECT NULL::bigint AS icgc_id,
+       geometry,
        class,
        name,
-       name_en,
-       name_de,
-       tags,
-       is_bridge,
-       is_tunnel,
-       is_intermittent,
-       0::INT AS icgc_id
+       NULL::text AS entorn
 FROM ne_50m_rivers_lake_centerlines_gen_z5
     );
 
 -- etldoc: waterway_relation_gen_z6 ->  waterway_z6
 CREATE OR REPLACE VIEW waterway_z6 AS
 (
-SELECT w.geometry,
-       w.class,
-       w.name,
-       w.name_en,
-       w.name_de,
-       w.tags,
-       w.is_bridge,
-       w.is_tunnel,
-       w.is_intermittent,
-       0::INT AS icgc_id
+SELECT NULL::bigint AS icgc_id,
+       w.geometry,
+       class,
+       name,
+       NULL::text AS entorn
 FROM waterway_relation_gen_z6 w, admin.cat
 WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
     );
@@ -198,16 +48,11 @@ WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
 -- etldoc: waterway_relation_gen_z7 ->  waterway_z7
 CREATE OR REPLACE VIEW waterway_z7 AS
 (
-SELECT w.geometry,
-       w.class,
-       w.name,
-       w.name_en,
-       w.name_de,
-       w.tags,
-       w.is_bridge,
-       w.is_tunnel,
-       w.is_intermittent,
-       0::INT AS icgc_id
+SELECT NULL::bigint AS icgc_id,
+       w.geometry,
+       class,
+       name,
+       NULL::text AS entorn
 FROM waterway_relation_gen_z7 w, admin.cat
 WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
     );
@@ -215,16 +60,11 @@ WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
 -- etldoc: waterway_relation_gen_z8 ->  waterway_z8
 CREATE OR REPLACE VIEW waterway_z8 AS
 (
-SELECT w.geometry,
-       w.class,
-       w.name,
-       w.name_en,
-       w.name_de,
-       w.tags,
-       w.is_bridge,
-       w.is_tunnel,
-       w.is_intermittent,
-       0::INT AS icgc_id
+SELECT NULL::bigint AS icgc_id,
+       w.geometry,
+       class,
+       name,
+       NULL::text AS entorn
 FROM waterway_relation_gen_z8 w, admin.cat
 WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
     );
@@ -232,16 +72,11 @@ WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
 -- etldoc: osm_important_waterway_linestring_gen_z9 ->  waterway_z9
 CREATE OR REPLACE VIEW waterway_z9 AS
 (
-SELECT w.geometry,
+SELECT NULL::bigint AS icgc_id,
+       w.geometry,
        'river'::text AS class,
-       w.name,
-       w.name_en,
-       w.name_de,
-       w.tags,
-       NULL::boolean AS is_bridge,
-       NULL::boolean AS is_tunnel,
-       NULL::boolean AS is_intermittent,
-       0::INT AS icgc_id
+       name,
+       NULL::text AS entorn
 FROM osm_important_waterway_linestring_gen_z9 w, admin.cat
 WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
     );
@@ -249,16 +84,11 @@ WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
 -- etldoc: osm_important_waterway_linestring_gen_z10 ->  waterway_z10
 CREATE OR REPLACE VIEW waterway_z10 AS
 (
-SELECT w.geometry,
+SELECT NULL::bigint AS icgc_id,
+       w.geometry,
        'river'::text AS class,
-       w.name,
-       w.name_en,
-       w.name_de,
-       w.tags,
-       NULL::boolean AS is_bridge,
-       NULL::boolean AS is_tunnel,
-       NULL::boolean AS is_intermittent,
-       0::INT AS icgc_id
+       name,
+       NULL::text AS entorn
 FROM osm_important_waterway_linestring_gen_z10 w, admin.cat
 WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
     );
@@ -266,16 +96,11 @@ WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
 -- etldoc:osm_important_waterway_linestring_gen_z11 ->  waterway_z11
 CREATE OR REPLACE VIEW waterway_z11 AS
 (
-SELECT w.geometry,
+SELECT NULL::bigint AS icgc_id,
+       w.geometry,
        'river'::text AS class,
-       w.name,
-       w.name_en,
-       w.name_de,
-       w.tags,
-       NULL::boolean AS is_bridge,
-       NULL::boolean AS is_tunnel,
-       NULL::boolean AS is_intermittent,
-       0::INT AS icgc_id
+       name,
+       NULL::text AS entorn
 FROM osm_important_waterway_linestring_gen_z11 w, admin.cat
 WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
     );
@@ -283,16 +108,11 @@ WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
 -- etldoc: osm_waterway_linestring ->  waterway_z12
 CREATE OR REPLACE VIEW waterway_z12 AS
 (
-SELECT w.geometry,
+SELECT NULL::bigint AS icgc_id,
+       w.geometry,
        waterway::text AS class,
-       w.name,
-       w.name_en,
-       w.name_de,
-       w.tags,
-       w.is_bridge,
-       w.is_tunnel,
-       w.is_intermittent,
-       0::INT AS icgc_id
+       name,
+       NULL::text AS entorn
 FROM osm_waterway_linestring w, admin.cat
 WHERE w.waterway IN ('river', 'canal') 
 AND ST_DISJOINT(admin.cat.geometry, w.geometry)
@@ -301,16 +121,11 @@ AND ST_DISJOINT(admin.cat.geometry, w.geometry)
 -- etldoc: osm_waterway_linestring ->  waterway_z13
 CREATE OR REPLACE VIEW waterway_z13 AS
 (
-SELECT w.geometry,
+SELECT NULL::bigint AS icgc_id,
+       w.geometry,
        waterway::text AS class,
-       w.name,
-       w.name_en,
-       w.name_de,
-       w.tags,
-       w.is_bridge,
-       w.is_tunnel,
-       w.is_intermittent,
-       0::INT AS icgc_id
+       name,
+       NULL::text AS entorn
 FROM osm_waterway_linestring w, admin.cat
 WHERE w.waterway IN ('river', 'canal', 'stream', 'drain', 'ditch')
 AND ST_DISJOINT(admin.cat.geometry, w.geometry)
@@ -319,16 +134,11 @@ AND ST_DISJOINT(admin.cat.geometry, w.geometry)
 -- etldoc: osm_waterway_linestring ->  waterway_z14
 CREATE OR REPLACE VIEW waterway_z14 AS
 (
-SELECT w.geometry,
+SELECT NULL::bigint AS icgc_id,
+       w.geometry,
        waterway::text AS class,
-       w.name,
-       w.name_en,
-       w.name_de,
-       w.tags,
-       w.is_bridge,
-       w.is_tunnel,
-       w.is_intermittent,
-       0::INT AS icgc_id
+       name,
+       NULL::text AS entorn
 FROM osm_waterway_linestring w, admin.cat
 WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
     );
@@ -338,28 +148,20 @@ WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
 
 CREATE OR REPLACE FUNCTION layer_waterway(bbox geometry, zoom_level int)
     RETURNS TABLE
-            (
+            (   
+            	icgc_id      bigint,
                 geometry     geometry,
                 class        text,
                 name         text,
-                name_en      text,
-                name_de      text,
-                brunnel      text,
-                intermittent int,
-                tags         hstore,
-                icgc_id      bigint
+                entorn       text
             )
 AS
 $$
-SELECT geometry,
+SELECT icgc_id,
+       geometry,
        class,
        NULLIF(name, '') AS name,
-       COALESCE(NULLIF(name_en, ''), NULLIF(name, '')) AS name_en,
-       COALESCE(NULLIF(name_de, ''), NULLIF(name, ''), NULLIF(name_en, '')) AS name_de,
-       waterway_brunnel(is_bridge, is_tunnel) AS brunnel,
-       is_intermittent::int AS intermittent,
-       tags,
-       NULLIF(icgc_id, 0) AS icgc_id
+       entorn
 FROM (
          -- etldoc: waterway_z3 ->  layer_waterway:z3
          SELECT *
@@ -434,65 +236,41 @@ FROM (
          UNION ALL
 
          -- icgc waterway_z_7_8_carto
-         SELECT 
+         SELECT icgc_id,
                 geom,
                 class,
                 name,
-                name_en,
-                name_de,
-                NULL::hstore AS tags,
-                NULL::boolean AS is_bridge,
-                NULL::boolean AS is_tunnel,
-                NULL::boolean AS is_intermittent,
-                icgc_id
+                'GE' AS entorn
          FROM waterway_z_7_8_carto
          WHERE (zoom_level BETWEEN 7 AND 8) AND geom && bbox
          UNION ALL
 
          -- waterway_z_9_10_carto
-         SELECT 
+         SELECT icgc_id,
                 geom,
                 class,
                 name,
-                name_en,
-                name_de,
-                NULL::hstore AS tags,
-                NULL::boolean AS is_bridge,
-                NULL::boolean AS is_tunnel,
-                NULL::boolean AS is_intermittent,
-                icgc_id
+                'GE' AS entorn
          FROM waterway_z_9_10_carto 
          WHERE (zoom_level = 9) AND geom && bbox
          UNION ALL
 
          -- waterway_z_10_11_carto
-         SELECT 
+         SELECT icgc_id,
                 geom,
                 class,
                 name,
-                name_en,
-                name_de,
-                NULL::hstore AS tags,
-                NULL::boolean AS is_bridge,
-                NULL::boolean AS is_tunnel,
-                NULL::boolean AS is_intermittent,
-                icgc_id
+                'GE' AS entorn
          FROM waterway_z_10_11_carto 
          WHERE (zoom_level BETWEEN 10 AND 11) AND geom && bbox
          UNION ALL
 
          -- waterway strahler
-         SELECT 
+         SELECT icgc_id,
                 geom,
                 class,
                 name,
-                name_en,
-                name_de,
-                NULL::hstore AS tags,
-                NULL::boolean AS is_bridge,
-                NULL::boolean AS is_tunnel,
-                NULL::boolean AS is_intermittent,
-                icgc_id
+                entorn
          FROM waterway_bt5mv30_strahler w
          WHERE 
          (w.entorn <> 'UR' ) AND (

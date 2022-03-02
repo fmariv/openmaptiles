@@ -17,8 +17,6 @@ layer:
     name: |
         The OSM [`name`](http://wiki.openstreetmap.org/wiki/Key:name) value of the waterway.
         The `name` field may be empty for NaturalEarth data or at lower zoom levels.
-    name_en: English name `name:en` if available, otherwise `name`.
-    name_de: German name `name:de` if available, otherwise `name` or `name:en`.
     class:
       description: |
         The original value of the [`waterway`](http://wiki.openstreetmap.org/wiki/Key:waterway) tag.
@@ -28,22 +26,13 @@ layer:
       - canal
       - drain
       - ditch
-    brunnel:
-      description: |
-          Mark whether way is a tunnel or bridge.
-      values:
-        - bridge
-        - tunnel
-    intermittent:
-      description: |
-        Mark with `1` if it is an [intermittent](http://wiki.openstreetmap.org/wiki/Key:intermittent) waterway.
-      values: [0, 1]
     icgc_id:
       description:
         Identificador de l'ICGC.
+    entorn: Pendent d'informar.
   datasource:
     geometry_field: geometry
-    query: (SELECT geometry, name, name_en, name_de, {name_languages}, class, brunnel, intermittent, icgc_id FROM layer_waterway(!bbox!, z(!scale_denominator!))) AS t
+    query: (SELECT geometry, name, class, icgc_id, entorn FROM layer_waterway(!bbox!, z(!scale_denominator!))) AS t
 schema:
   - ./update_waterway_linestring.sql
   - ./update_important_waterway.sql

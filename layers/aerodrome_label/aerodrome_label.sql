@@ -35,7 +35,7 @@ SELECT
     NULLIF(icao, '') AS icao,
     substring(ele FROM E'^(-?\\d+)(\\D|$)')::int AS ele,
     round(substring(ele FROM E'^(-?\\d+)(\\D|$)')::int * 3.2808399)::int AS ele_ft
-FROM osm_aerodrome_label_point oalp, admin.cat c
+FROM osm_aerodrome_label_point oalp, icgc_data.catalunya c
 WHERE oalp.geometry && bbox
   AND ST_Disjoint(c.geometry, oalp.geometry)
   AND aerodrome_type = 'international'
@@ -58,7 +58,7 @@ SELECT
     NULLIF(icao, '') AS icao,
     substring(ele FROM E'^(-?\\d+)(\\D|$)')::int AS ele,
     round(substring(ele FROM E'^(-?\\d+)(\\D|$)')::int * 3.2808399)::int AS ele_ft
-FROM osm_aerodrome_label_point oalp, admin.cat c
+FROM osm_aerodrome_label_point oalp, icgc_data.catalunya c
 WHERE oalp.geometry && bbox
   AND ST_Disjoint(c.geometry, oalp.geometry)
   AND zoom_level >= 10
@@ -79,7 +79,7 @@ SELECT
     icao,
     CAST(ele AS int) AS ele,
     CAST(ele AS int) AS ele_ft
-FROM aerodrome_label
+FROM icgc_data.aerodrome_label
 WHERE zoom_level >= 10 AND geom && bbox;
 $$ LANGUAGE SQL STABLE
                 -- STRICT

@@ -62,7 +62,7 @@ FROM (
             layer as d_categori,
             NULL::text AS codi_via,
             NULL::text AS observacio
-        FROM z_7mtc_vials t
+        FROM icgc_data.z_7mtc_vials t
         WHERE zoom_level BETWEEN 6 AND 8
         UNION ALL
 
@@ -83,7 +83,7 @@ FROM (
             layer as d_categori,
             NULL::text AS codi_via,
             NULL::text AS observacio
-        FROM z_8mtc_vials 
+        FROM icgc_data.z_8mtc_vials 
         WHERE zoom_level BETWEEN 8 AND 9
         UNION ALL
 
@@ -104,7 +104,7 @@ FROM (
             d_categori,
             codi_via,
             observacio
-        FROM z_11_13_transportation_contextmaps
+        FROM icgc_data.z_11_13_transportation_contextmaps
         WHERE zoom_level BETWEEN 9 AND 13
         UNION ALL
 
@@ -125,7 +125,7 @@ FROM (
             d_categori,
             codi_via,
             observacio
-        FROM z_13_18_transportation_contextmaps 
+        FROM icgc_data.z_13_18_transportation_contextmaps 
         WHERE zoom_level >= 13
 ) AS icgc_zoom_levels
 WHERE geom && bbox
@@ -452,7 +452,7 @@ FROM
                     NULL AS mtb_scale,
                     NULL AS surface,
                     z_order
-            FROM osm_railway_linestring_gen_z8 orl, admin.cat c
+            FROM osm_railway_linestring_gen_z8 orl, icgc_data.catalunya c
             WHERE zoom_level = 8
             AND railway = 'rail'
             AND service = ''
@@ -489,7 +489,7 @@ FROM
                     NULL AS mtb_scale,
                     NULL AS surface,
                     z_order
-            FROM osm_railway_linestring_gen_z9 orl, admin.cat c
+            FROM osm_railway_linestring_gen_z9 orl, icgc_data.catalunya c
             WHERE zoom_level = 9
             AND railway = 'rail'
             AND service = ''
@@ -526,7 +526,7 @@ FROM
                     NULL AS mtb_scale,
                     NULL AS surface,
                     z_order
-            FROM osm_railway_linestring_gen_z10 orl, admin.cat c
+            FROM osm_railway_linestring_gen_z10 orl, icgc_data.catalunya c
             WHERE zoom_level = 10
             AND railway IN ('rail', 'narrow_gauge')
             AND service = ''
@@ -562,7 +562,7 @@ FROM
                     NULL AS mtb_scale,
                     NULL AS surface,
                     z_order
-            FROM osm_railway_linestring_gen_z11 orl, admin.cat c
+            FROM osm_railway_linestring_gen_z11 orl, icgc_data.catalunya c
             WHERE zoom_level = 11
             AND railway IN ('rail', 'narrow_gauge', 'light_rail')
             AND service = ''
@@ -598,7 +598,7 @@ FROM
                     NULL AS mtb_scale,
                     NULL AS surface,
                     z_order
-            FROM osm_railway_linestring_gen_z12 orl, admin.cat c
+            FROM osm_railway_linestring_gen_z12 orl, icgc_data.catalunya c
             WHERE zoom_level = 12
             AND railway IN ('rail', 'narrow_gauge', 'light_rail')
             AND service = ''
@@ -635,7 +635,7 @@ FROM
                     NULL AS mtb_scale,
                     NULL AS surface,
                     z_order
-            FROM osm_railway_linestring orl, admin.cat c
+            FROM osm_railway_linestring orl, icgc_data.catalunya c
             WHERE zoom_level = 13
             AND railway IN ('rail', 'narrow_gauge', 'light_rail')
             AND service = ''
@@ -680,7 +680,7 @@ FROM
                     NULL AS mtb_scale,
                     NULL AS surface,
                     z_order
-            FROM osm_highway_polygon ohp, admin.cat c
+            FROM osm_highway_polygon ohp, icgc_data.catalunya c
                 -- We do not want underground pedestrian areas for now
             WHERE zoom_level >= 13
             AND (

@@ -33,14 +33,14 @@ SELECT
        zoom,
        classicgc,
        icgc_id_match
-FROM poi
+FROM icgc_data.poi
 WHERE geom && bbox
     AND zoom_level >= zoom
     AND zoom > 0
 
 UNION ALL
 
-SELECT planet_poi.*
+SELECT *
 FROM (
     -- Planet POI
     SELECT  osm_id_hash AS osm_id,
@@ -71,7 +71,7 @@ FROM (
             -- etldoc: osm_poi_point ->  layer_poi:z13
             SELECT opp.*,
                     osm_id * 10 AS osm_id_hash
-            FROM osm_poi_point opp, admin.cat c
+            FROM osm_poi_point opp, icgc_data.catalunya c
             WHERE ST_Disjoint(c.geometry, opp.geometry)
             AND opp.geometry && bbox
             AND zoom_level BETWEEN 12 AND 13
@@ -83,7 +83,7 @@ FROM (
             -- etldoc: osm_poi_point ->  layer_poi:z14_
             SELECT opp.*,
                     osm_id * 10 AS osm_id_hash
-            FROM osm_poi_point opp, admin.cat c
+            FROM osm_poi_point opp, icgc_data.catalunya c
             WHERE ST_Disjoint(c.geometry, opp.geometry)
             AND opp.geometry && bbox
             AND zoom_level >= 14
@@ -98,7 +98,7 @@ FROM (
                         WHEN osm_id < 0 THEN -osm_id * 10 + 4
                         ELSE osm_id * 10 + 1
                         END AS osm_id_hash
-            FROM osm_poi_polygon opp, admin.cat c
+            FROM osm_poi_polygon opp, icgc_data.catalunya c
             WHERE ST_Disjoint(c.geometry, opp.geometry)
             AND opp.geometry && bbox
             AND zoom_level BETWEEN 12 AND 13
@@ -114,7 +114,7 @@ FROM (
                         WHEN osm_id < 0 THEN -osm_id * 10 + 4
                         ELSE osm_id * 10 + 1
                         END AS osm_id_hash
-            FROM osm_poi_polygon opp, admin.cat c
+            FROM osm_poi_polygon opp, icgc_data.catalunya c
             WHERE ST_Disjoint(c.geometry, opp.geometry)
             AND opp.geometry && bbox
             AND zoom_level >= 14

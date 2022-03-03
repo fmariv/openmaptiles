@@ -25,7 +25,7 @@ SELECT
     rank,
     codigeo,
     icgc_id_match
-FROM place
+FROM icgc_data.place
 WHERE zoom <= zoom_level and geom && bbox
 
 UNION ALL
@@ -95,7 +95,7 @@ FROM (
              name,
              'island' AS class,
              7 AS "rank"
-         FROM osm_island_point oip, admin.cat c
+         FROM osm_island_point oip, icgc_data.catalunya c
          WHERE zoom_level >= 12
             AND oip.geometry && bbox
 
@@ -109,7 +109,7 @@ FROM (
              oip.name,
              'island' AS class,
              island_rank(area) AS "rank"
-         FROM osm_island_polygon oip, admin.cat c
+         FROM osm_island_polygon oip, icgc_data.catalunya c
          WHERE oip.geometry && bbox
            AND ST_Disjoint(c.geometry, oip.geometry)
            AND ((zoom_level = 8 AND island_rank(area) <= 3)

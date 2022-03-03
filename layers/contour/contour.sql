@@ -10,11 +10,11 @@ CREATE OR REPLACE FUNCTION layer_contour(bbox geometry, zoom_level int, pixel_wi
 AS
 $$
 SELECT icgc_id,
-       ST_Intersection(contour.geom, c.geometry) as geometry,
+       ST_Intersection(c.geom, cat.geometry) as geometry,
        class,
        height
-FROM contour, admin.cat c
-WHERE contour.geom && bbox
+FROM icgc_data.contour c, icgc_data.catalunya cat
+WHERE geom && bbox
     AND zoom_level >= 14;
 $$ LANGUAGE SQL STABLE
                 PARALLEL SAFE;

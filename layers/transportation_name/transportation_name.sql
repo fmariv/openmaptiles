@@ -65,7 +65,7 @@ FROM (
             0::bigint AS colorcaixa,
             0::smallint AS rank,
             0::integer AS codigeo
-            FROM transportation_name_lines t
+            FROM icgc_data.transportation_name_lines t
             WHERE zoom_level < 15 AND t.geom && bbox
         UNION ALL
         SELECT
@@ -86,7 +86,7 @@ FROM (
             0::bigint AS colorcaixa,
             t.rank::smallint,
             t.codigeo::integer
-            FROM transportation_name t
+            FROM icgc_data.transportation_name t
             WHERE zoom_level < 15 AND zoom_level >= t.zoom AND t.geom && bbox
         UNION ALL
         SELECT
@@ -107,7 +107,7 @@ FROM (
             t.colorcaixa::bigint,
             t.rank::smallint,
             0::integer AS codigeo
-            FROM transportation_name_line3_3857 t
+            FROM icgc_data.transportation_name_line3_3857 t
             WHERE zoom_level < 15 AND zoom_level >= t.zoom AND t.geom && bbox
         UNION ALL
         SELECT
@@ -128,7 +128,7 @@ FROM (
             0::bigint AS colorcaixa,
             0::smallint AS rank,
             0::integer AS codigeo
-            FROM public.z_13_18_transportation_contextmaps_name t
+            FROM icgc_data.z_13_18_transportation_contextmaps_name t
             WHERE zoom_level >= 13 AND t.geom && bbox
       ) AS data_unordered
       ORDER BY zoom, rank
@@ -296,7 +296,7 @@ FROM (
                 NULL::boolean AS indoor
          FROM osm_highway_point p
          WHERE highway = 'motorway_junction' AND zoom_level >= 10
-     ) AS planet_data, admin.cat c
+     ) AS planet_data, icgc_data.catalunya c
 WHERE planet_data.geometry && bbox
     AND ST_Disjoint(c.geometry, planet_data.geometry)
 ORDER BY z_order ASC;

@@ -204,7 +204,7 @@ FROM (
                   FROM osm_park_polygon
                   WHERE zoom_level >= 14
                     AND geometry && bbox
-              ) AS park_polygon, admin.cat c
+              ) AS park_polygon, icgc_data.catalunya c
          WHERE ST_Disjoint(c.geometry, park_polygon.geometry)
 
          UNION ALL
@@ -405,7 +405,7 @@ FROM (
                   FROM osm_park_polygon
                   WHERE zoom_level >= 14
                     AND geometry_point && bbox
-              ) AS park_point, admin.cat c
+              ) AS park_point, icgc_data.catalunya c
          WHERE ST_Disjoint(c.geometry, park_point.geometry_point) 
          UNION ALL
 
@@ -419,7 +419,7 @@ FROM (
                 NULL::text AS name_de,
                 NULL::hstore AS tags,
                 NULL::int AS rank
-         FROM park
+         FROM icgc_data.park
          WHERE zoom_level >= 6 AND geom && bbox
      ) AS park_all;
 $$ LANGUAGE SQL STABLE

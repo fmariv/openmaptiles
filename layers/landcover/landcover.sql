@@ -332,7 +332,7 @@ FROM (
          SELECT l.geometry, 
                 l.subclass,
                 0::int as icgc_id
-         FROM osm_landcover_gen_z7 l, admin.cat c
+         FROM osm_landcover_gen_z7 l, icgc_data.catalunya c
          WHERE zoom_level = 7
            AND ST_Disjoint(c.geometry, l.geometry)
            AND l.geometry && bbox
@@ -342,7 +342,7 @@ FROM (
          SELECT l.geometry, 
                 l.subclass,
                 0::int as icgc_id
-         FROM osm_landcover_gen_z8 l, admin.cat c
+         FROM osm_landcover_gen_z8 l, icgc_data.catalunya c
          WHERE zoom_level = 8
            AND ST_Disjoint(c.geometry, l.geometry)
            AND l.geometry && bbox
@@ -352,7 +352,7 @@ FROM (
          SELECT l.geometry, 
                 l.subclass,
                 0::int as icgc_id
-         FROM osm_landcover_gen_z9 l, admin.cat c
+         FROM osm_landcover_gen_z9 l, icgc_data.catalunya c
          WHERE zoom_level = 9
            AND ST_Disjoint(c.geometry, l.geometry)
            AND l.geometry && bbox
@@ -362,7 +362,7 @@ FROM (
          SELECT l.geometry, 
                 l.subclass,
                 0::int as icgc_id
-         FROM osm_landcover_gen_z10 l, admin.cat c
+         FROM osm_landcover_gen_z10 l, icgc_data.catalunya c
          WHERE zoom_level = 10
            AND ST_Disjoint(c.geometry, l.geometry)
            AND l.geometry && bbox
@@ -372,7 +372,7 @@ FROM (
          SELECT l.geometry, 
                 l.subclass,
                 0::int as icgc_id
-         FROM osm_landcover_gen_z11 l, admin.cat c
+         FROM osm_landcover_gen_z11 l, icgc_data.catalunya c
          WHERE zoom_level = 11
            AND ST_Disjoint(c.geometry, l.geometry)
            AND l.geometry && bbox
@@ -382,7 +382,7 @@ FROM (
          SELECT l.geometry, 
                 l.subclass,
                 0::int as icgc_id
-         FROM osm_landcover_gen_z12 l, admin.cat c
+         FROM osm_landcover_gen_z12 l, icgc_data.catalunya c
          WHERE zoom_level = 12
            AND ST_Disjoint(c.geometry, l.geometry)
            AND l.geometry && bbox
@@ -392,7 +392,7 @@ FROM (
          SELECT l.geometry, 
                 l.subclass,
                 0::int as icgc_id
-         FROM osm_landcover_gen_z13 l, admin.cat c
+         FROM osm_landcover_gen_z13 l, icgc_data.catalunya c
          WHERE zoom_level = 13
            AND ST_Disjoint(c.geometry, l.geometry)
            AND l.geometry && bbox
@@ -402,7 +402,7 @@ FROM (
          SELECT l.geometry, 
                 l.subclass,
                 0::int as icgc_id
-         FROM osm_landcover_polygon l, admin.cat c
+         FROM osm_landcover_polygon l, icgc_data.catalunya c
          WHERE zoom_level >= 14
            AND ST_Disjoint(c.geometry, l.geometry)
            AND l.geometry && bbox
@@ -412,7 +412,7 @@ FROM (
          SELECT geom,
                 class,
                 icgc_id
-         FROM landcover_z7_z8
+         FROM icgc_data.landcover_z7_z8
          WHERE (zoom_level BETWEEN 6 AND 8 AND geom && bbox )
          UNION ALL
  
@@ -420,7 +420,7 @@ FROM (
          SELECT geom,
                 class,
                 icgc_id
-         FROM landcover_z9_z10
+         FROM icgc_data.landcover_z9_z10
          WHERE (zoom_level BETWEEN 9 AND 10 AND geom && bbox )
          UNION ALL
  
@@ -428,7 +428,7 @@ FROM (
          SELECT geom,
                 class,
                 icgc_id
-         FROM landcover_z11_z12
+         FROM icgc_data.landcover_z11_z12
          WHERE (zoom_level BETWEEN 11 AND 12 AND geom && bbox )
          UNION ALL
  
@@ -436,7 +436,7 @@ FROM (
          SELECT geom,
                 class,
                 icgc_id
-         FROM landcover_ini
+         FROM icgc_data.landcover_ini
          WHERE (zoom_level BETWEEN 13 AND 14 AND geom && bbox )
          UNION ALL
  
@@ -444,7 +444,7 @@ FROM (
          SELECT geom,
                 class,
                 icgc_id
-         FROM landcover_bt5m
+         FROM icgc_data.landcover_bt5m
          WHERE (zoom_level > 14 AND geom && bbox )
      ) AS zoom_levels;
 $$ LANGUAGE SQL STABLE

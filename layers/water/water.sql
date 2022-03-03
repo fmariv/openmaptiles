@@ -333,7 +333,7 @@ SELECT w.geometry,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
-FROM osm_water_polygon_gen_z6 w, admin.cat c
+FROM osm_water_polygon_gen_z6 w, icgc_data.catalunya c
 WHERE "natural" != 'bay'
  AND ST_Disjoint(c.geometry, w.geometry)
     );
@@ -356,7 +356,7 @@ SELECT w.geometry,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
-FROM osm_water_polygon_gen_z7 w, admin.cat c
+FROM osm_water_polygon_gen_z7 w, icgc_data.catalunya c
 WHERE "natural" != 'bay'
  AND ST_Disjoint(c.geometry, w.geometry)
     );
@@ -379,7 +379,7 @@ SELECT w.geometry,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
-FROM osm_water_polygon_gen_z8 w, admin.cat c
+FROM osm_water_polygon_gen_z8 w, icgc_data.catalunya c
 WHERE "natural" != 'bay' 
  AND ST_Disjoint(c.geometry, w.geometry)
     );
@@ -402,7 +402,7 @@ SELECT w.geometry,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
-FROM osm_water_polygon_gen_z9 w, admin.cat c
+FROM osm_water_polygon_gen_z9 w, icgc_data.catalunya c
 WHERE "natural" != 'bay'
  AND ST_Disjoint(c.geometry, w.geometry)
     );
@@ -425,7 +425,7 @@ SELECT w.geometry,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
-FROM osm_water_polygon_gen_z10 w, admin.cat c
+FROM osm_water_polygon_gen_z10 w, icgc_data.catalunya c
 WHERE "natural" != 'bay'
  AND ST_Disjoint(c.geometry, w.geometry)
     );
@@ -448,7 +448,7 @@ SELECT w.geometry,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
-FROM osm_water_polygon_gen_z11 w, admin.cat c
+FROM osm_water_polygon_gen_z11 w, icgc_data.catalunya c
 WHERE "natural" != 'bay'
  AND ST_Disjoint(c.geometry, w.geometry)
     );
@@ -471,7 +471,7 @@ SELECT w.geometry,
        w.is_bridge,
        w.is_tunnel,
        0::int AS icgc_id
-FROM osm_water_polygon w, admin.cat c
+FROM osm_water_polygon w, icgc_data.catalunya c
 WHERE "natural" != 'bay'
  AND ST_Disjoint(c.geometry, w.geometry)
     );
@@ -582,7 +582,7 @@ FROM (
                 NULL::BOOLEAN AS is_bridge,
                 null::BOOLEAN as is_tunnel,
                 icgc_id
-         FROM water_z_7_8_carto
+         FROM icgc_data.water_z_7_8_carto
          WHERE (zoom_level <= 8 ) AND geom && bbox
          UNION ALL
 
@@ -594,7 +594,7 @@ FROM (
                 NULL::BOOLEAN AS is_bridge,
                 null::BOOLEAN as is_tunnel,
                 icgc_id
-         FROM water_z_9_10_carto
+         FROM icgc_data.water_z_9_10_carto
          WHERE (zoom_level = 9 ) AND geom && bbox
          UNION ALL
 
@@ -606,7 +606,7 @@ FROM (
                 NULL::BOOLEAN AS is_bridge,
                 null::BOOLEAN as is_tunnel,
                 icgc_id
-         FROM water_z_10_11_carto
+         FROM icgc_data.water_z_10_11_carto
          WHERE (zoom_level BETWEEN 10 AND 11 ) AND geom && bbox
          UNION ALL
 
@@ -618,7 +618,7 @@ FROM (
                 NULL::BOOLEAN AS is_bridge,
                 null::BOOLEAN as is_tunnel,
                 icgc_id
-         FROM water
+         FROM icgc_data.water
          WHERE zoom_level >= 12 AND geom && bbox
      ) AS zoom_levels
 WHERE geometry && bbox;

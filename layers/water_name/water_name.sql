@@ -39,7 +39,7 @@ SELECT
     NULL::INT AS rank,
     NULL::INT AS codigeo,
     NULL::FLOAT AS fontsize
-FROM osm_water_lakeline w, admin.cat c
+FROM osm_water_lakeline w, icgc_data.catalunya c
 WHERE w.geometry && bbox
   AND ST_Disjoint(c.geometry, w.geometry)
   AND ((zoom_level BETWEEN 9 AND 13 AND LineLabel(zoom_level, NULLIF(name, ''), w.geometry))
@@ -65,7 +65,7 @@ SELECT
     NULL::INT AS rank,
     NULL::INT AS codigeo,
     NULL::FLOAT AS fontsize
-FROM osm_water_point w, admin.cat c
+FROM osm_water_point w, icgc_data.catalunya c
 WHERE w.geometry && bbox
   AND ST_Disjoint(c.geometry, w.geometry)
   AND (
@@ -116,7 +116,7 @@ SELECT
      w.rank,
      w.codigeo,
      w.fontsize
-FROM water_name w
+FROM icgc_data.water_name w
 WHERE zoom_level >= w.zoom AND w.geom && bbox
 UNION ALL
 
@@ -135,7 +135,7 @@ SELECT
      w.rank,
      w.codigeo,
      w.fontsize
-FROM waterway w
+FROM icgc_data.waterway w
 WHERE zoom_level >= w.zoom AND w.geom && bbox
     ;
 $$ LANGUAGE SQL STABLE

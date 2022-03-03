@@ -516,7 +516,7 @@ SELECT obl.geometry,
        CASE WHEN disputed THEN edit_name(name) END AS disputed_name,
        obl.claimed_by,
        obl.maritime
-FROM osm_border_linestring_gen_z6 obl, admin.cat c
+FROM osm_border_linestring_gen_z6 obl, icgc_data.catalunya c
 WHERE admin_level <= 4 
    AND ST_Disjoint(c.geometry, obl.geometry)
     );
@@ -532,7 +532,7 @@ SELECT obl.geometry,
        CASE WHEN disputed THEN edit_name(name) END AS disputed_name,
        obl.claimed_by,
        obl.maritime
-FROM osm_border_linestring_gen_z7 obl, admin.cat c
+FROM osm_border_linestring_gen_z7 obl, icgc_data.catalunya c
 WHERE admin_level <= 6
    AND ST_Disjoint(c.geometry, obl.geometry)
     );
@@ -548,7 +548,7 @@ SELECT obl.geometry,
        CASE WHEN disputed THEN edit_name(name) END AS disputed_name,
        obl.claimed_by,
        obl.maritime
-FROM osm_border_linestring_gen_z8 obl, admin.cat c
+FROM osm_border_linestring_gen_z8 obl, icgc_data.catalunya c
 WHERE admin_level <= 6
    AND ST_Disjoint(c.geometry, obl.geometry)
     );
@@ -564,7 +564,7 @@ SELECT obl.geometry,
        CASE WHEN disputed THEN edit_name(name) END AS disputed_name,
        obl.claimed_by,
        obl.maritime
-FROM osm_border_linestring_gen_z9 obl, admin.cat c
+FROM osm_border_linestring_gen_z9 obl, icgc_data.catalunya c
 WHERE admin_level <= 6
    AND ST_Disjoint(c.geometry, obl.geometry)
     );
@@ -580,7 +580,7 @@ SELECT obl.geometry,
        CASE WHEN disputed THEN edit_name(name) END AS disputed_name,
        obl.claimed_by,
        obl.maritime
-FROM osm_border_linestring_gen_z10 obl, admin.cat c
+FROM osm_border_linestring_gen_z10 obl, icgc_data.catalunya c
 WHERE admin_level <= 6
    AND ST_Disjoint(c.geometry, obl.geometry)
     );
@@ -596,7 +596,7 @@ SELECT obl.geometry,
        CASE WHEN disputed THEN edit_name(name) END AS disputed_name,
        obl.claimed_by,
        obl.maritime
-FROM osm_border_linestring_gen_z11 obl, admin.cat c
+FROM osm_border_linestring_gen_z11 obl, icgc_data.catalunya c
 WHERE admin_level <= 8
    AND ST_Disjoint(c.geometry, obl.geometry)
     );
@@ -612,7 +612,7 @@ SELECT obl.geometry,
        CASE WHEN disputed THEN edit_name(name) END AS disputed_name,
        obl.claimed_by,
        obl.maritime
-FROM osm_border_linestring_gen_z12 obl, admin.cat c
+FROM osm_border_linestring_gen_z12 obl, icgc_data.catalunya c
 WHERE ST_Disjoint(c.geometry, obl.geometry)
     );
 
@@ -627,7 +627,7 @@ SELECT obl.geometry,
        CASE WHEN disputed THEN edit_name(name) END AS disputed_name,
        obl.claimed_by,
        obl.maritime
-FROM osm_border_linestring_gen_z13 obl, admin.cat c
+FROM osm_border_linestring_gen_z13 obl, icgc_data.catalunya c
 WHERE ST_Disjoint(c.geometry, obl.geometry)
     );
 
@@ -763,7 +763,7 @@ FROM (
                 icgc_id,
                 minzoom,
                 maxzoom
-         FROM boundary
+         FROM icgc_data.boundary
          WHERE (zoom_level BETWEEN minzoom AND maxzoom) AND geom && bbox
      ) AS zoom_levels;
 $$ LANGUAGE SQL STABLE

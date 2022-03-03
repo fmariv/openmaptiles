@@ -41,8 +41,8 @@ SELECT NULL::bigint AS icgc_id,
        class,
        name,
        NULL::text AS entorn
-FROM waterway_relation_gen_z6 w, admin.cat
-WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
+FROM waterway_relation_gen_z6 w, icgc_data.catalunya
+WHERE ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
     );
 
 -- etldoc: waterway_relation_gen_z7 ->  waterway_z7
@@ -53,8 +53,8 @@ SELECT NULL::bigint AS icgc_id,
        class,
        name,
        NULL::text AS entorn
-FROM waterway_relation_gen_z7 w, admin.cat
-WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
+FROM waterway_relation_gen_z7 w, icgc_data.catalunya
+WHERE ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
     );
 
 -- etldoc: waterway_relation_gen_z8 ->  waterway_z8
@@ -65,8 +65,8 @@ SELECT NULL::bigint AS icgc_id,
        class,
        name,
        NULL::text AS entorn
-FROM waterway_relation_gen_z8 w, admin.cat
-WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
+FROM waterway_relation_gen_z8 w, icgc_data.catalunya
+WHERE ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
     );
 
 -- etldoc: osm_important_waterway_linestring_gen_z9 ->  waterway_z9
@@ -77,8 +77,8 @@ SELECT NULL::bigint AS icgc_id,
        'river'::text AS class,
        name,
        NULL::text AS entorn
-FROM osm_important_waterway_linestring_gen_z9 w, admin.cat
-WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
+FROM osm_important_waterway_linestring_gen_z9 w, icgc_data.catalunya
+WHERE ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
     );
 
 -- etldoc: osm_important_waterway_linestring_gen_z10 ->  waterway_z10
@@ -89,8 +89,8 @@ SELECT NULL::bigint AS icgc_id,
        'river'::text AS class,
        name,
        NULL::text AS entorn
-FROM osm_important_waterway_linestring_gen_z10 w, admin.cat
-WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
+FROM osm_important_waterway_linestring_gen_z10 w, icgc_data.catalunya
+WHERE ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
     );
 
 -- etldoc:osm_important_waterway_linestring_gen_z11 ->  waterway_z11
@@ -101,8 +101,8 @@ SELECT NULL::bigint AS icgc_id,
        'river'::text AS class,
        name,
        NULL::text AS entorn
-FROM osm_important_waterway_linestring_gen_z11 w, admin.cat
-WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
+FROM osm_important_waterway_linestring_gen_z11 w, icgc_data.catalunya
+WHERE ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
     );
 
 -- etldoc: osm_waterway_linestring ->  waterway_z12
@@ -113,9 +113,9 @@ SELECT NULL::bigint AS icgc_id,
        waterway::text AS class,
        name,
        NULL::text AS entorn
-FROM osm_waterway_linestring w, admin.cat
+FROM osm_waterway_linestring w, icgc_data.catalunya
 WHERE w.waterway IN ('river', 'canal') 
-AND ST_DISJOINT(admin.cat.geometry, w.geometry)
+AND ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
     );
 
 -- etldoc: osm_waterway_linestring ->  waterway_z13
@@ -126,9 +126,9 @@ SELECT NULL::bigint AS icgc_id,
        waterway::text AS class,
        name,
        NULL::text AS entorn
-FROM osm_waterway_linestring w, admin.cat
+FROM osm_waterway_linestring w, icgc_data.catalunya
 WHERE w.waterway IN ('river', 'canal', 'stream', 'drain', 'ditch')
-AND ST_DISJOINT(admin.cat.geometry, w.geometry)
+AND ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
     );
 
 -- etldoc: osm_waterway_linestring ->  waterway_z14
@@ -139,8 +139,8 @@ SELECT NULL::bigint AS icgc_id,
        waterway::text AS class,
        name,
        NULL::text AS entorn
-FROM osm_waterway_linestring w, admin.cat
-WHERE ST_DISJOINT(admin.cat.geometry, w.geometry)
+FROM osm_waterway_linestring w, icgc_data.catalunya
+WHERE ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
     );
 
 -- etldoc: layer_waterway[shape=record fillcolor=lightpink, style="rounded,filled",
@@ -241,7 +241,7 @@ FROM (
                 class,
                 name,
                 'GE' AS entorn
-         FROM waterway_z_7_8_carto
+         FROM icgc_data.waterway_z_7_8_carto
          WHERE (zoom_level BETWEEN 7 AND 8) AND geom && bbox
          UNION ALL
 
@@ -251,7 +251,7 @@ FROM (
                 class,
                 name,
                 'GE' AS entorn
-         FROM waterway_z_9_10_carto 
+         FROM icgc_data.waterway_z_9_10_carto 
          WHERE (zoom_level = 9) AND geom && bbox
          UNION ALL
 
@@ -261,7 +261,7 @@ FROM (
                 class,
                 name,
                 'GE' AS entorn
-         FROM waterway_z_10_11_carto 
+         FROM icgc_data.waterway_z_10_11_carto 
          WHERE (zoom_level BETWEEN 10 AND 11) AND geom && bbox
          UNION ALL
 
@@ -271,7 +271,7 @@ FROM (
                 class,
                 name,
                 entorn
-         FROM waterway_bt5mv30_strahler w
+         FROM icgc_data.waterway_bt5mv30_strahler w
          WHERE 
          (w.entorn <> 'UR' ) AND (
             ((zoom_level BETWEEN 12 AND 13) AND (w.strahler_order > 2 OR w.jsel in ('3A','3B','3C','2A','2B') ) AND w.geom && bbox) OR

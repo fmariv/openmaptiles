@@ -18,7 +18,7 @@ SELECT
     nullif(material, '') AS material,
     nullif(colour, '') AS colour,
     FALSE AS hide_3d
-FROM osm_building_relation b, admin.cat c
+FROM osm_building_relation b, icgc_data.catalunya c
 WHERE building = ''
   AND ST_GeometryType(b.geometry) = 'ST_Polygon'
   AND ST_Disjoint(c.geometry, b.geometry)
@@ -41,7 +41,7 @@ FROM osm_building_polygon obp
         obp.osm_id >= 0 AND
         obr.member = obp.osm_id AND
         obr.role = 'outline',
-      admin.cat c
+      icgc_data.catalunya c
 WHERE ST_GeometryType(obp.geometry) IN ('ST_Polygon', 'ST_MultiPolygon')
    AND ST_Disjoint(c.geometry, obp.geometry)
     );
@@ -99,7 +99,7 @@ FROM (
              NULL::text AS colour,
              FALSE AS hide_3d,
              NULL::text AS building
-         FROM osm_building_block_gen_z13 obp, admin.cat c
+         FROM osm_building_block_gen_z13 obp, icgc_data.catalunya c
          WHERE zoom_level = 13
            AND obp.geometry && bbox
            AND ST_Disjoint(c.geometry, obp.geometry)
@@ -137,7 +137,7 @@ FROM (
              NULL::text AS colour,
              NULL::boolean AS hide_3d,
              building
-         FROM z_9_10mtc_poblament_poligon
+         FROM icgc_data.z_9_10mtc_poblament_poligon
          WHERE (zoom_level BETWEEN 7 AND 10) AND geom && bbox
          UNION ALL
 
@@ -152,7 +152,7 @@ FROM (
              NULL::text AS colour,
              NULL::boolean AS hide_3d,
              building
-         FROM poblament
+         FROM icgc_data.poblament
          WHERE zoom_level = 11 AND geom && bbox
          UNION ALL
 
@@ -167,7 +167,7 @@ FROM (
              NULL::text AS colour,
              NULL::boolean AS hide_3d,
              building
-         FROM building_z12
+         FROM icgc_data.building_z12
          WHERE zoom_level = 12 AND geom && bbox
          UNION ALL
 
@@ -182,7 +182,7 @@ FROM (
              NULL::text AS colour,
              NULL::boolean AS hide_3d,
              building
-         FROM building
+         FROM icgc_data.building
          WHERE zoom_level = 13 AND geom && bbox
          UNION ALL
 
@@ -197,7 +197,7 @@ FROM (
              NULL::text AS colour,
              NULL::boolean AS hide_3d,
              building
-         FROM building
+         FROM icgc_data.building
          WHERE zoom_level > 13 AND building IN ('industrial', 'cns-XE', 'dip') AND geom && bbox
          UNION ALL
 
@@ -212,7 +212,7 @@ FROM (
              NULL::text AS colour,
              NULL::boolean AS hide_3d,
              building
-         FROM building
+         FROM icgc_data.building
          WHERE zoom_level > 13 AND building NOT IN ('industrial', 'cns-XE', 'dip') AND geom && bbox
          UNION ALL
 
@@ -227,7 +227,7 @@ FROM (
              NULL::text AS colour,
              NULL::boolean AS hide_3d,
              building
-         FROM ascensors
+         FROM icgc_data.ascensors
          WHERE zoom_level > 13 AND geom && bbox
      ) AS zoom_levels
 ORDER BY render_height ASC, ST_YMin(geometry) DESC;

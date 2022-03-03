@@ -1,0 +1,13 @@
+layer:
+  id: "template"
+  description: |
+  buffer_size: 4
+  fields:
+    icgc_id:
+      description:
+          Identificador únic de l'ICGC.
+  datasource:
+    geometry_field: geometry
+    query: (SELECT geometry, icgc_id FROM layer_template(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
+schema:
+  - ./template.sql

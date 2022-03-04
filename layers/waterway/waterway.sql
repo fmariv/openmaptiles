@@ -275,7 +275,7 @@ FROM (
          WHERE 
          (w.entorn <> 'UR' ) AND (
             ((zoom_level BETWEEN 12 AND 13) AND (w.strahler_order > 2 OR w.jsel in ('3A','3B','3C','2A','2B') ) AND w.geom && bbox) OR
-            ((zoom_level =14)  AND (w.strahler_order >1 OR w.jsel in ('3A','3B','3C','2A','2B') ) AND w.geom && bbox) OR
+            ((zoom_level = 14)  AND (w.strahler_order >1 OR w.jsel in ('3A','3B','3C','2A','2B') ) AND w.geom && bbox) OR
             ((zoom_level >14)  AND w.geom && bbox) )
      ) AS zoom_levels
 WHERE geometry && bbox;

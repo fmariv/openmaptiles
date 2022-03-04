@@ -2,6 +2,8 @@
 -- Export ICGC data from public schema to icgc_data schema
 --
 
+CREATE SCHEMA IF NOT EXISTS icgc_data;
+
 -- aerodrome label
 SELECT *
 INTO icgc_data.aerodrome_label
@@ -14,7 +16,7 @@ SELECT *
 INTO icgc_data.aeroway
 FROM aeroway;
 CREATE INDEX idx_aeroway_geom ON icgc_data.aeroway USING gist (geom);
--- DROP TABLE public.aeroway;
+DROP TABLE public.aeroway;
 
 -- ascensors
 SELECT *

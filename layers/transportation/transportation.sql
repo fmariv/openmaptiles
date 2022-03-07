@@ -60,7 +60,7 @@ FROM (
             NULL::int AS level,
             NULL::int AS indoor,
             layer as d_categori,
-            NULL::text AS codi_via,
+            codi_via,
             NULL::text AS observacio
         FROM icgc_data.z_7mtc_vials t
         WHERE zoom_level BETWEEN 6 AND 7
@@ -81,7 +81,7 @@ FROM (
             NULL::int AS level,
             NULL::int AS indoor,
             layer as d_categori,
-            NULL::text AS codi_via,
+            codi_via,
             NULL::text AS observacio
         FROM icgc_data.z_8mtc_vials 
         WHERE zoom_level = 8
@@ -105,8 +105,7 @@ FROM (
             codi_via,
             observacio
         FROM icgc_data.z_11_13_transportation_contextmaps
-        WHERE zoom_level BETWEEN 9 AND 13
-           AND class IN ('motorway', 'primary', 'secondary', 'tertiary')
+        WHERE zoom_level BETWEEN 9 AND 12
         UNION ALL
 
         -- z_13_18_transportation_contextmaps
@@ -127,7 +126,7 @@ FROM (
             codi_via,
             observacio
         FROM icgc_data.z_13_18_transportation_contextmaps 
-        WHERE zoom_level > 13
+        WHERE zoom_level >= 13
 ) AS icgc_zoom_levels
 WHERE geom && bbox
 UNION ALL

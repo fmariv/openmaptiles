@@ -18,235 +18,6 @@ $$ LANGUAGE SQL IMMUTABLE
                 -- STRICT
                 PARALLEL SAFE;
 
--- ne_50m_antarctic_ice_shelves_polys
--- etldoc: ne_50m_antarctic_ice_shelves_polys ->  ne_50m_antarctic_ice_shelves_polys_gen_z4
-DROP MATERIALIZED VIEW IF EXISTS ne_50m_antarctic_ice_shelves_polys_gen_z4 CASCADE;
-CREATE MATERIALIZED VIEW ne_50m_antarctic_ice_shelves_polys_gen_z4 AS
-(
-SELECT
-    ST_Simplify(geometry, ZRes(6)) as geometry,
-    'ice_shelf'::text AS subclass
-FROM ne_50m_antarctic_ice_shelves_polys
-    ) /* DELAY_MATERIALIZED_VIEW_CREATION */ ;
-CREATE INDEX IF NOT EXISTS ne_50m_antarctic_ice_shelves_polys_gen_z4_idx ON ne_50m_antarctic_ice_shelves_polys_gen_z4 USING gist (geometry);
-
--- ne_110m_glaciated_areas
--- etldoc: ne_110m_glaciated_areas ->  ne_110m_glaciated_areas_gen_z1
-DROP MATERIALIZED VIEW IF EXISTS ne_110m_glaciated_areas_gen_z1 CASCADE;
-CREATE MATERIALIZED VIEW ne_110m_glaciated_areas_gen_z1 AS
-(
-SELECT
-    ST_Simplify(geometry, ZRes(3)) as geometry,
-    'glacier'::text AS subclass
-FROM ne_110m_glaciated_areas
-    ) /* DELAY_MATERIALIZED_VIEW_CREATION */ ;
-CREATE INDEX IF NOT EXISTS ne_110m_glaciated_areas_gen_z1_idx ON ne_110m_glaciated_areas_gen_z1 USING gist (geometry);
-
--- etldoc: ne_110m_glaciated_areas_gen_z1 ->  ne_110m_glaciated_areas_gen_z0
-DROP MATERIALIZED VIEW IF EXISTS ne_110m_glaciated_areas_gen_z0 CASCADE;
-CREATE MATERIALIZED VIEW ne_110m_glaciated_areas_gen_z0 AS
-(
-SELECT
-    ST_Simplify(geometry, ZRes(2)) as geometry,
-    subclass
-FROM ne_110m_glaciated_areas_gen_z1
-    ) /* DELAY_MATERIALIZED_VIEW_CREATION */ ;
-CREATE INDEX IF NOT EXISTS ne_110m_glaciated_areas_gen_z0_idx ON ne_110m_glaciated_areas_gen_z0 USING gist (geometry);
-
--- etldoc: ne_50m_antarctic_ice_shelves_polys_gen_z4 ->  ne_50m_antarctic_ice_shelves_polys_gen_z3
-DROP MATERIALIZED VIEW IF EXISTS ne_50m_antarctic_ice_shelves_polys_gen_z3 CASCADE;
-CREATE MATERIALIZED VIEW ne_50m_antarctic_ice_shelves_polys_gen_z3 AS
-(
-SELECT
-    ST_Simplify(geometry, ZRes(5)) as geometry,
-    subclass
-FROM ne_50m_antarctic_ice_shelves_polys_gen_z4
-    ) /* DELAY_MATERIALIZED_VIEW_CREATION */ ;
-CREATE INDEX IF NOT EXISTS ne_50m_antarctic_ice_shelves_polys_gen_z3_idx ON ne_50m_antarctic_ice_shelves_polys_gen_z3 USING gist (geometry);
-
--- etldoc: ne_50m_antarctic_ice_shelves_polys_gen_z3 ->  ne_50m_antarctic_ice_shelves_polys_gen_z2
-DROP MATERIALIZED VIEW IF EXISTS ne_50m_antarctic_ice_shelves_polys_gen_z2 CASCADE;
-CREATE MATERIALIZED VIEW ne_50m_antarctic_ice_shelves_polys_gen_z2 AS
-(
-SELECT
-    ST_Simplify(geometry, ZRes(4)) as geometry,
-    subclass
-FROM ne_50m_antarctic_ice_shelves_polys_gen_z3
-    ) /* DELAY_MATERIALIZED_VIEW_CREATION */ ;
-CREATE INDEX IF NOT EXISTS ne_50m_antarctic_ice_shelves_polys_gen_z2_idx ON ne_50m_antarctic_ice_shelves_polys_gen_z2 USING gist (geometry);
-
--- ne_50m_glaciated_areas
--- etldoc: ne_50m_glaciated_areas ->  ne_50m_glaciated_areas_gen_z4
-DROP MATERIALIZED VIEW IF EXISTS ne_50m_glaciated_areas_gen_z4 CASCADE;
-CREATE MATERIALIZED VIEW ne_50m_glaciated_areas_gen_z4 AS
-(
-SELECT
-    ST_Simplify(geometry, ZRes(6)) as geometry,
-    'glacier'::text AS subclass
-FROM ne_50m_glaciated_areas
-    ) /* DELAY_MATERIALIZED_VIEW_CREATION */ ;
-CREATE INDEX IF NOT EXISTS ne_50m_glaciated_areas_gen_z4_idx ON ne_50m_glaciated_areas_gen_z4 USING gist (geometry);
-
--- etldoc: ne_50m_glaciated_areas_gen_z4 ->  ne_50m_glaciated_areas_gen_z3
-DROP MATERIALIZED VIEW IF EXISTS ne_50m_glaciated_areas_gen_z3 CASCADE;
-CREATE MATERIALIZED VIEW ne_50m_glaciated_areas_gen_z3 AS
-(
-SELECT
-    ST_Simplify(geometry, ZRes(5)) as geometry,
-    subclass
-FROM ne_50m_glaciated_areas_gen_z4
-    ) /* DELAY_MATERIALIZED_VIEW_CREATION */ ;
-CREATE INDEX IF NOT EXISTS ne_50m_glaciated_areas_gen_z3_idx ON ne_50m_glaciated_areas_gen_z3 USING gist (geometry);
-
--- etldoc: ne_50m_glaciated_areas_gen_z3 ->  ne_50m_glaciated_areas_gen_z2
-DROP MATERIALIZED VIEW IF EXISTS ne_50m_glaciated_areas_gen_z2 CASCADE;
-CREATE MATERIALIZED VIEW ne_50m_glaciated_areas_gen_z2 AS
-(
-SELECT
-    ST_Simplify(geometry, ZRes(4)) as geometry,
-    subclass
-FROM ne_50m_glaciated_areas_gen_z3
-    ) /* DELAY_MATERIALIZED_VIEW_CREATION */ ;
-CREATE INDEX IF NOT EXISTS ne_50m_glaciated_areas_gen_z2_idx ON ne_50m_glaciated_areas_gen_z2 USING gist (geometry);
-
--- ne_10m_glaciated_areas
--- etldoc: ne_10m_glaciated_areas ->  ne_10m_glaciated_areas_gen_z6
-DROP MATERIALIZED VIEW IF EXISTS ne_10m_glaciated_areas_gen_z6 CASCADE;
-CREATE MATERIALIZED VIEW ne_10m_glaciated_areas_gen_z6 AS
-(
-SELECT
-    ST_Simplify(geometry, ZRes(8)) as geometry,
-    'glacier'::text AS subclass
-FROM ne_10m_glaciated_areas
-    ) /* DELAY_MATERIALIZED_VIEW_CREATION */ ;
-CREATE INDEX IF NOT EXISTS ne_10m_glaciated_areas_gen_z6_idx ON ne_10m_glaciated_areas_gen_z6 USING gist (geometry);
-
--- etldoc: ne_10m_glaciated_areas_gen_z6 ->  ne_10m_glaciated_areas_gen_z5
-DROP MATERIALIZED VIEW IF EXISTS ne_10m_glaciated_areas_gen_z5 CASCADE;
-CREATE MATERIALIZED VIEW ne_10m_glaciated_areas_gen_z5 AS
-(
-SELECT
-    ST_Simplify(geometry, ZRes(7)) as geometry,
-    subclass
-FROM ne_10m_glaciated_areas_gen_z6
-    ) /* DELAY_MATERIALIZED_VIEW_CREATION */ ;
-CREATE INDEX IF NOT EXISTS ne_10m_glaciated_areas_gen_z5_idx ON ne_10m_glaciated_areas_gen_z5 USING gist (geometry);
-
--- ne_10m_antarctic_ice_shelves_polys
--- etldoc: ne_10m_antarctic_ice_shelves_polys ->  ne_10m_antarctic_ice_shelves_polys_gen_z6
-DROP MATERIALIZED VIEW IF EXISTS ne_10m_antarctic_ice_shelves_polys_gen_z6 CASCADE;
-CREATE MATERIALIZED VIEW ne_10m_antarctic_ice_shelves_polys_gen_z6 AS
-(
-SELECT
-    ST_Simplify(geometry, ZRes(8)) as geometry,
-    'ice_shelf'::text AS subclass
-FROM ne_10m_antarctic_ice_shelves_polys
-    ) /* DELAY_MATERIALIZED_VIEW_CREATION */ ;
-CREATE INDEX IF NOT EXISTS ne_10m_antarctic_ice_shelves_polys_gen_z6_idx ON ne_10m_antarctic_ice_shelves_polys_gen_z6 USING gist (geometry);
-
--- etldoc: ne_10m_antarctic_ice_shelves_polys_gen_z6 ->  ne_10m_antarctic_ice_shelves_polys_gen_z5
-DROP MATERIALIZED VIEW IF EXISTS ne_10m_antarctic_ice_shelves_polys_gen_z5 CASCADE;
-CREATE MATERIALIZED VIEW ne_10m_antarctic_ice_shelves_polys_gen_z5 AS
-(
-SELECT
-    ST_Simplify(geometry, ZRes(7)) as geometry,
-    subclass
-FROM ne_10m_antarctic_ice_shelves_polys_gen_z6
-    ) /* DELAY_MATERIALIZED_VIEW_CREATION */ ;
-CREATE INDEX IF NOT EXISTS ne_10m_antarctic_ice_shelves_polys_gen_z5_idx ON ne_10m_antarctic_ice_shelves_polys_gen_z5 USING gist (geometry);
-
--- etldoc: ne_110m_glaciated_areas_gen_z0 ->  landcover_z0
-CREATE OR REPLACE VIEW landcover_z0 AS
-(
-SELECT
-    geometry,
-    subclass
-FROM ne_110m_glaciated_areas_gen_z0
-    );
-
--- etldoc: ne_110m_glaciated_areas_gen_z1 ->  landcover_z1
-CREATE OR REPLACE VIEW landcover_z1 AS
-(
-SELECT
-    geometry,
-    subclass
-FROM ne_110m_glaciated_areas_gen_z1
-    );
-
-CREATE OR REPLACE VIEW landcover_z2 AS
-(
--- etldoc: ne_50m_glaciated_areas_gen_z2 ->  landcover_z2
-SELECT
-    geometry,
-    subclass
-FROM ne_50m_glaciated_areas_gen_z2
-UNION ALL
--- etldoc: ne_50m_antarctic_ice_shelves_polys_gen_z2 ->  landcover_z2
-SELECT
-    geometry,
-    subclass
-FROM ne_50m_antarctic_ice_shelves_polys_gen_z2
-    );
-
-CREATE OR REPLACE VIEW landcover_z3 AS
-(
--- etldoc: ne_50m_glaciated_areas_gen_z3 ->  landcover_z3
-SELECT
-    geometry,
-    subclass
-FROM ne_50m_glaciated_areas_gen_z3
-UNION ALL
--- etldoc: ne_50m_antarctic_ice_shelves_polys_gen_z3 ->  landcover_z3
-SELECT
-    geometry,
-    subclass
-FROM ne_50m_antarctic_ice_shelves_polys_gen_z3
-    );
-
-CREATE OR REPLACE VIEW landcover_z4 AS
-(
--- etldoc: ne_50m_glaciated_areas_gen_z4 ->  landcover_z4
-SELECT
-    geometry,
-    subclass
-FROM ne_50m_glaciated_areas_gen_z4
-UNION ALL
--- etldoc: ne_50m_antarctic_ice_shelves_polys_gen_z4 ->  landcover_z4
-SELECT
-    geometry,
-    subclass
-FROM ne_50m_antarctic_ice_shelves_polys_gen_z4
-    );
-
-CREATE OR REPLACE VIEW landcover_z5 AS
-(
--- etldoc: ne_10m_glaciated_areas_gen_z5 ->  landcover_z5
-SELECT
-    geometry,
-    subclass
-FROM ne_10m_glaciated_areas_gen_z5
-UNION ALL
--- etldoc: ne_10m_antarctic_ice_shelves_polys_gen_z5 ->  landcover_z5
-SELECT
-    geometry,
-    subclass
-FROM ne_10m_antarctic_ice_shelves_polys_gen_z5
-    );
-
-CREATE OR REPLACE VIEW landcover_z6 AS
-(
--- etldoc: ne_10m_glaciated_areas_gen_z6 ->  landcover_z6
-SELECT
-    geometry,
-    subclass
-FROM ne_10m_glaciated_areas_gen_z6
-UNION ALL
--- etldoc: ne_10m_antarctic_ice_shelves_polys_gen_z6 ->  landcover_z6
-SELECT
-    geometry,
-    subclass
-FROM ne_10m_antarctic_ice_shelves_polys_gen_z6
-    );
 
 -- etldoc: layer_landcover[shape=record fillcolor=lightpink, style="rounded, filled", label="layer_landcover | <z0> z0 | <z1> z1 | <z2> z2 | <z3> z3 | <z4> z4 | <z5> z5 | <z6> z6 |<z7> z7 |<z8> z8 |<z9> z9 |<z10> z10 |<z11> z11 |<z12> z12|<z13> z13|<z14_> z14+" ] ;
 
@@ -329,83 +100,59 @@ FROM (
          UNION ALL
 
          -- etldoc:  osm_landcover_gen_z7 -> layer_landcover:z7
-         SELECT l.geometry, 
-                l.subclass,
-                0::int as icgc_id
-         FROM osm_landcover_gen_z7 l, icgc_data.catalunya c
+         SELECT *
+         FROM osm_landcover_planet_z7
          WHERE zoom_level = 7
-           AND ST_Disjoint(c.geometry, l.geometry)
-           AND l.geometry && bbox
+           AND geometry && bbox
          UNION ALL
 
          -- etldoc:  osm_landcover_gen_z8 -> layer_landcover:z8
-         SELECT l.geometry, 
-                l.subclass,
-                0::int as icgc_id
-         FROM osm_landcover_gen_z8 l, icgc_data.catalunya c
+         SELECT *
+         FROM osm_landcover_planet_z8
          WHERE zoom_level = 8
-           AND ST_Disjoint(c.geometry, l.geometry)
-           AND l.geometry && bbox
+           AND geometry && bbox
          UNION ALL
 
          -- etldoc:  osm_landcover_gen_z9 -> layer_landcover:z9
-         SELECT l.geometry, 
-                l.subclass,
-                0::int as icgc_id
-         FROM osm_landcover_gen_z9 l, icgc_data.catalunya c
+         SELECT *
+         FROM osm_landcover_planet_z9
          WHERE zoom_level = 9
-           AND ST_Disjoint(c.geometry, l.geometry)
-           AND l.geometry && bbox
+           AND geometry && bbox
          UNION ALL
 
          -- etldoc:  osm_landcover_gen_z10 -> layer_landcover:z10
-         SELECT l.geometry, 
-                l.subclass,
-                0::int as icgc_id
-         FROM osm_landcover_gen_z10 l, icgc_data.catalunya c
+         SELECT *
+         FROM osm_landcover_planet_z10
          WHERE zoom_level = 10
-           AND ST_Disjoint(c.geometry, l.geometry)
-           AND l.geometry && bbox
+           AND geometry && bbox
          UNION ALL
 
          -- etldoc:  osm_landcover_gen_z11 -> layer_landcover:z11
-         SELECT l.geometry, 
-                l.subclass,
-                0::int as icgc_id
-         FROM osm_landcover_gen_z11 l, icgc_data.catalunya c
+         SELECT *
+         FROM osm_landcover_planet_z11
          WHERE zoom_level = 11
-           AND ST_Disjoint(c.geometry, l.geometry)
-           AND l.geometry && bbox
+           AND geometry && bbox
          UNION ALL
 
          -- etldoc:  osm_landcover_gen_z12 -> layer_landcover:z12
-         SELECT l.geometry, 
-                l.subclass,
-                0::int as icgc_id
-         FROM osm_landcover_gen_z12 l, icgc_data.catalunya c
+         SELECT *
+         FROM osm_landcover_planet_z12
          WHERE zoom_level = 12
-           AND ST_Disjoint(c.geometry, l.geometry)
-           AND l.geometry && bbox
+           AND geometry && bbox
          UNION ALL
 
          -- etldoc:  osm_landcover_gen_z13 -> layer_landcover:z13
-         SELECT l.geometry, 
-                l.subclass,
-                0::int as icgc_id
-         FROM osm_landcover_gen_z13 l, icgc_data.catalunya c
+         SELECT *
+         FROM osm_landcover_planet_z13
          WHERE zoom_level = 13
-           AND ST_Disjoint(c.geometry, l.geometry)
-           AND l.geometry && bbox
+           AND geometry && bbox
          UNION ALL
 
          -- etldoc:  osm_landcover_polygon -> layer_landcover:z14_
-         SELECT l.geometry, 
-                l.subclass,
-                0::int as icgc_id
-         FROM osm_landcover_polygon l, icgc_data.catalunya c
-         WHERE zoom_level >= 14
-           AND ST_Disjoint(c.geometry, l.geometry)
-           AND l.geometry && bbox
+         SELECT *
+         FROM osm_landcover_planet_z14
+         WHERE zoom_level = 14
+           AND geometry && bbox
          UNION ALL
 
          -- landcover_z7_z8

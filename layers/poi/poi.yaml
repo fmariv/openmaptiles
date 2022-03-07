@@ -123,10 +123,18 @@ layer:
     icgc_id:
       description:
         Identificador únic de l'ICGC.
-    categoria: Pendent d'informar.
-    zoom: Pendent d'informar.
-    classicgc: Pendent d'informar.
-    icgc_id_match: Pendent d'informar.
+    categoria:
+      description:
+        Pendent d'informar.
+    zoom:
+      description:
+        Pendent d'informar.
+    classicgc:
+      description:
+        Pendent d'informar.
+    icgc_id_match:
+      description:
+        Pendent d'informar.
   datasource:
     geometry_field: geometry
     key_field: osm_id

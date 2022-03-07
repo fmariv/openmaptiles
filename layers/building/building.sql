@@ -1,51 +1,6 @@
 -- etldoc: layer_building[shape=record fillcolor=lightpink, style="rounded,filled",
 -- etldoc:     label="layer_building | <z13> z13 | <z14_> z14+ " ] ;
 
-CREATE INDEX IF NOT EXISTS osm_building_relation_building_idx ON osm_building_relation (building) WHERE building = '' AND ST_GeometryType(geometry) = 'ST_Polygon';
-CREATE INDEX IF NOT EXISTS osm_building_relation_member_idx ON osm_building_relation (member) WHERE role = 'outline';
-
-CREATE OR REPLACE VIEW osm_all_buildings AS
-(
-SELECT
-    -- etldoc: osm_building_relation -> layer_building:z14_
-    -- Buildings built from relations
-    member AS osm_id,
-    b.geometry,
-    COALESCE(CleanNumeric(height), CleanNumeric(buildingheight)) AS height,
-    COALESCE(CleanNumeric(min_height), CleanNumeric(buildingmin_height)) AS min_height,
-    COALESCE(CleanNumeric(levels), CleanNumeric(buildinglevels)) AS levels,
-    COALESCE(CleanNumeric(min_level), CleanNumeric(buildingmin_level)) AS min_level,
-    nullif(material, '') AS material,
-    nullif(colour, '') AS colour,
-    FALSE AS hide_3d
-FROM osm_building_relation b, icgc_data.catalunya c
-WHERE building = ''
-  AND ST_GeometryType(b.geometry) = 'ST_Polygon'
-  AND ST_Disjoint(c.geometry, b.geometry)
-UNION ALL
-
-SELECT
-    -- etldoc: osm_building_polygon -> layer_building:z14_
-    -- Standalone buildings
-    obp.osm_id,
-    obp.geometry,
-    COALESCE(CleanNumeric(obp.height), CleanNumeric(obp.buildingheight)) AS height,
-    COALESCE(CleanNumeric(obp.min_height), CleanNumeric(obp.buildingmin_height)) AS min_height,
-    COALESCE(CleanNumeric(obp.levels), CleanNumeric(obp.buildinglevels)) AS levels,
-    COALESCE(CleanNumeric(obp.min_level), CleanNumeric(obp.buildingmin_level)) AS min_level,
-    nullif(obp.material, '') AS material,
-    nullif(obp.colour, '') AS colour,
-    obr.role IS NOT NULL AS hide_3d
-FROM osm_building_polygon obp
-         LEFT JOIN osm_building_relation obr ON
-        obp.osm_id >= 0 AND
-        obr.member = obp.osm_id AND
-        obr.role = 'outline',
-      icgc_data.catalunya c
-WHERE ST_GeometryType(obp.geometry) IN ('ST_Polygon', 'ST_MultiPolygon')
-   AND ST_Disjoint(c.geometry, obp.geometry)
-    );
-
 CREATE OR REPLACE FUNCTION layer_building(bbox geometry, zoom_level int)
     RETURNS TABLE
             (
@@ -99,10 +54,9 @@ FROM (
              NULL::text AS colour,
              FALSE AS hide_3d,
              NULL::text AS building
-         FROM osm_building_block_gen_z13 obp, icgc_data.catalunya c
+         FROM osm_building_block_planet
          WHERE zoom_level = 13
            AND obp.geometry && bbox
-           AND ST_Disjoint(c.geometry, obp.geometry)
          UNION ALL
 
          -- etldoc: osm_building_polygon -> layer_building:z14_
@@ -116,7 +70,6 @@ FROM (
                                   colour,
                                   hide_3d,
                                   NULL::text AS building
-         -- Don't need to filter by extent because the view it's already filtered on its creation
          FROM osm_all_buildings
          WHERE (levels IS NULL OR levels < 1000)
            AND (min_level IS NULL OR min_level < 1000)

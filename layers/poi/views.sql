@@ -21,5 +21,3 @@ FROM osm_poi_polygon opp, icgc_data.catalunya c
 WHERE ST_Disjoint(c.geometry, opp.geometry)
     );
 CREATE INDEX IF NOT EXISTS osm_poi_polygon_planet_idx ON osm_poi_polygon_planet USING gist (geometry);
-$$ LANGUAGE SQL STABLE
-                PARALLEL SAFE;

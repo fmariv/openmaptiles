@@ -160,6 +160,3 @@ FROM osm_waterway_linestring w, icgc_data.catalunya
 WHERE ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
     );
 CREATE INDEX IF NOT EXISTS waterway_z14_idx ON waterway_z14 USING gist (geometry);
-
-$$ LANGUAGE SQL STABLE
-                PARALLEL SAFE;

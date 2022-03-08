@@ -468,6 +468,3 @@ WHERE "natural" != 'bay'
  AND ST_Disjoint(c.geometry, w.geometry)
     );
 CREATE INDEX IF NOT EXISTS water_z12_idx ON water_z12 USING gist (geometry);
-
-$$ LANGUAGE SQL STABLE
-                PARALLEL SAFE;

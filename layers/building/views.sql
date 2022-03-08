@@ -53,5 +53,3 @@ WHERE ST_GeometryType(obp.geometry) IN ('ST_Polygon', 'ST_MultiPolygon')
    AND ST_Disjoint(c.geometry, obp.geometry)
     );
 CREATE INDEX IF NOT EXISTS osm_all_buildings_idx ON osm_all_buildings USING gist (geometry);
-$$ LANGUAGE SQL STABLE
-                PARALLEL SAFE;

@@ -16,7 +16,6 @@ CREATE OR REPLACE FUNCTION layer_transportation_name(bbox geometry, zoom_level i
                 layer      int,
                 level      int,
                 indoor     int,
-                zoom       int,
                 mtc25m     text,
                 colorcaixa bigint,
                 rank       int,
@@ -37,8 +36,7 @@ SELECT
       subclass,  
       layer,     
       level,     
-      indoor,    
-      zoom,      
+      indoor,      
       mtc25m,    
       colorcaixa,
       rank,      
@@ -48,14 +46,14 @@ FROM (
       SELECT * FROM 
       (
         SELECT
-            t.icgc_id::bigint,
-            t.geom,
-            t.name::text,
-            t.name::text AS ref,
+            icgc_id::bigint,
+            geom,
+            name::text,
+            name::text AS ref,
             6::int AS ref_length,
             ''::text AS network,
             ''::text AS id_via,
-            t.class::text,
+            class::text,
             ''::text AS subclass,
             0::INT AS layer,
             0::INT AS level,
@@ -65,60 +63,43 @@ FROM (
             0::bigint AS colorcaixa,
             0::smallint AS rank,
             0::integer AS codigeo
-            FROM icgc_data.transportation_name_lines t
-            WHERE zoom_level < 15 AND t.geom && bbox
+            FROM icgc_data.transportation_name_lines
+            WHERE zoom_level BETWEEN 6 AND 14
+               AND geom && bbox
         UNION ALL
+
         SELECT
-            t.icgc_id::bigint,
-            ST_GeometryN(t.geom, 1) AS geom,
-            t.name::text,
+            icgc_id::bigint,
+            ST_GeometryN(geom, 1) AS geom,
+            name::text,
             ''::text AS ref,
             0::int AS ref_length,
             ''::text AS network,
             ''::text AS id_via,
-            t.class::text,
+            class::text,
             ''::text AS subclass,
             0::INT AS layer,
             0::INT AS level,
             0::INT AS indoor,
-            t.zoom::smallint,
+            zoom::smallint,
             ''::text AS mtc25m,
             0::bigint AS colorcaixa,
-            t.rank::smallint,
-            t.codigeo::integer
-            FROM icgc_data.transportation_name t
-            WHERE zoom_level < 15 AND zoom_level >= t.zoom AND t.geom && bbox
+            rank::smallint,
+            codigeo::integer
+            FROM icgc_data.transportation_name 
+            WHERE zoom_level BETWEEN zoom AND 14 
+               AND geom && bbox
         UNION ALL
+
         SELECT
-            t.icgc_id::bigint,
-            t.geom,
-            t.name::text,
-            ''::text AS ref,
-            0::int AS ref_length,
+            icgc_id::bigint,
+            geom,
+            name::text,
+            name::text AS ref,
+            ref_length::INT,
             ''::text AS network,
-            ''::text AS id_via,
-            t.class::text,
-            ''::text AS subclass,
-            0::INT AS layer,
-            0::INT AS level,
-            0::INT AS indoor,
-            t.zoom::smallint,
-            t.mtc25m::text,
-            t.colorcaixa::bigint,
-            t.rank::smallint,
-            0::integer AS codigeo
-            FROM icgc_data.transportation_name_line3_3857 t
-            WHERE zoom_level < 15 AND zoom_level >= t.zoom AND t.geom && bbox
-        UNION ALL
-        SELECT
-            t.icgc_id::bigint,
-            t.geom,
-            t.name::text,
-            t.name::text AS ref,
-            t.ref_length::INT,
-            ''::text AS network,
-            t.id_via::text,
-            t.class::text,
+            id_via::text,
+            class::text,
             ''::text AS subclass,
             0::int AS layer,
             0::int AS level,
@@ -128,8 +109,9 @@ FROM (
             0::bigint AS colorcaixa,
             0::smallint AS rank,
             0::integer AS codigeo
-            FROM icgc_data.z_13_18_transportation_contextmaps_name t
-            WHERE zoom_level >= 13 AND t.geom && bbox
+            FROM icgc_data.z_13_18_transportation_contextmaps_name 
+            WHERE zoom_level >= 13 
+                AND geom && bbox
       ) AS data_unordered
       ORDER BY zoom, rank
 ) AS icgc_data
@@ -156,7 +138,6 @@ SELECT NULL::bigint AS icgc_id,
        NULLIF(layer, 0) AS layer,
        "level",
        CASE WHEN indoor = TRUE THEN 1 END AS indoor,
-       NULL::int AS zoom,
        NULL::text AS mtc25m,
        NULL::bigint AS colorcaixa,
        NULL::int AS rank,

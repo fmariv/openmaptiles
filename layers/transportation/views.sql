@@ -102,3 +102,6 @@ CREATE MATERIALIZED VIEW transportation_gen_planet_z11 AS
 	FROM osm_transportation_merge_linestring_gen_z11 otml, icgc_data.catalunya c
 );
 CREATE INDEX IF NOT EXISTS transportation_gen_planet_z11_idx ON transportation_gen_planet_z11 USING gist (geometry);
+
+$$ LANGUAGE SQL STABLE
+                PARALLEL SAFE;

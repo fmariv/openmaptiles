@@ -1,6 +1,5 @@
 -- etldoc: layer_poi[shape=record fillcolor=lightpink, style="rounded,filled",
 -- etldoc:     label="layer_poi | <z12> z12 | <z13> z13 | <z14_> z14+" ] ;
-
 CREATE OR REPLACE FUNCTION layer_poi(bbox geometry, zoom_level integer, pixel_width numeric)
     RETURNS TABLE
             (
@@ -13,9 +12,9 @@ CREATE OR REPLACE FUNCTION layer_poi(bbox geometry, zoom_level integer, pixel_wi
                 categoria      text,
                 layer          text,
                 "rank"         int,
-                zoom           integer,
                 classicgc      text,
                 icgc_id_match  bigint
+                -- No s'inclou zoom per què dona error al generar les mbtiles
             )
 AS
 $$
@@ -30,13 +29,12 @@ SELECT
        categoria,
        layer,
        rank,
-       zoom,
        classicgc,
        icgc_id_match
 FROM icgc_data.poi
 WHERE geom && bbox
     AND zoom_level >= zoom
-    AND zoom > 0
+    AND zoom <> 0
 
 UNION ALL
 
@@ -63,7 +61,6 @@ FROM (
                 PARTITION BY LabelGrid(poi_union.geometry, 100 * pixel_width)
                 ORDER BY CASE WHEN name = '' THEN 2000 ELSE poi_class_rank(poi_class(subclass, mapping_key)) END ASC
                 )::int AS "rank",
-            NULL::int AS zoom,
             NULL::text AS classicgc,
             NULL::int AS icgc_id_match
     FROM (
@@ -71,7 +68,7 @@ FROM (
             -- etldoc: osm_poi_point ->  layer_poi:z13
             SELECT *
             FROM osm_poi_point_planet
-            AND geometry && bbox
+            WHERE geometry && bbox
             AND zoom_level BETWEEN 12 AND 13
             AND ((subclass = 'station' AND mapping_key = 'railway')
                 OR subclass IN ('halt', 'ferry_terminal'))
@@ -89,7 +86,7 @@ FROM (
             -- etldoc: osm_poi_polygon ->  layer_poi:z12
             -- etldoc: osm_poi_polygon ->  layer_poi:z13
             SELECT *
-            FROM osm_island_polygon_planet 
+            FROM osm_poi_polygon_planet 
             WHERE geometry && bbox
             AND zoom_level BETWEEN 12 AND 13
             AND ((subclass = 'station' AND mapping_key = 'railway')
@@ -99,7 +96,7 @@ FROM (
 
             -- etldoc: osm_poi_polygon ->  layer_poi:z14_
             SELECT *
-            FROM osm_poi_polygon
+            FROM osm_poi_polygon_planet
             WHERE geometry && bbox
             AND zoom_level >= 14
         ) AS poi_union

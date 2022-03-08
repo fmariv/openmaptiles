@@ -315,3 +315,5 @@ FROM osm_landcover_gen_z14 ol, icgc_data.catalunya c
 WHERE ST_Disjoint(c.geometry, ol.geometry)
     );
 CREATE INDEX IF NOT EXISTS osm_landcover_planet_z14_idx ON osm_landcover_planet_z14 USING gist (geometry);
+$$ LANGUAGE SQL STABLE
+                PARALLEL SAFE;

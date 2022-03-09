@@ -1,3 +1,5 @@
+
+
 -- etldoc: layer_place[shape=record fillcolor=lightpink, style="rounded,filled",
 -- etldoc:     label="layer_place | <z0_3> z0-3|<z4_7> z4-7|<z8_11> z8-11| <z12_14> z12-z14+" ] ;
 
@@ -90,8 +92,12 @@ FROM (
              -- etldoc: osm_island_point    -> layer_place:z12_14
              -- There is only one feature in the osm_island_point layer that is contained by Catalonia.
              -- So, perform the filter or delete the feature?
-             *
-         FROM osm_island_point_planet
+             osm_id * 10 AS osm_id,
+             geometry,
+             name,
+             'island' AS class,
+             7 AS "rank"
+         FROM osm_island_point oip
          WHERE zoom_level >= 12
             AND geometry && bbox
 
@@ -100,9 +106,14 @@ FROM (
          SELECT
              -- etldoc: osm_island_polygon  -> layer_place:z8_11
              -- etldoc: osm_island_polygon  -> layer_place:z12_14
-             *
-         FROM osm_island_polygon_planet 
-         WHERE geometry && bbox
+             osm_id * 10 AS osm_id,
+             oip.geometry,
+             oip.name,
+             'island' AS class,
+             island_rank(area) AS "rank"
+         FROM osm_island_polygon oip, icgc_data.catalunya c
+         WHERE oip.geometry && bbox
+           AND ST_Disjoint(c.geometry, oip.geometry)
            AND ((zoom_level = 8 AND island_rank(area) <= 3)
              OR (zoom_level = 9 AND island_rank(area) <= 4)
              OR (zoom_level >= 10))

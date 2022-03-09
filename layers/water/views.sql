@@ -309,7 +309,7 @@ UNION ALL
 -- etldoc:  osm_water_polygon_gen_z6 ->  water_z6
 SELECT w.geometry,
        water_class(waterway, water) AS class,
-       w.is_intermittent,
+       is_intermittent,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
@@ -334,7 +334,7 @@ UNION ALL
 -- etldoc:  osm_water_polygon_gen_z7 ->  water_z7
 SELECT w.geometry,
        water_class(waterway, water) AS class,
-       w.is_intermittent,
+       is_intermittent,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
@@ -359,7 +359,7 @@ UNION ALL
 -- etldoc:  osm_water_polygon_gen_z8 ->  water_z8
 SELECT w.geometry,
        water_class(waterway, water) AS class,
-       w.is_intermittent,
+       is_intermittent,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
@@ -384,7 +384,7 @@ UNION ALL
 -- etldoc:  osm_water_polygon_gen_z9 ->  water_z9
 SELECT w.geometry,
        water_class(waterway, water) AS class,
-       w.is_intermittent,
+       is_intermittent,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
@@ -409,7 +409,7 @@ UNION ALL
 -- etldoc:  osm_water_polygon_gen_z10 ->  water_z10
 SELECT w.geometry,
        water_class(waterway, water) AS class,
-       w.is_intermittent,
+       is_intermittent,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
@@ -434,7 +434,7 @@ UNION ALL
 -- etldoc:  osm_water_polygon_gen_z11 ->  water_z11
 SELECT w.geometry,
        water_class(waterway, water) AS class,
-       w.is_intermittent,
+       is_intermittent,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
@@ -459,9 +459,9 @@ UNION ALL
 -- etldoc:  osm_water_polygon ->  water_z12
 SELECT w.geometry,
        water_class(waterway, water) AS class,
-       w.is_intermittent,
-       w.is_bridge,
-       w.is_tunnel,
+       is_intermittent,
+       is_bridge,
+       is_tunnel,
        0::int AS icgc_id
 FROM osm_water_polygon w, icgc_data.catalunya c
 WHERE "natural" != 'bay'

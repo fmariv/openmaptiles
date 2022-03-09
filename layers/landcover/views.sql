@@ -231,7 +231,7 @@ FROM ne_10m_antarctic_ice_shelves_polys_gen_z6
 DROP MATERIALIZED VIEW IF EXISTS osm_landcover_planet_z7;
 CREATE MATERIALIZED VIEW osm_landcover_planet_z7 AS
 (
-SELECT l.geometry, 
+SELECT ol.geometry, 
        subclass,
        NULL::int as icgc_id
 FROM osm_landcover_gen_z7 ol, icgc_data.catalunya c
@@ -242,7 +242,7 @@ CREATE INDEX IF NOT EXISTS osm_landcover_planet_z7_idx ON osm_landcover_planet_z
 DROP MATERIALIZED VIEW IF EXISTS osm_landcover_planet_z8;
 CREATE MATERIALIZED VIEW osm_landcover_planet_z8 AS
 (
-SELECT l.geometry, 
+SELECT ol.geometry, 
        subclass,
        NULL::int as icgc_id
 FROM osm_landcover_gen_z8 ol, icgc_data.catalunya c
@@ -253,7 +253,7 @@ CREATE INDEX IF NOT EXISTS osm_landcover_planet_z8_idx ON osm_landcover_planet_z
 DROP MATERIALIZED VIEW IF EXISTS osm_landcover_planet_z9;
 CREATE MATERIALIZED VIEW osm_landcover_planet_z9 AS
 (
-SELECT l.geometry, 
+SELECT ol.geometry, 
        subclass,
        NULL::int as icgc_id
 FROM osm_landcover_gen_z9 ol, icgc_data.catalunya c
@@ -264,7 +264,7 @@ CREATE INDEX IF NOT EXISTS osm_landcover_planet_z9_idx ON osm_landcover_planet_z
 DROP MATERIALIZED VIEW IF EXISTS osm_landcover_planet_z10;
 CREATE MATERIALIZED VIEW osm_landcover_planet_z10 AS
 (
-SELECT l.geometry, 
+SELECT ol.geometry, 
        subclass,
        NULL::int as icgc_id
 FROM osm_landcover_gen_z10 ol, icgc_data.catalunya c
@@ -275,7 +275,7 @@ CREATE INDEX IF NOT EXISTS osm_landcover_planet_z10_idx ON osm_landcover_planet_
 DROP MATERIALIZED VIEW IF EXISTS osm_landcover_planet_z11;
 CREATE MATERIALIZED VIEW osm_landcover_planet_z11 AS
 (
-SELECT l.geometry, 
+SELECT ol.geometry, 
        subclass,
        NULL::int as icgc_id
 FROM osm_landcover_gen_z11 ol, icgc_data.catalunya c
@@ -286,7 +286,7 @@ CREATE INDEX IF NOT EXISTS osm_landcover_planet_z11_idx ON osm_landcover_planet_
 DROP MATERIALIZED VIEW IF EXISTS osm_landcover__planetz12;
 CREATE MATERIALIZED VIEW osm_landcover_planet_z12 AS
 (
-SELECT l.geometry, 
+SELECT ol.geometry, 
        subclass,
        NULL::int as icgc_id
 FROM osm_landcover_gen_z12 ol, icgc_data.catalunya c
@@ -297,7 +297,7 @@ CREATE INDEX IF NOT EXISTS osm_landcover_planet_z12_idx ON osm_landcover_planet_
 DROP MATERIALIZED VIEW IF EXISTS osm_landcover_planet_z13;
 CREATE MATERIALIZED VIEW osm_landcover_planet_z13 AS
 (
-SELECT l.geometry, 
+SELECT ol.geometry, 
        subclass,
        NULL::int as icgc_id
 FROM osm_landcover_gen_z13 ol, icgc_data.catalunya c
@@ -308,7 +308,7 @@ CREATE INDEX IF NOT EXISTS osm_landcover_planet_z13_idx ON osm_landcover_planet_
 DROP MATERIALIZED VIEW IF EXISTS osm_landcover_planet_z14;
 CREATE MATERIALIZED VIEW osm_landcover_planet_z14 AS
 (
-SELECT l.geometry, 
+SELECT ol.geometry, 
        subclass,
        NULL::int as icgc_id
 FROM osm_landcover_gen_z14 ol, icgc_data.catalunya c

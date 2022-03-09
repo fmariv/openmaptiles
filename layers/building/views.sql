@@ -43,13 +43,13 @@ SELECT
     nullif(obp.material, '') AS material,
     nullif(obp.colour, '') AS colour,
     obr.role IS NOT NULL AS hide_3d
-FROM osm_building_polygon obp
+FROM osm_building_polygon obp, icgc_data.catalunya c
          LEFT JOIN osm_building_relation obr ON
         obp.osm_id >= 0 AND
         obr.member = obp.osm_id AND
         obr.role = 'outline',
       icgc_data.catalunya c
 WHERE ST_GeometryType(obp.geometry) IN ('ST_Polygon', 'ST_MultiPolygon')
-   AND ST_Disjoint(c.geometry, obp.geometry)
+    AND ST_Disjoint(c.geometry, obp.geometry)
     );
 CREATE INDEX IF NOT EXISTS osm_all_buildings_idx ON osm_all_buildings USING gist (geometry);

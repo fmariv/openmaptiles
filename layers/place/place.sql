@@ -98,7 +98,7 @@ FROM (
              'island' AS class,
              7 AS "rank"
          FROM osm_island_point oip
-         WHERE zoom_level >= 12
+         WHERE zoom_level BETWEEN 12 AND 14
             AND geometry && bbox
 
          UNION ALL
@@ -116,7 +116,7 @@ FROM (
            AND ST_Disjoint(c.geometry, oip.geometry)
            AND ((zoom_level = 8 AND island_rank(area) <= 3)
              OR (zoom_level = 9 AND island_rank(area) <= 4)
-             OR (zoom_level >= 10))
+             OR (zoom_level BETWEEN 10 AND 14))
 
          UNION ALL
 

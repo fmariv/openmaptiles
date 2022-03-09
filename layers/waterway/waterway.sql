@@ -230,7 +230,7 @@ FROM (
          -- etldoc: waterway_z14 ->  layer_waterway:z14
          SELECT *
          FROM waterway_z14
-         WHERE zoom_level >= 14
+         WHERE zoom_level = 14
          UNION ALL
 
          -- icgc waterway_z_7_8_carto

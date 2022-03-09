@@ -405,7 +405,7 @@ FROM (
                 l.subclass,
                 0::int as icgc_id
          FROM osm_landcover_polygon l, icgc_data.catalunya c
-         WHERE zoom_level >= 14
+         WHERE zoom_level = 14
            AND ST_Disjoint(c.geometry, l.geometry)
            AND l.geometry && bbox
          UNION ALL

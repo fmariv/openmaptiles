@@ -747,7 +747,7 @@ FROM (
          SELECT *, NULL::int as icgc_id, NULL::int as minzoom, NULL::int as maxzoom
          FROM boundary_z13
          WHERE geometry && bbox
-           AND zoom_level >= 13
+           AND zoom_level BETWEEN 13 AND 14
          UNION ALL
 
          -- icgc boundary

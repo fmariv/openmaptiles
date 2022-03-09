@@ -572,7 +572,7 @@ FROM (
          -- etldoc: water_z12 ->  layer_water:z12
          SELECT *
          FROM water_z12
-         WHERE zoom_level >= 12
+         WHERE zoom_level BETWEEN 12 AND 14
          UNION ALL
         
          -- water_z_7_8_carto

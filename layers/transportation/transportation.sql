@@ -577,7 +577,7 @@ FROM
                     NULL AS surface,
                     z_order
             FROM osm_railway_linestring orl, icgc_data.catalunya c
-            WHERE zoom_level >= 13
+            WHERE zoom_level BETWEEN 13 AND 14
             AND railway IN ('rail', 'narrow_gauge', 'light_rail')
             AND service = ''
             AND ST_Disjoint(c.geometry, orl.geometry)
@@ -622,7 +622,7 @@ FROM
                     z_order
             FROM osm_highway_polygon ohp, icgc_data.catalunya c
                 -- We do not want underground pedestrian areas for now
-            WHERE zoom_level >= 13
+            WHERE zoom_level BETWEEN 13 AND 14
             AND (
                     man_made IN ('bridge', 'pier')
                     OR (is_area AND COALESCE(layer, 0) >= 0)

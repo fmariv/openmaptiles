@@ -121,7 +121,7 @@ FROM (
            AND (min_level IS NULL OR min_level < 1000)
            AND (height IS NULL OR height < 3000)
            AND (min_height IS NULL OR min_height < 3000)
-           AND zoom_level >= 14
+           AND zoom_level = 14
            AND geometry && bbox
          UNION ALL
 

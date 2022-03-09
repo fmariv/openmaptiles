@@ -72,7 +72,7 @@ FROM (
             OR (zoom_level = 9 AND (gridrank <= 8 OR "rank" IS NOT NULL))
             OR (zoom_level = 10 AND (gridrank <= 12 OR "rank" IS NOT NULL))
             OR (zoom_level BETWEEN 11 AND 12 AND (gridrank <= 14 OR "rank" IS NOT NULL))
-            OR (zoom_level >= 13)
+            OR (zoom_level BETWEEN 13 AND 14)
      ) AS city_all, icgc_data.catalunya c
      WHERE ST_Disjoint(c.geometry, city_all.geometry)
      ;

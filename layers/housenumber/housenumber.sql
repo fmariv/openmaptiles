@@ -18,7 +18,7 @@ SELECT
     ohp.geometry,
     ohp.housenumber
 FROM osm_housenumber_point ohp, icgc_data.catalunya c
-WHERE zoom_level >= 14
+WHERE zoom_level = 14
   AND ohp.geometry && bbox
   AND ST_Disjoint(c.geometry, ohp.geometry)
 

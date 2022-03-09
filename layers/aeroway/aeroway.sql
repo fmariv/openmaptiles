@@ -66,14 +66,14 @@ FROM (
          -- etldoc:  osm_aeroway_polygon -> layer_aeroway:z14_
          SELECT NULL::int AS icgc_id, oep.geometry, oep.aeroway, oep.ref, NULL::int as tipus
          FROM osm_aeroway_polygon oep, icgc_data.catalunya c
-         WHERE zoom_level >= 14
+         WHERE zoom_level = 14
             AND ST_Disjoint(c.geometry, oep.geometry)
          UNION ALL
          
          -- etldoc:  osm_aeroway_point -> layer_aeroway:z14_
          SELECT NULL::int AS icgc_id, oep.geometry, oep.aeroway, oep.ref, NULL::int as tipus
          FROM osm_aeroway_point oep, icgc_data.catalunya c
-         WHERE zoom_level >= 14
+         WHERE zoom_level = 14
             AND ST_Disjoint(c.geometry, oep.geometry)
          UNION ALL
 

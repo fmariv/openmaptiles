@@ -202,7 +202,7 @@ FROM (
                          boundary,
                          protection_title
                   FROM osm_park_polygon
-                  WHERE zoom_level >= 14
+                  WHERE zoom_level = 14
                     AND geometry && bbox
               ) AS park_polygon, icgc_data.catalunya c
          WHERE ST_Disjoint(c.geometry, park_polygon.geometry)
@@ -403,7 +403,7 @@ FROM (
                          protection_title,
                          area
                   FROM osm_park_polygon
-                  WHERE zoom_level >= 14
+                  WHERE zoom_level = 14
                     AND geometry_point && bbox
               ) AS park_point, icgc_data.catalunya c
          WHERE ST_Disjoint(c.geometry, park_point.geometry_point) 

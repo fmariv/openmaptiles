@@ -61,7 +61,7 @@ SELECT
 FROM osm_aerodrome_label_point oalp, icgc_data.catalunya c
 WHERE oalp.geometry && bbox
   AND ST_Disjoint(c.geometry, oalp.geometry)
-  AND zoom_level >= 10
+  AND zoom_level BETWEEN 10 AND 14
 
 UNION ALL
 

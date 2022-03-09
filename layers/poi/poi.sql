@@ -79,7 +79,7 @@ FROM (
             SELECT *
             FROM osm_poi_point_planet 
             WHERE geometry && bbox
-            AND zoom_level >= 14
+            AND zoom_level = 14
 
             UNION ALL
 
@@ -98,7 +98,7 @@ FROM (
             SELECT *
             FROM osm_poi_polygon_planet
             WHERE geometry && bbox
-            AND zoom_level >= 14
+            AND zoom_level = 14
         ) AS poi_union
     ORDER BY "rank"
     ) AS planet_poi;

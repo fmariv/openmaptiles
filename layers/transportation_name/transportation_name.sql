@@ -249,7 +249,7 @@ FROM (
                 "level",
                 indoor
          FROM osm_transportation_name_linestring
-         WHERE zoom_level >= 14
+         WHERE zoom_level = 14
          UNION ALL
 
          -- etldoc: osm_highway_point ->  layer_transportation_name:z10
@@ -276,7 +276,7 @@ FROM (
                 NULL::int AS level,
                 NULL::boolean AS indoor
          FROM osm_highway_point p
-         WHERE highway = 'motorway_junction' AND zoom_level >= 10
+         WHERE highway = 'motorway_junction' AND zoom_level BETWEEN 10 AND 14
      ) AS planet_data, icgc_data.catalunya c
 WHERE planet_data.geometry && bbox
     AND ST_Disjoint(c.geometry, planet_data.geometry)

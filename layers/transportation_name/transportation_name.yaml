@@ -87,7 +87,6 @@ layer:
       values:
       - 1
     id_via: Pendent d'informar.
-    zoom: Pendent d'informar.
     mtc25m: Pendent d'informar.
     colorcaixa: Pendent d'informar.
     rank: Pendent d'informar.
@@ -96,7 +95,7 @@ layer:
   datasource:
     geometry_field: geometry
     srid: 900913
-    query: (SELECT geometry, name, ref, ref_length, network::text, id_via, class::text, subclass, layer, level, indoor, zoom, mtc25m, colorcaixa, rank, codigeo, z_order  FROM layer_transportation_name(!bbox!, z(!scale_denominator!))) AS t
+    query: (SELECT geometry, name, ref, ref_length, network::text, id_via, class::text, subclass, layer, level, indoor, mtc25m, colorcaixa, rank, codigeo, z_order  FROM layer_transportation_name(!bbox!, z(!scale_denominator!))) AS t
 schema:
   - ./highway_classification.sql
   - ./update_transportation_name.sql

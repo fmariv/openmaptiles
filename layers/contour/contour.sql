@@ -19,12 +19,12 @@ WHERE geom && bbox
 
 UNION ALL 
 
-SELECT objectid,
+SELECT c.objectid,
        ST_Intersection(c.geometry, cat.geometry) as geometry,
        NULL::text AS class,
        NULL AS height
 FROM icgc_data.corbes_mtc250M c, icgc_data.catalunya cat
-WHERE geom && bbox
+WHERE c.geometry && bbox
     AND zoom_level BETWEEN 7 AND 13 
 ;
 $$ LANGUAGE SQL STABLE

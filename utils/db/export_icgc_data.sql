@@ -78,7 +78,7 @@ DROP TABLE public.housenumber;
 SELECT *
 INTO icgc_data.landcover_bt5m
 FROM landcover_bt5m;
-CREATE INDEX landcover_bt5m_geom_1608554362525 ON icgc_data.landcover_bt5m USING gist (geom);
+CREATE INDEX landcover_bt5m_geom ON icgc_data.landcover_bt5m USING gist (geom);
 DROP TABLE public.landcover_bt5m;
 
 -- landcover_ini
@@ -270,7 +270,7 @@ DROP TABLE public.z_11_13_transportation_contextmaps;
 SELECT *
 INTO icgc_data.z_13_18_transportation_contextmaps
 FROM z_13_18_transportation_contextmaps;
-CREATE INDEX z_13_18_transportation_contextmaps_geom ON icgc_data.z_13_18_transportation_contextmaps USING gist (geom);
+CREATE INDEX idx_z_13_18_transportation_contextmaps_geom ON icgc_data.z_13_18_transportation_contextmaps USING gist (geom);
 DROP TABLE public.z_13_18_transportation_contextmaps;
 
 -- z_13_18_transportation_contextmaps_name
@@ -300,13 +300,3 @@ INTO icgc_data.z_9_10mtc_poblament_poligon
 FROM z_9_10mtc_poblament_poligon;
 CREATE INDEX idx_z_9_10mtc_poblament_poligon_geom ON icgc_data.z_9_10mtc_poblament_poligon USING gist (geom);
 DROP TABLE public.z_9_10mtc_poblament_poligon;
-
---
--- Add PK when needed
---
-ALTER TABLE icgc_data.ascensors ADD CONSTRAINT ascensors_pk PRIMARY KEY (icgc_id);
-ALTER TABLE icgc_data.contour ADD CONSTRAINT contour_pk PRIMARY KEY (icgc_id);
-ALTER TABLE icgc_data.landcover_bt5m ADD CONSTRAINT landcover_bt5m_pk PRIMARY KEY (icgc_id);
-ALTER TABLE icgc_data.z_13_18_transportation_contextmaps ADD CONSTRAINT z_13_18_transportation_contextmaps_pk PRIMARY KEY (icgc_id);
-ALTER TABLE icgc_data.z_13_18_transportation_contextmaps_name ADD CONSTRAINT z_13_18_transportation_contextmaps_name_pk PRIMARY KEY (icgc_id);
-ALTER TABLE icgc_data.z_9_10mtc_poblament_poligon ADD CONSTRAINT z_9_10mtc_poblament_poligon_pk PRIMARY KEY (icgc_id);

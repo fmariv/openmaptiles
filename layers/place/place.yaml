@@ -65,12 +65,6 @@ schema:
   - ./capital.sql
   - ./city.sql
   - ./island_rank.sql
-  - ./update_continent_point.sql
-  - ./update_country_point.sql
-  - ./update_island_polygon.sql
-  - ./update_island_point.sql
-  - ./update_state_point.sql
-  - ./update_city_point.sql
   - ./place.sql
 datasources:
   - type: imposm3

@@ -79,7 +79,6 @@ layer:
     geometry_field: geometry
     query: (SELECT geometry, class, subclass, icgc_id FROM layer_landcover(!bbox!, z(!scale_denominator!))) AS t
 schema:
-  - ./generalized.sql
   - ./landcover.sql
 datasources:
   - type: imposm3

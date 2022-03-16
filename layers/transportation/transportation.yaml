@@ -170,8 +170,6 @@ schema:
   - ./network_type.sql
   - ./class.sql
   - ./highway_name.sql
-  - ./update_route_member.sql
-  - ./update_transportation_merge.sql
   - ./transportation.sql
 datasources:
   - type: imposm3

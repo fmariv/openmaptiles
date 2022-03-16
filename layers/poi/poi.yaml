@@ -142,8 +142,6 @@ schema:
   - ./public_transport_stop_type.sql
   - ./class.sql
   - ./poi_stop_agg.sql
-  - ./update_poi_polygon.sql
-  - ./update_poi_point.sql
   - ./poi.sql
 datasources:
   - type: imposm3

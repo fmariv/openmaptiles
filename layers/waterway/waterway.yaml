@@ -34,8 +34,6 @@ layer:
     geometry_field: geometry
     query: (SELECT geometry, name, class, icgc_id, entorn FROM layer_waterway(!bbox!, z(!scale_denominator!))) AS t
 schema:
-  - ./update_waterway_linestring.sql
-  - ./update_important_waterway.sql
   - ./waterway.sql
 datasources:
   - type: imposm3

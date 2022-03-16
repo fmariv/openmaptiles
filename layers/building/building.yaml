@@ -24,7 +24,6 @@ layer:
     building:
         Pendent d'informar.
 schema:
-  - ./update_building.sql
   - ./building.sql
 datasources:
   - type: imposm3

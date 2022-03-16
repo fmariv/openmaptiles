@@ -46,7 +46,6 @@ layer:
     srid: 900913
     query: (SELECT id, geometry, name, name_en, name_de, {name_languages}, class, iata, icao, ele, ele_ft, icgc_id FROM layer_aerodrome_label(!bbox!, z(!scale_denominator!))) AS t
 schema:
-  - ./update_aerodrome_label_point.sql
   - ./aerodrome_label.sql
 datasources:
   - type: imposm3

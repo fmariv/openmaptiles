@@ -84,7 +84,8 @@ services:
       MAX_ZOOM: ${MAX_ZOOM}
       # Control tilelive-copy threads
       COPY_CONCURRENCY: ${COPY_CONCURRENCY}
-      #
+      # Control uv_threadpol_size
+      UV_THREADPOOL_SIZE: ${UV_THREADPOOL_SIZE}
 
   postserve:
     image: "openmaptiles/openmaptiles-tools:${TOOLS_VERSION}"

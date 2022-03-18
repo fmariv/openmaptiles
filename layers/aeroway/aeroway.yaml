@@ -31,6 +31,3 @@ layer:
     query: (SELECT icgc_id, geometry, ref, class, tipus FROM layer_aeroway(!bbox!, z(!scale_denominator!))) AS t
 schema:
   - ./aeroway.sql
-datasources:
-  - type: imposm3
-    mapping_file: ./mapping.yaml

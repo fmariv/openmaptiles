@@ -140,6 +140,3 @@ layer:
     query: (SELECT osm_id, geometry, name, class, subclass, layer, rank, icgc_id, categoria, classicgc, icgc_id_match FROM layer_poi(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
 schema:
   - ./poi.sql
-datasources:
-  - type: imposm3
-    mapping_file: ./mapping.yaml

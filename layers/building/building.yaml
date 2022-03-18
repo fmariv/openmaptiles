@@ -25,6 +25,3 @@ layer:
         Pendent d'informar.
 schema:
   - ./building.sql
-datasources:
-  - type: imposm3
-    mapping_file: ./mapping.yaml

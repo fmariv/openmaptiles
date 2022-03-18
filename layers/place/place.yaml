@@ -1,10 +1,5 @@
 layer:
   id: "place"
-  requires:
-    tables:
-      - ne_10m_admin_1_states_provinces
-      - ne_10m_admin_0_countries
-      - ne_10m_admin_1_states_provinces
   description: |
       The place layer consists out of [countries](http://wiki.openstreetmap.org/wiki/Tag:place%3Dcountry),
       [states](http://wiki.openstreetmap.org/wiki/Tag:place%3Dstate) and [cities](http://wiki.openstreetmap.org/wiki/Key:place).
@@ -61,10 +56,6 @@ layer:
     key_field_as_attribute: no
     query: (SELECT osm_id, geometry, name, class, rank, icgc_id, codigeo, icgc_id_match FROM layer_place(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
 schema:
-  - ./types.sql
-  - ./capital.sql
-  - ./city.sql
-  - ./island_rank.sql
   - ./place.sql
 datasources:
   - type: imposm3

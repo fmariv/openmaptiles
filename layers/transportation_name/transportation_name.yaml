@@ -97,7 +97,6 @@ layer:
     srid: 900913
     query: (SELECT geometry, name, ref, ref_length, network::text, id_via, class::text, subclass, layer, level, indoor, mtc25m, colorcaixa, rank, codigeo, z_order  FROM layer_transportation_name(!bbox!, z(!scale_denominator!))) AS t
 schema:
-  - ./highway_classification.sql
   - ./transportation_name.sql
 datasources:
   - type: imposm3

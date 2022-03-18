@@ -139,9 +139,6 @@ layer:
     srid: 900913
     query: (SELECT osm_id, geometry, name, class, subclass, layer, rank, icgc_id, categoria, classicgc, icgc_id_match FROM layer_poi(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
 schema:
-  - ./public_transport_stop_type.sql
-  - ./class.sql
-  - ./poi_stop_agg.sql
   - ./poi.sql
 datasources:
   - type: imposm3

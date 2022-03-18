@@ -1,8 +1,5 @@
 layer:
   id: "transportation"
-  requires:
-    tables:
-      - ne_10m_admin_0_countries
   description: |
       **transportation** contains roads, railways, aerial ways, and shipping
        lines.
@@ -167,9 +164,6 @@ layer:
     srid: 900913
     query: (SELECT geometry, class, subclass, oneway, ramp, brunnel, service, layer, level, indoor, icgc_id, d_categori, codi_via, observacio FROM layer_transportation(!bbox!, z(!scale_denominator!))) AS t
 schema:
-  - ./network_type.sql
-  - ./class.sql
-  - ./highway_name.sql
   - ./transportation.sql
 datasources:
   - type: imposm3

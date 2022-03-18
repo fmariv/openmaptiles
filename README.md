@@ -92,8 +92,8 @@ Aquest pas utilitza [Wikidata Query Service](https://query.wikidata.org) per des
 sudo make import-wikidata
 ```
 
-### Treballar les layers
-Cada vegada que modifiqueu el fitxer `mapping.yaml` d'una capa o afegiu noves etiquetes OSM, executeu `make` i `make import-osm` per recrear taules (potencialment amb dades addicionals) a PostgreSQL. Amb les noves dades, també hi pot haver nous registres de Wikidata.
+### Treballar les capes
+Cada vegada que es modifiqui el fitxer `mapping.yaml` d'una capa o s'afegeixin noves etiquetes OSM, s'ha de'executar `make` i `make import-osm` per recrear taules (potencialment amb dades addicionals) a PostgreSQL. Amb les noves dades, també hi pot haver nous registres de Wikidata.
 ```
 sudo make clean
 sudo make
@@ -101,7 +101,7 @@ sudo  make import-osm
 sudo  make import-wikidata
 ```
 
-Cada vegada que modifiqueu el codi SQL de la capa, executeu `sudo  make` i `sudo make import-sql`.
+Cada vegada que es modifiqui el codi SQL de la capa, s'ha d'executar `sudo  make` i `sudo make import-sql`.
 
 ```
 sudo make clean
@@ -116,21 +116,31 @@ sudo make generate-bbox-file  # generar bbox - no és necessari per tot el plane
 sudo make generate-tiles-pg   # generar tesseles
 ```
 
+### Afegir noves capes
+S'ha creat un petit script de Python que permet afegir noves capes a l'esquema OpenMapTiles de manera molt fàcil. Simplement s'haurà d'executar `add_layer.py "nom_capa"` i automàticament es crearà una nova carpeta al directori `layers` amb el nom de la nova capa i dos arxius definits a continuació.
+
+```
+arxiu SQL    # és on es defineixen les comandes SQL a executar, per exemple per generar vistes o per definir la funció que generarà les tesseles
+arxiu yaml   # és on es defineixen els atributs de la capa, els arxius SQL necessaris per generar la capa i la query SQL que es cridarà en el moment de generar les tesseles
+```
+
+Aquest arxius, però, s'han d'editar manualment a conveniència.
+
 ### Workflow per generar les tesseles
-Si aneu de dalt a baix podeu estar segur que generarà un fitxer .mbtiles a partir d'un fitxer .osm.pbf
+Si aneu de dalt a baix podeu estar segurs que es generarà un fitxer .mbtiles a partir d'un fitxer .osm.pbf
 ```
 sudo make clean                  # clean / remove existing build files
 sudo make                        # generate build files
 sudo make start-db               # start up the database container.
 sudo make import-data            # Import external data from OpenStreetMapData, Natural Earth and OpenStreetMap Lake Labels.
-sudo make download area=spain  # download albania .osm.pbf file -- can be skipped if a .osm.pbf file already existing
+sudo make download area=spain    # download spain .osm.pbf file -- can be skipped if a .osm.pbf file already existing
 sudo make import-osm             # import data into postgres
 sudo make import-wikidata        # import Wikidata
 sudo make import-sql             # create / import sql funtions 
 sudo make generate-bbox-file     # compute data bbox -- not needed for the whole planet
 sudo make generate-tiles-pg      # generate tiles
 ```
-En lloc de cridar `make download area=spain`, podeu afegir un fitxer .osm.pbf a la carpeta `data` `openmaptiles/data/la_teva_area.osm.pbf`
+En lloc de cridar `make download area=spain`, es pot afegir un fitxer .osm.pbf a la carpeta `data` `openmaptiles/data/la_teva_area.osm.pbf`
 
 
 ## Llicènsia
@@ -145,4 +155,4 @@ el crèdit hauria d'aparèixer a la cantonada del mapa. Per exemple:
 [© OpenMapTiles](https://openmaptiles.org/) [© Col·laboradors d'OpenStreetMap](https://www.openstreetmap.org/copyright)
 
 Per als mapes impresos i estàtics s'ha de fer una atribució similar en un textual
-descripció a prop de la imatge, de la mateixa manera que si cites una fotografia.
+descripció a prop de la imatge, de la mateixa manera que si es cita una fotografia.

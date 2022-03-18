@@ -1,50 +1,22 @@
-## OpenMapTiles [![Build Status](https://github.com/openmaptiles/openmaptiles/workflows/OMT_CI/badge.svg?branch=master)](https://github.com/openmaptiles/openmaptiles/actions)
+## Contextmaps & OpenMapTiles [![Build Status](https://github.com/openmaptiles/openmaptiles/workflows/OMT_CI/badge.svg?branch=master)](https://github.com/openmaptiles/openmaptiles/actions)
 
-OpenMapTiles is an extensible and open tile schema based on the OpenStreetMap. This project is used to generate vector tiles for online zoomable maps. OpenMapTiles is about creating a beautiful basemaps with general layers containing topographic information. More information [openmaptiles.org](https://openmaptiles.org/) and [maptiler.com/data/](https://www.maptiler.com/data/).
+ContextMaps és el nou referent de cartografia topogràfica transversal de l’Institut Cartogràfic i Geològic de Catalunya
 
-We encourage you to collaborate, reuse and adapt existing layers, or add your own layers. You may use our approach for your own vector tile project. Feel free to fork the repo and experiment. The repository is built on top of the [openmaptiles/openmaptiles-tools](https://github.com/openmaptiles/openmaptiles-tools) to simplify vector tile creation.
+ContextMaps està basat en tecnologia VectorTiles (vector/imatge), desenvolupada originalment per l’empresa Mapbox, d’accés ràpid i àgil, amb nou contingut geogràfic, disposa de serveis i funcionalitats pròpies que permeten generar, personalitzar i publicar cartografia de manera flexible. Alhora, també visualitzar i analitzar de forma contínua la informació i el coneixement geogràfic de Catalunya amb la de la resta del món, amb la informació OpenStreetMap, seguint l’esquema OpenMapTiles.
 
-Please keep in mind that OpenMapTiles schema should display general topographic content. If creating a new layer or expanding an existing layer with a specific theme, please create a fork and invite other community members to cooperate on your topic. OpenMapTiles schema is used in many projects all over the world and the size of the final vector tiles needs to be considered in any update.
+OpenMapTiles és un esquema de tesseles extensible i obert basat en OpenStreetMap. Aquest projecte s'utilitza per generar tesseles vectorials per a mapes en línia. OpenMapTiles permet crear mapes base amb capes generals que contenen informació topogràfica. Més informació [openmaptiles.org](https://openmaptiles.org/) i [maptiler.com/data/](https://www.maptiler.com/data/).
 
-- :link: Schema https://openmaptiles.org/schema
+L'esquema OpenMapTiles s'utilitza en molts projectes d'arreu del món i la mida de les fitxes vectorials finals s'ha de tenir en compte en qualsevol actualització.
+
+- :link: Esquema https://openmaptiles.org/schema
 - :link: Docs https://openmaptiles.org/docs
-- :link: Data for download: https://www.maptiler.com/data/
-- :link: Hosting https://www.maptiler.com/cloud/
-- :link: Create own layer https://github.com/openmaptiles/openmaptiles-skiing
-- :link: Discuss at the #openmaptiles channel at [OSM Slack](https://osmus-slack.herokuapp.com/)
+- :link: Dades: https://www.maptiler.com/data/
+- :link: Crear capa própia https://github.com/openmaptiles/openmaptiles-skiing
 
-## Styles
+## Esquema
 
-You can start from several GL styles supporting the OpenMapTiles vector schema.
-
-:link: [Learn how to create Mapbox GL styles with Maputnik and OpenMapTiles](http://openmaptiles.org/docs/style/maputnik/).
-
-
-- [OSM Bright](https://github.com/openmaptiles/osm-bright-gl-style)
-- [Positron](https://github.com/openmaptiles/positron-gl-style)
-- [Dark Matter](https://github.com/openmaptiles/dark-matter-gl-style)
-- [Klokantech Basic](https://github.com/openmaptiles/klokantech-basic-gl-style)
-- [Klokantech 3D](https://github.com/openmaptiles/klokantech-3d-gl-style)
-- [Fiord Color](https://github.com/openmaptiles/fiord-color-gl-style)
-- [Toner](https://github.com/openmaptiles/toner-gl-style)
-- [OSM Liberty](https://github.com/maputnik/osm-liberty)
-
-We also ported over our favorite old raster styles (TM2).
-
-:link: [Learn how to create TM2 styles with Mapbox Studio Classic and OpenMapTiles](http://openmaptiles.org/docs/style/mapbox-studio-classic/).
-
-- [Light](https://github.com/openmaptiles/mapbox-studio-light.tm2/)
-- [Dark](https://github.com/openmaptiles/mapbox-studio-dark.tm2/)
-- [OSM Bright](https://github.com/openmaptiles/mapbox-studio-osm-bright.tm2/)
-- [Pencil](https://github.com/openmaptiles/mapbox-studio-pencil.tm2/)
-- [Woodcut](https://github.com/openmaptiles/mapbox-studio-woodcut.tm2/)
-- [Pirates](https://github.com/openmaptiles/mapbox-studio-pirates.tm2/)
-- [Wheatpaste](https://github.com/openmaptiles/mapbox-studio-wheatpaste.tm2/)
-
-## Schema
-
-OpenMapTiles consists out of a collection of documented and self contained layers you can modify and adapt.
-Together the layers make up the OpenMapTiles tileset.
+OpenMapTiles consisteix en una col·lecció de capes documentades i autònomes que es poden modificar i adaptar.
+Les capes juntes formen el conjunt de tesseles OpenMapTiles.
 
 :link: [Study the vector tile schema](http://openmaptiles.org/schema)
 
@@ -64,121 +36,113 @@ Together the layers make up the OpenMapTiles tileset.
 - [water_name](https://openmaptiles.org/schema/#water_name)
 - [waterway](https://openmaptiles.org/schema/#waterway)
 
-## Develop
-
-To work on OpenMapTiles you need Docker.
-
-- Install [Docker](https://docs.docker.com/engine/installation/). Minimum version is 1.12.3+.
-- Install [Docker Compose](https://docs.docker.com/compose/install/). Minimum version is 1.7.1+.
-
-### Microsoft Windows Subsystem for Linux (WSL)
-
-Please use Linux `/home/user/` directory, not Windows e.g. `/mnt/c` directory.
-
 ### Build
 
-Build the tileset.
+Construir el tileset.
 
 ```bash
-git clone https://github.com/openmaptiles/openmaptiles.git
+git clone git@autogitlab.icgc.local:f.martin/openmaptiles.git
 cd openmaptiles
-# Build the imposm mapping, the tm2source project and collect all SQL scripts
-make
+# Construeix el mapeig imposm, el projecte tm2source i recull tot l'SQL
+sudo make
 ```
 
-You can execute the following manual steps (for better understanding)
-or use the provided `quickstart.sh` script to automatically download and import given area. If area is not given, albania will be imported.
+Podeu executar els passos manuals següents (per a una millor comprensió) o utilitzar l'script `quickstart.sh` proporcionat per descarregar i importar automàticament l'àrea determinada. Si no es dóna l'àrea, s'importarà Albània.
 
 ```
 ./quickstart.sh <area>
 ```
 
-### Prepare the Database
+### Preparar la base de dades
 
-Now start up the database container.
+La base de dades es construeix a un contenidor de Docker amb la imatge de [PostGIS](https://hub.docker.com/r/openmaptiles/postgis) d'Openmaptiles. 
+
+Per aixecar la base de dades.
 
 ```bash
-make start-db
+sudo make start-db
 ```
 
-Import external data from [OpenStreetMapData](http://osmdata.openstreetmap.de/), [Natural Earth](http://www.naturalearthdata.com/) and [OpenStreetMap Lake Labels](https://github.com/lukasmartinelli/osm-lakelines). Natural Earth country boundaries are used in the few lowest zoom levels.
+El port al qual ens podem conectar a la base de dades pot canviar cada cop que s'aixequi la base, per la qual cosa es recomana fixar-lo mitjançant, per exemple, [Portainer](https://www.portainer.io/).
+
+Un cop aixecada la base de dades, importem dades externes des d'[OpenStreetMapData](http://osmdata.openstreetmap.de/), [Natural Earth](http://www.naturalearthdata.com/) i [Etiquetes OpenStreetMap Lake](https://github.com/lukasmartinelli/osm-lakelines). Els límits naturals dels països de la Terra s'utilitzen en els nivells de zoom més baixos.
 
 ```bash
 make import-data
 ```
 
-Download OpenStreetMap data extracts from any source like [Geofabrik](http://download.geofabrik.de/), and store the PBF file in the `./data` directory. To use a specific download source, use `download-geofabrik`, `download-bbbike`, or `download-osmfr`, or use `download` to make it auto-pick the area. You can use `area=planet` for the entire OSM dataset (very large).  Note that if you have more than one `data/*.osm.pbf` file, every `make` command will always require `area=...` parameter (or you can just `export area=...` first).
+Ara, s'han de descarregar les dades d'OSM que siguin necessàries. Es poden baixar extractes de dades d'OpenStreetMap de qualsevol font com [Geofabrik](http://download.geofabrik.de/) i emmagatzemar el fitxer PBF al directori `./data`. Per utilitzar una font de descàrrega específica, utilitzeu `download-geofabrik`, `download-bbbike` o `download-osmfr`, o utilitzeu `download` per fer que escolleixi automàticament l'àrea. Podeu utilitzar `area=planet` per a tot el conjunt de dades OSM (molt gran). Tingueu en compte que si teniu més d'un fitxer `data/*.osm.pbf`, cada comanda `make` sempre requerirà el paràmetre `area=...` (o podeu simplement `export area=...` primer) .
 
 ```bash
-make download area=albania
+sudo make download area=spain
 ```
 
-[Import OpenStreetMap data](https://github.com/openmaptiles/openmaptiles-tools/tree/master/docker/import-osm) with the mapping rules from
-`build/mapping.yaml` (which has been created by `make`). Run after any change in layers definition.
+Ara s'han d'importar les [dades d'OpenStreetMap](https://github.com/openmaptiles/openmaptiles-tools/tree/master/docker/import-osm) amb les regles de mapeig de
+`build/mapping.yaml` (que ha estat creat per `make`). Executar després de qualsevol canvi en la definició de capes.
 
 ```bash
-make import-osm
+sudo make import-osm
 ```
 
-Import labels from Wikidata. If an OSM feature has [Key:wikidata](https://wiki.openstreetmap.org/wiki/Key:wikidata), OpenMapTiles check corresponding item in Wikidata and use its [labels](https://www.wikidata.org/wiki/Help:Label) for languages listed in [openmaptiles.yaml](openmaptiles.yaml). So the generated vector tiles includes multi-languages in name field.
+Un cop importades les dades d'OSM, s'han d'importar les etiquetes de Wikidata. Si una característica OSM té [Key:wikidata](https://wiki.openstreetmap.org/wiki/Key:wikidata), es comprovarà l'element corresponent a Wikidata i s'utilitzaran les seves [etiquetes](https://www.wikidata.org/wiki/Help:Label) pels idiomes que figuren a [openmaptiles.yaml](openmaptiles.yaml). Així, les tesseles vectorials generades inclouran diversos idiomes al camp de nom.
 
-This step uses [Wikidata Query Service](https://query.wikidata.org) to download just the Wikidata IDs that already exist in the database.
+Aquest pas utilitza [Wikidata Query Service](https://query.wikidata.org) per descarregar només els ID de Wikidata que ja existeixen a la base de dades.
 
 ```bash
-make import-wikidata
+sudo make import-wikidata
 ```
 
-### Work on Layers
-Each time you modify a layer's `mapping.yaml` file or add new OSM tags, run `make` and `make import-osm` to recreate tables (potentially with additional data) in PostgreSQL. With the new data, there can be new Wikidata records also.
+### Treballar les layers
+Cada vegada que modifiqueu el fitxer `mapping.yaml` d'una capa o afegiu noves etiquetes OSM, executeu `make` i `make import-osm` per recrear taules (potencialment amb dades addicionals) a PostgreSQL. Amb les noves dades, també hi pot haver nous registres de Wikidata.
 ```
-make clean
-make
-make import-osm
-make import-wikidata
-```
-
-Each time you modify layer SQL code run `make` and `make import-sql`.
-
-```
-make clean
-make
-make import-sql
+sudo make clean
+sudo make
+sudo  make import-osm
+sudo  make import-wikidata
 ```
 
-Now you are ready to **generate the vector tiles**. By default, `./.env` specifies the entire planet BBOX for zooms 0-7, but running `generate-bbox-file` will analyze the data file and set the `BBOX` param to limit tile generation.
+Cada vegada que modifiqueu el codi SQL de la capa, executeu `sudo  make` i `sudo make import-sql`.
 
 ```
-make generate-bbox-file  # compute data bbox -- not needed for the whole planet
-make generate-tiles-pg   # generate tiles
+sudo make clean
+sudo make
+sudo make import-sql
 ```
 
-### Workflow to generate tiles
-If you go from top to bottom you can be sure that it will generate a .mbtiles file out of a .osm.pbf file
+Ara ja està tot preparat per **generar les tesseles vectorials**. Per defecte, `./.env` especifica tot el planeta BBOX per als zooms 0-7, però executant `generate-bbox-file` analitzarà el fitxer de dades i establirà el paràmetre `BBOX` per limitar la generació de tesseles.
+
 ```
-make clean                  # clean / remove existing build files
-make                        # generate build files
-make start-db               # start up the database container.
-make import-data            # Import external data from OpenStreetMapData, Natural Earth and OpenStreetMap Lake Labels.
-make download area=albania  # download albania .osm.pbf file -- can be skipped if a .osm.pbf file already existing
-make import-osm             # import data into postgres
-make import-wikidata        # import Wikidata
-make import-sql             # create / import sql funtions 
-make generate-bbox-file     # compute data bbox -- not needed for the whole planet
-make generate-tiles-pg      # generate tiles
+sudo make generate-bbox-file  # generar bbox - no és necessari per tot el planeta
+sudo make generate-tiles-pg   # generar tesseles
 ```
-Instead of calling `make download area=albania` you can add a .osm.pbf file in the `data` folder `openmaptiles/data/your_area_file.osm.pbf`
+
+### Workflow per generar les tesseles
+Si aneu de dalt a baix podeu estar segur que generarà un fitxer .mbtiles a partir d'un fitxer .osm.pbf
+```
+sudo make clean                  # clean / remove existing build files
+sudo make                        # generate build files
+sudo make start-db               # start up the database container.
+sudo make import-data            # Import external data from OpenStreetMapData, Natural Earth and OpenStreetMap Lake Labels.
+sudo make download area=spain  # download albania .osm.pbf file -- can be skipped if a .osm.pbf file already existing
+sudo make import-osm             # import data into postgres
+sudo make import-wikidata        # import Wikidata
+sudo make import-sql             # create / import sql funtions 
+sudo make generate-bbox-file     # compute data bbox -- not needed for the whole planet
+sudo make generate-tiles-pg      # generate tiles
+```
+En lloc de cridar `make download area=spain`, podeu afegir un fitxer .osm.pbf a la carpeta `data` `openmaptiles/data/la_teva_area.osm.pbf`
 
 
-## License
+## Llicènsia
 
-All code in this repository is under the [BSD license](./LICENSE.md) and the cartography decisions encoded in the schema and SQL are licensed under [CC-BY](./LICENSE.md).
+Tot el codi d'aquest repositori es troba sota la [llicència BSD](./LICENSE.md) i les decisions de cartografia codificades a l'esquema i SQL tenen llicència [CC-BY](./LICENSE.md).
 
-Products or services using maps derived from OpenMapTiles schema need to visibly credit "OpenMapTiles.org" or reference "OpenMapTiles" with a link to https://openmaptiles.org/. Exceptions to attribution requirement can be granted on request.
+Els productes o serveis que utilitzen mapes derivats de l'esquema OpenMapTiles han d'acreditar visiblement "OpenMapTiles.org" o fer referència a "OpenMapTiles" amb un enllaç a https://openmaptiles.org/. Es poden concedir excepcions al requisit d'atribució a petició.
 
-For a browsable electronic map based on OpenMapTiles and OpenStreetMap data, the
-credit should appear in the corner of the map. For example:
+Per a un mapa electrònic navegable basat en dades d'OpenMapTiles i OpenStreetMap, el
+el crèdit hauria d'aparèixer a la cantonada del mapa. Per exemple:
 
-[© OpenMapTiles](https://openmaptiles.org/) [© OpenStreetMap contributors](https://www.openstreetmap.org/copyright)
+[© OpenMapTiles](https://openmaptiles.org/) [© Col·laboradors d'OpenStreetMap](https://www.openstreetmap.org/copyright)
 
-For printed and static maps a similar attribution should be made in a textual
-description near the image, in the same fashion as if you cite a photograph.
+Per als mapes impresos i estàtics s'ha de fer una atribució similar en un textual
+descripció a prop de la imatge, de la mateixa manera que si cites una fotografia.

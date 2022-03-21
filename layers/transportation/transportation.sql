@@ -81,7 +81,7 @@ FROM (
         WHERE zoom_level BETWEEN 6 AND 8
         UNION ALL
 
-        -- z_9_12_transportation_contextmaps
+        -- transportation_bdu - xarxa catalogada
         SELECT
             NULL::bigint AS osm_id,
             icgc_id,
@@ -103,11 +103,12 @@ FROM (
             d_categori,
             codi_via,
             observacio
-        FROM icgc_data.z_9_12_transportation_contextmaps
+        FROM icgc_test.transportation_bdu
+            AND class IN ('motorway', 'primary', 'tertiary', 'secondary', 'minor')
         WHERE zoom_level BETWEEN 9 AND 12
         UNION ALL
 
-        -- z_13_18_transportation_contextmaps
+        -- transportation_bdu
         SELECT
             NULL::bigint AS osm_id,
             icgc_id,
@@ -129,7 +130,7 @@ FROM (
             d_categori,
             codi_via,
             observacio
-        FROM icgc_data.z_13_18_transportation_contextmaps 
+        FROM icgc_data.transportation_bdu 
         WHERE zoom_level >= 13
 ) AS icgc_zoom_levels
 WHERE geom && bbox;

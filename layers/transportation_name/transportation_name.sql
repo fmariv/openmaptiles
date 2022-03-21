@@ -3,23 +3,20 @@
 CREATE OR REPLACE FUNCTION layer_transportation_name(bbox geometry, zoom_level integer)
     RETURNS TABLE
             (
-                icgc_id    bigint,
-                geometry   geometry,
-                name       text,
-                ref        text,
-                ref_length int,
-                network    text,
-                id_via     text,
-                class      text,
-                subclass   text,
-                layer      int,
-                level      int,
-                indoor     int,
-                mtc25m     text,
-                colorcaixa bigint,
-                rank       smallint,
-                codigeo    int,
-                z_order    int
+                icgc_id       bigint,
+                geometry      geometry,
+                name          text,
+                "name:latin"  text,
+                ref           text,
+                ref_length    int,
+                network       text,
+                id_via        text,
+                class         text,
+                subclass      text,
+                brunnel       text,
+                layer         int,
+                level         int,
+                indoor        int
             )
 AS
 $$
@@ -33,87 +30,79 @@ SELECT
       id_via,    
       class,     
       subclass,  
+      brunnel,
       layer,     
       level,     
-      indoor,      
-      mtc25m,    
-      colorcaixa,
-      rank,      
-      codigeo,
-      NULL::int AS z_order   
+      indoor 
 FROM (
-      SELECT * FROM 
-      (
+        -- z_6_8_mtc_vials
         SELECT
             icgc_id::bigint,
             geom,
-            name::text,
-            name::text AS ref,
+            NULL::text AS name,
+            NULL::text AS "name:latin",
+            NULL::text AS ref,
+            NULL::text as brunnel,
             6::int AS ref_length,
             ''::text AS network,
-            ''::text AS id_via,
-            class::text,
-            ''::text AS subclass,
-            0::INT AS layer,
-            0::INT AS level,
-            0::INT AS indoor,
-            0::smallint AS zoom,
-            ''::text AS mtc25m,
-            0::bigint AS colorcaixa,
-            0::smallint AS rank,
-            0::integer AS codigeo
-            FROM icgc_data.transportation_name_lines
-            WHERE zoom_level BETWEEN 6 AND 14
-               AND geom && bbox
+            codi_via,
+            class,
+            NULL::text AS subclass,
+            brunnel,
+            NULL::INT AS layer,
+            NULL::INT AS level,
+            NULL::INT AS indoor
+        FROM icgc_data.z_6_8_mtc_vials
+        WHERE zoom_level BETWEEN 6 AND 8
+            AND codi_via <> ''
+            AND geom && bbox
         UNION ALL
 
+        -- transportation_name_bdu - xarxa catalogada
         SELECT
-            icgc_id::bigint,
-            ST_GeometryN(geom, 1) AS geom,
-            name::text,
-            ''::text AS ref,
-            0::int AS ref_length,
-            ''::text AS network,
-            ''::text AS id_via,
-            class::text,
-            ''::text AS subclass,
-            0::INT AS layer,
-            0::INT AS level,
-            0::INT AS indoor,
-            zoom::smallint,
-            ''::text AS mtc25m,
-            0::bigint AS colorcaixa,
-            rank::smallint,
-            codigeo::integer
-            FROM icgc_data.transportation_name 
-            WHERE zoom_level BETWEEN zoom AND 14 
-               AND geom && bbox
-        UNION ALL
-
-        SELECT
-            icgc_id::bigint,
+            icgc_id,
             geom,
-            name::text,
-            name::text AS ref,
-            ref_length::INT,
-            ''::text AS network,
-            id_via::text,
-            class::text,
-            ''::text AS subclass,
-            0::int AS layer,
-            0::int AS level,
-            0::int AS indoor,
-            13::smallint AS zoom,
-            ''::text AS mtc25m,
-            0::bigint AS colorcaixa,
-            0::smallint AS rank,
-            0::integer AS codigeo
-            FROM icgc_data.z_13_18_transportation_contextmaps_name 
-            WHERE zoom_level >= 13 
-                AND geom && bbox
-      ) AS data_unordered
-      ORDER BY zoom, rank
-) AS icgc_data;
+            name,
+            name AS "name:latin",
+            name AS ref,
+            brunnel,
+            ref_length,
+            network,
+            id_via,
+            class,
+            subclass,
+            brunnel,
+            layer,
+            level,
+            indoor
+        FROM icgc_test.transportation_name_bdu 
+        WHERE zoom_level BETWEEN 9 AND 13
+            AND class in ('motorway', 'primary', 'secondary', 'tertiary')
+            AND name <> ''
+            AND geom && bbox
+        UNION ALL
+
+        -- transportation_name_bdu
+        SELECT
+            icgc_id,
+            geom,
+            name,
+            name AS "name:latin",
+            name AS ref,
+            brunnel,
+            ref_length,
+            network,
+            id_via,
+            class,
+            subclass,
+            brunnel,
+            layer,
+            level,
+            indoor
+        FROM icgc_test.transportation_name_bdu 
+        WHERE zoom_level >= 13 
+            AND name <> ''
+            AND geom && bbox;
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

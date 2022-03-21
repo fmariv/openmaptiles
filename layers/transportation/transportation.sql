@@ -18,13 +18,18 @@ CREATE OR REPLACE FUNCTION layer_transportation(bbox geometry, zoom_level int)
                 subclass   text,
                 ramp       integer,
                 oneway     integer,
+                network    text,
                 brunnel    text,
                 service    text,
+                access     text,
+                toll       integer,
+                expressway integer,
                 layer      integer,
                 level      integer,
                 indoor     integer,
                 d_categori text,
                 codi_via   text,
+                surface    text,
                 observacio text
             )
 AS
@@ -36,16 +41,21 @@ SELECT osm_id,
        subclass,
        ramp,
        oneway,
+       network,
        brunnel,
        service,
+       access,
+       toll,
+       expressway,
        layer,
        level,
        indoor,
+       surface,
        d_categori,
        codi_via,
        observacio
 FROM (
-        -- z_8mtc_vials
+        -- z_6_8mtc_vials
         SELECT
             NULL::bigint AS osm_id,
             icgc_id,
@@ -54,11 +64,16 @@ FROM (
             NULL::text AS subclass,
             NULL::int as ramp,
             NULL::int as oneway,
+            NULL::text AS network,
             brunnel,
             NULL::text AS service,
+            NULL::text AS access,
+            NULL::int AS toll,
+            NULL::int AS expressway,
             NULL::int AS layer,
             NULL::int AS level,
             NULL::int AS indoor,
+            NULL::text AS surface,
             layer as d_categori,
             codi_via,
             NULL::text AS observacio
@@ -66,7 +81,7 @@ FROM (
         WHERE zoom_level BETWEEN 6 AND 8
         UNION ALL
 
-        -- z_11_13_transportation_contextmaps
+        -- z_9_12_transportation_contextmaps
         SELECT
             NULL::bigint AS osm_id,
             icgc_id,
@@ -75,11 +90,16 @@ FROM (
             subclass,
             ramp,
             oneway,
+            NULL::text AS network,
             brunnel,
             service,
+            NULL::text AS access,
+            NULL::int AS toll,
+            NULL::int AS expressway,
             layer,
             level,
             indoor,
+            NULL::text AS surface,
             d_categori,
             codi_via,
             observacio
@@ -96,11 +116,16 @@ FROM (
             subclass,
             ramp,
             oneway,
+            NULL::text AS network,
             brunnel,
             service,
+            NULL::text AS access,
+            NULL::int AS toll,
+            NULL::int AS expressway,
             layer,
             level,
             indoor,
+            NULL::text AS surface,
             d_categori,
             codi_via,
             observacio

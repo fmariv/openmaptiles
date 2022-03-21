@@ -113,6 +113,12 @@ layer:
       - bridleway
       - corridor
       - platform
+    network:
+      description: |
+          The network type derived mainly from [`network`](http://wiki.openstreetmap.org/wiki/Key:network) tag of the road.
+          See more info about [`us-*`](http://wiki.openstreetmap.org/wiki/Road_signs_in_the_United_States),
+          [`ca-transcanada`](https://en.wikipedia.org/wiki/Trans-Canada_Highway),
+          or [`gb-*`](http://wiki.openstreetmap.org/wiki/United_Kingdom_Tagging_Guidelines#UK_roads).
     brunnel:
       description: |
           Mark whether way is a tunnel or bridge.
@@ -142,6 +148,20 @@ layer:
       - driveway
       - alley
       - parking_aisle
+    access:
+      description: |
+          Access restrictions on this road.  Supported values of the
+          [`access`](http://wiki.openstreetmap.org/wiki/Key:access) tag are `no` and `private`,
+          which resolve to `no`.
+      values:
+      - no
+    toll:
+      description: |
+          Whether this is a toll road, based on the [`toll`](http://wiki.openstreetmap.org/wiki/Key:toll) tag.
+    expressway:
+      description: |
+          Whether this is an expressway, based on the [`expressway`](http://wiki.openstreetmap.org/wiki/Key:expressway) tag.
+      values: [1]
     layer:
       description: |
           Original value of the [`layer`](http://wiki.openstreetmap.org/wiki/Key:layer) tag.
@@ -155,6 +175,12 @@ layer:
           value of the [`indoor`](http://wiki.openstreetmap.org/wiki/Key:indoor) tag.
       values:
       - 1
+    surface:
+      description: |
+          Values of [`surface`](https://wiki.openstreetmap.org/wiki/Key:surface) tag devided into 2 groups `paved` (paved, asphalt, cobblestone, concrete, concrete:lanes, concrete:plates, metal, paving_stones, sett, unhewn_cobblestone, wood) and `unpaved` (unpaved, compacted, dirt, earth, fine_gravel, grass, grass_paver, gravel, gravel_turf, ground, ice, mud, pebblestone, salt, sand, snow, woodchips).
+      values:
+      - paved
+      - unpaved
     icgc_id: Identificador únic de l'ICGC.
     d_categori: Pendent d'informar.
     codi_via: Pendent d'informar.
@@ -162,6 +188,6 @@ layer:
   datasource:
     geometry_field: geometry
     srid: 900913
-    query: (SELECT geometry, class, subclass, oneway, ramp, brunnel, service, layer, level, indoor, icgc_id, d_categori, codi_via, observacio FROM layer_transportation(!bbox!, z(!scale_denominator!))) AS t
+    query: (SELECT geometry, class, subclass, network, oneway, ramp, brunnel, service, access, toll, expressway, layer, level, indoor, surface, icgc_id, d_categori, codi_via, observacio FROM layer_transportation(!bbox!, z(!scale_denominator!))) AS t
 schema:
   - ./transportation.sql

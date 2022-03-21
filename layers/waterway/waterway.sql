@@ -4,7 +4,7 @@
 CREATE OR REPLACE FUNCTION layer_waterway(bbox geometry, zoom_level int)
     RETURNS TABLE
             (   
-            	  icgc_id      bigint,
+            	icgc_id      bigint,
                 geometry     geometry,
                 class        text,
                 name         text,

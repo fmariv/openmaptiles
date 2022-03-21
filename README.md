@@ -18,7 +18,7 @@ L'esquema OpenMapTiles s'utilitza en molts projectes d'arreu del món i la mida 
 OpenMapTiles consisteix en una col·lecció de capes documentades i autònomes que es poden modificar i adaptar.
 Les capes juntes formen el conjunt de tesseles OpenMapTiles.
 
-:link: [Study the vector tile schema](http://openmaptiles.org/schema)
+:link: [Estudiar l'esquema vectorial](http://openmaptiles.org/schema)
 
 - [aeroway](https://openmaptiles.org/schema/#aeroway)
 - [boundary](https://openmaptiles.org/schema/#boundary)
@@ -38,7 +38,7 @@ Les capes juntes formen el conjunt de tesseles OpenMapTiles.
 
 ### Build
 
-Construir el tileset.
+Clonar el repositori i construir el tileset.
 
 ```bash
 git clone git@autogitlab.icgc.local:f.martin/openmaptiles.git
@@ -93,12 +93,20 @@ sudo make import-wikidata
 ```
 
 ### Treballar les capes
-Cada vegada que es modifiqui el fitxer `mapping.yaml` d'una capa o s'afegeixin noves etiquetes OSM, s'ha de'executar `make` i `make import-osm` per recrear taules (potencialment amb dades addicionals) a PostgreSQL. Amb les noves dades, també hi pot haver nous registres de Wikidata.
+
+Per cada capa de l'esquema OpenMaptiles hi ha una carpeta al directori `layers` amb tota la informació necessària, disposada en diferents arxius. Els més importants per nosaltres i que s'hauran de modificar a conveniència són els següents:
+
+```
+arxiu SQL    # és on es defineixen les comandes SQL a executar, per exemple per generar vistes o per definir la funció que generarà les tesseles
+arxiu yaml   # és on es defineixen els atributs de la capa, els arxius SQL necessaris per generar la capa i la query SQL que es cridarà en el moment de generar les tesseles
+```
+
+Cada vegada que es modifiqui el fitxer `mapping.yaml` d'una capa, que és l'arxiu que fa servir Imposm3 per determinar i estructurar el traspàs de dades d'OSM a la BDD, o s'afegeixin noves etiquetes OSM, s'ha de'executar `make` i `make import-osm` per recrear taules (potencialment amb dades addicionals) a PostgreSQL. Amb les noves dades, també hi pot haver nous registres de Wikidata.
 ```
 sudo make clean
 sudo make
-sudo  make import-osm
-sudo  make import-wikidata
+sudo make import-osm
+sudo make import-wikidata
 ```
 
 Cada vegada que es modifiqui el codi SQL de la capa, s'ha d'executar `sudo  make` i `sudo make import-sql`.
@@ -109,7 +117,7 @@ sudo make
 sudo make import-sql
 ```
 
-Ara ja està tot preparat per **generar les tesseles vectorials**. Per defecte, `./.env` especifica tot el planeta BBOX per als zooms 0-7, però executant `generate-bbox-file` analitzarà el fitxer de dades i establirà el paràmetre `BBOX` per limitar la generació de tesseles.
+Ara ja està tot preparat per **generar les tesseles vectorials**. Per defecte, `./.env` especifica tot el planeta BBOX per als zooms 0-7, però executar `generate-bbox-file` analitzarà el fitxer de dades i establirà el paràmetre `BBOX` per limitar la generació de tesseles.
 
 ```
 sudo make generate-bbox-file  # generar bbox - no és necessari per tot el planeta
@@ -117,12 +125,7 @@ sudo make generate-tiles-pg   # generar tesseles
 ```
 
 ### Afegir noves capes
-S'ha creat un petit script de Python que permet afegir noves capes a l'esquema OpenMapTiles de manera molt fàcil. Simplement s'haurà d'executar `add_layer.py "nom_capa"` i automàticament es crearà una nova carpeta al directori `layers` amb el nom de la nova capa i dos arxius definits a continuació.
-
-```
-arxiu SQL    # és on es defineixen les comandes SQL a executar, per exemple per generar vistes o per definir la funció que generarà les tesseles
-arxiu yaml   # és on es defineixen els atributs de la capa, els arxius SQL necessaris per generar la capa i la query SQL que es cridarà en el moment de generar les tesseles
-```
+S'ha creat un petit script de Python que permet afegir noves capes a l'esquema OpenMapTiles de manera molt fàcil. Simplement s'haurà d'executar `add_layer.py "nom_capa"` i automàticament es crearà una nova carpeta al directori `layers` amb el nom de la nova capa i l'arxiu SQL i YAML de la capa definits a l'apartat anterior.
 
 Aquest arxius, però, s'han d'editar manualment a conveniència.
 

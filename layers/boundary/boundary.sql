@@ -11,53 +11,26 @@ CREATE OR REPLACE FUNCTION layer_boundary(bbox geometry, zoom_level int)
                 disputed      int,
                 disputed_name text,
                 claimed_by    text,
-                maritime      int
+                maritime      int,
+                minzoom       int,
+                maxzoom       int
             )
 AS
 $$
-SELECT icgc_id,
-    geom,
-    admin_level,
-    adm0_l,
-    adm9_r,
-    disputed,
-    disputed_name,
-    claimed_by,
-    maritime
-FROM icgc_test.boundary_mon_0
-WHERE admin_level = 2 
-    AND maritime <> 1
-    AND disputed <> 1
-UNION ALL 
-
-SELECT icgc_id,
-    geom,
-    admin_level,
-    adm0_l,
-    adm9_r,
-    disputed,
-    disputed_name,
-    claimed_by,
-    maritime
-FROM icgc_test.boundary_mon_1
-WHERE admin_level = 4
-   AND maritime = 1
-UNION ALL 
-
-SELECT icgc_id,
-    geom,
-    admin_level,
-    adm0_l,
-    adm9_r,
-    disputed,
-    disputed_name,
-    claimed_by,
-    maritime,
-    minzoom,
-    maxzoom
-FROM icgc_test.boundary_mon_1
-WHERE admin_level IN (4, 6, 7, 8)
-    AND maritime <> 1;
+ -- icgc boundary
+ SELECT icgc_id,
+        geom,
+        admin_level,
+        NULL::text AS adm0_l,
+        NULL::text AS adm9_r,
+        disputed,
+        NULL::text AS disputed_name,
+        NULL::text AS claimed_by,
+        maritime,
+        minzoom,
+        maxzoom
+ FROM icgc_data.boundary
+ WHERE (zoom_level BETWEEN minzoom AND maxzoom) AND geom && bbox;
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

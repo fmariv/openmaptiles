@@ -12,7 +12,7 @@ CREATE OR REPLACE FUNCTION layer_transportation(bbox geometry, zoom_level int)
     RETURNS TABLE
             (
                 osm_id     bigint,
-                icgc_id    bigint,
+                icgc_id    int,
                 geometry   geometry,
                 class      text,
                 subclass   text,
@@ -85,7 +85,7 @@ FROM (
         SELECT
             NULL::bigint AS osm_id,
             icgc_id,
-            geom,
+            geometry,
             class,
             subclass,
             ramp,
@@ -104,15 +104,15 @@ FROM (
             codi_via,
             observacio
         FROM icgc_test.transportation_bdu
-            AND class IN ('motorway', 'primary', 'tertiary', 'secondary', 'minor')
-        WHERE zoom_level BETWEEN 9 AND 12
+        WHERE class IN ('motorway', 'primary', 'tertiary', 'secondary', 'minor')
+        	AND zoom_level BETWEEN 9 AND 12
         UNION ALL
 
         -- transportation_bdu
         SELECT
             NULL::bigint AS osm_id,
             icgc_id,
-            geom,
+            geometry,
             class,
             subclass,
             ramp,
@@ -130,7 +130,7 @@ FROM (
             d_categori,
             codi_via,
             observacio
-        FROM icgc_data.transportation_bdu 
+        FROM icgc_test.transportation_bdu 
         WHERE zoom_level >= 13
 ) AS icgc_zoom_levels
 WHERE geom && bbox;

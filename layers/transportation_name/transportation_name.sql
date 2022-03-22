@@ -23,7 +23,8 @@ $$
 SELECT
       icgc_id,
       geom,  
-      name,      
+      name,
+      "name:latin",      
       ref,       
       ref_length,
       network,   
@@ -42,10 +43,9 @@ FROM (
             NULL::text AS name,
             NULL::text AS "name:latin",
             NULL::text AS ref,
-            NULL::text as brunnel,
             6::int AS ref_length,
             ''::text AS network,
-            codi_via,
+            codi_via AS id_via,
             class,
             NULL::text AS subclass,
             brunnel,
@@ -55,17 +55,15 @@ FROM (
         FROM icgc_data.z_6_8_mtc_vials
         WHERE zoom_level BETWEEN 6 AND 8
             AND codi_via <> ''
-            AND geom && bbox
         UNION ALL
 
         -- transportation_name_bdu - xarxa catalogada
         SELECT
             icgc_id,
-            geom,
+            geometry,
             name,
             name AS "name:latin",
             ref,
-            brunnel,
             ref_length,
             network,
             id_via,
@@ -79,17 +77,15 @@ FROM (
         WHERE zoom_level BETWEEN 9 AND 13
             AND class in ('motorway', 'primary', 'secondary', 'tertiary')
             AND name <> ''
-            AND geom && bbox
         UNION ALL
 
         -- transportation_name_bdu
         SELECT
             icgc_id,
-            geom,
+            geometry,
             name,
             name AS "name:latin",
             ref,
-            brunnel,
             ref_length,
             network,
             id_via,
@@ -102,7 +98,8 @@ FROM (
         FROM icgc_test.transportation_name_bdu 
         WHERE zoom_level >= 13 
             AND name <> ''
-            AND geom && bbox;
+) as zoom_levels
+WHERE geom && bbox;
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

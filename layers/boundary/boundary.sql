@@ -3,9 +3,9 @@
 CREATE OR REPLACE FUNCTION layer_boundary(bbox geometry, zoom_level int)
     RETURNS TABLE
             (
-                icgc_id       bigint,
+                icgc_id       int,
                 geometry      geometry,
-                admin_level   int,
+                admin_level   bigint,
                 adm0_l        text,
                 adm0_r        text,
                 disputed      int,
@@ -16,49 +16,50 @@ CREATE OR REPLACE FUNCTION layer_boundary(bbox geometry, zoom_level int)
 AS
 $$
 SELECT icgc_id,
-    geom,
-    admin_level,
+    geometry,
+    adm_level,
     adm0_l,
-    adm9_r,
+    adm0_r,
     disputed,
-    disputed_name,
+    disp_name,
     claimed_by,
     maritime
 FROM icgc_test.boundary_mon_0
-WHERE admin_level = 2 
-    AND maritime <> 1
-    AND disputed <> 1
+WHERE adm_level = 2 
+    AND (maritime IS NULL or maritime = 0)
+    AND (disputed = 0 OR disputed IS NULL)
+    AND geometry && bbox
 UNION ALL 
 
 SELECT icgc_id,
-    geom,
-    admin_level,
+    geometry,
+    adm_level,
     adm0_l,
-    adm9_r,
+    adm0_r,
     disputed,
-    disputed_name,
-    claimed_by,
+    disp_name,
+    NULL::text AS claimed_by,
     maritime
 FROM icgc_test.boundary_mon_1
-WHERE admin_level = 4
+WHERE adm_level IN (2, 3, 4, 6)
    AND maritime = 1
+   AND geometry && bbox
 UNION ALL 
 
 SELECT icgc_id,
-    geom,
-    admin_level,
+    geometry,
+    adm_level,
     adm0_l,
-    adm9_r,
+    adm0_r,
     disputed,
-    disputed_name,
-    claimed_by,
-    maritime,
-    minzoom,
-    maxzoom
+    disp_name,
+    NULL::text AS claimed_by,
+    maritime
 FROM icgc_test.boundary_mon_1
-WHERE admin_level IN (4, 6, 7, 8)
-    AND maritime <> 1;
+WHERE adm_level IN (3, 4, 6, 7, 8)
+    AND maritime = 0
+    AND geometry && bbox
+    AND zoom_level >= 4;
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;
-

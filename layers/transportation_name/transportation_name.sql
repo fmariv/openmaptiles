@@ -41,9 +41,9 @@ FROM (
         SELECT
             icgc_id::bigint,
             geom,
-            NULL::text AS name,
-            NULL::text AS "name:latin",
-            NULL::text AS ref,
+            codi_via AS name,
+            codi_via AS "name:latin",
+            codi_via AS ref,
             6::int AS ref_length,
             ''::text AS network,
             codi_via,

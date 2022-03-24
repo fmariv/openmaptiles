@@ -1,5 +1,3 @@
-
-
 -- etldoc: layer_place[shape=record fillcolor=lightpink, style="rounded,filled",
 -- etldoc:     label="layer_place | <z0_3> z0-3|<z4_7> z4-7|<z8_11> z8-11| <z12_14> z12-z14+" ] ;
 

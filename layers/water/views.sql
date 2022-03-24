@@ -294,8 +294,7 @@ SELECT geometry,
 FROM ne_10m_lakes_gen_z5
     );
 
-DROP MATERIALIZED VIEW IF EXISTS water_z6;
-CREATE MATERIALIZED VIEW water_z6 AS
+CREATE OR REPLACE VIEW water_z6 AS
 (
 -- etldoc:  osm_ocean_polygon_gen_z6 ->  water_z6
 SELECT geometry,
@@ -309,7 +308,7 @@ UNION ALL
 -- etldoc:  osm_water_polygon_gen_z6 ->  water_z6
 SELECT w.geometry,
        water_class(waterway, water) AS class,
-       is_intermittent,
+       w.is_intermittent,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
@@ -317,10 +316,8 @@ FROM osm_water_polygon_gen_z6 w, icgc_data.catalunya c
 WHERE "natural" != 'bay'
  AND ST_Disjoint(c.geometry, w.geometry)
     );
-CREATE INDEX IF NOT EXISTS water_z6_idx ON water_z6 USING gist (geometry);
 
-DROP MATERIALIZED VIEW IF EXISTS water_z7;
-CREATE MATERIALIZED VIEW water_z7 AS
+CREATE OR REPLACE VIEW water_z7 AS
 (
 -- etldoc:  osm_ocean_polygon_gen_z7 ->  water_z7
 SELECT geometry,
@@ -334,7 +331,7 @@ UNION ALL
 -- etldoc:  osm_water_polygon_gen_z7 ->  water_z7
 SELECT w.geometry,
        water_class(waterway, water) AS class,
-       is_intermittent,
+       w.is_intermittent,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
@@ -342,10 +339,8 @@ FROM osm_water_polygon_gen_z7 w, icgc_data.catalunya c
 WHERE "natural" != 'bay'
  AND ST_Disjoint(c.geometry, w.geometry)
     );
-CREATE INDEX IF NOT EXISTS water_z7_idx ON water_z7 USING gist (geometry);
 
-DROP MATERIALIZED VIEW IF EXISTS water_z8;
-CREATE MATERIALIZED VIEW water_z8 AS
+CREATE OR REPLACE VIEW water_z8 AS
 (
 -- etldoc:  osm_ocean_polygon_gen_z8 ->  water_z8
 SELECT geometry,
@@ -359,7 +354,7 @@ UNION ALL
 -- etldoc:  osm_water_polygon_gen_z8 ->  water_z8
 SELECT w.geometry,
        water_class(waterway, water) AS class,
-       is_intermittent,
+       w.is_intermittent,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
@@ -367,10 +362,8 @@ FROM osm_water_polygon_gen_z8 w, icgc_data.catalunya c
 WHERE "natural" != 'bay' 
  AND ST_Disjoint(c.geometry, w.geometry)
     );
-CREATE INDEX IF NOT EXISTS water_z8_idx ON water_z8 USING gist (geometry);
 
-DROP MATERIALIZED VIEW IF EXISTS water_z9;
-CREATE MATERIALIZED VIEW water_z9 AS
+CREATE OR REPLACE VIEW water_z9 AS
 (
 -- etldoc:  osm_ocean_polygon_gen_z9 ->  water_z9
 SELECT geometry,
@@ -384,7 +377,7 @@ UNION ALL
 -- etldoc:  osm_water_polygon_gen_z9 ->  water_z9
 SELECT w.geometry,
        water_class(waterway, water) AS class,
-       is_intermittent,
+       w.is_intermittent,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
@@ -392,10 +385,8 @@ FROM osm_water_polygon_gen_z9 w, icgc_data.catalunya c
 WHERE "natural" != 'bay'
  AND ST_Disjoint(c.geometry, w.geometry)
     );
-CREATE INDEX IF NOT EXISTS water_z9_idx ON water_z9 USING gist (geometry);
 
-DROP MATERIALIZED VIEW IF EXISTS water_z10;
-CREATE MATERIALIZED VIEW water_z10 AS
+CREATE OR REPLACE VIEW water_z10 AS
 (
 -- etldoc:  osm_ocean_polygon_gen_z10 ->  water_z10
 SELECT geometry,
@@ -409,7 +400,7 @@ UNION ALL
 -- etldoc:  osm_water_polygon_gen_z10 ->  water_z10
 SELECT w.geometry,
        water_class(waterway, water) AS class,
-       is_intermittent,
+       w.is_intermittent,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
@@ -417,10 +408,8 @@ FROM osm_water_polygon_gen_z10 w, icgc_data.catalunya c
 WHERE "natural" != 'bay'
  AND ST_Disjoint(c.geometry, w.geometry)
     );
-CREATE INDEX IF NOT EXISTS water_z10_idx ON water_z10 USING gist (geometry);
 
-DROP MATERIALIZED VIEW IF EXISTS water_z11;
-CREATE MATERIALIZED VIEW water_z11 AS
+CREATE OR REPLACE VIEW water_z11 AS
 (
 -- etldoc:  osm_ocean_polygon_gen_z11 ->  water_z11
 SELECT geometry,
@@ -434,7 +423,7 @@ UNION ALL
 -- etldoc:  osm_water_polygon_gen_z11 ->  water_z11
 SELECT w.geometry,
        water_class(waterway, water) AS class,
-       is_intermittent,
+       w.is_intermittent,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
@@ -442,10 +431,8 @@ FROM osm_water_polygon_gen_z11 w, icgc_data.catalunya c
 WHERE "natural" != 'bay'
  AND ST_Disjoint(c.geometry, w.geometry)
     );
-CREATE INDEX IF NOT EXISTS water_z11_idx ON water_z11 USING gist (geometry);
 
-DROP MATERIALIZED VIEW IF EXISTS water_z12;
-CREATE MATERIALIZED VIEW water_z12 AS
+CREATE OR REPLACE VIEW water_z12 AS
 (
 -- etldoc:  osm_ocean_polygon_union ->  water_z12
 SELECT geometry,
@@ -459,12 +446,12 @@ UNION ALL
 -- etldoc:  osm_water_polygon ->  water_z12
 SELECT w.geometry,
        water_class(waterway, water) AS class,
-       is_intermittent,
-       is_bridge,
-       is_tunnel,
+       w.is_intermittent,
+       w.is_bridge,
+       w.is_tunnel,
        0::int AS icgc_id
 FROM osm_water_polygon w, icgc_data.catalunya c
 WHERE "natural" != 'bay'
  AND ST_Disjoint(c.geometry, w.geometry)
     );
-CREATE INDEX IF NOT EXISTS water_z12_idx ON water_z12 USING gist (geometry);
+

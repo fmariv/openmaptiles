@@ -50,9 +50,9 @@ SELECT osm_id,
        layer,
        level,
        indoor,
-       surface,
        d_categori,
        codi_via,
+       surface,
        observacio
 FROM (
         -- z_6_8mtc_vials
@@ -73,9 +73,9 @@ FROM (
             NULL::int AS layer,
             NULL::int AS level,
             NULL::int AS indoor,
-            NULL::text AS surface,
             layer as d_categori,
             codi_via,
+            NULL::text AS surface,
             NULL::text AS observacio
         FROM icgc_data.z_6_8_mtc_vials 
         WHERE zoom_level BETWEEN 6 AND 8
@@ -99,9 +99,9 @@ FROM (
             layer,
             level,
             indoor,
-            surface,
             d_categori,
             codi_via,
+            surface,
             observacio
         FROM icgc_test.transportation_bdu
         WHERE class IN ('motorway', 'primary', 'tertiary', 'secondary')
@@ -126,9 +126,9 @@ FROM (
             layer,
             level,
             indoor,
-            surface,
             d_categori,
             codi_via,
+            surface,
             observacio
         FROM icgc_test.transportation_bdu 
         WHERE zoom_level >= 13
@@ -171,9 +171,9 @@ FROM
                 NULLIF(layer, 0) layer,
                 "level",
                 CASE WHEN indoor = TRUE THEN 1 END AS indoor,
-                NULLIF(surface, '') AS surface,
                 NULL::text AS d_categori,
                 NULL::text AS codi_via,
+                NULLIF(surface, '') AS surface,
                 NULL::text AS observacio
     FROM (
             -- transportation_gen_planet_z6 -> layer_transportation:z6

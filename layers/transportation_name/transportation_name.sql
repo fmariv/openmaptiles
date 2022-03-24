@@ -1,5 +1,6 @@
 -- etldoc: layer_transportation_name[shape=record fillcolor=lightpink, style="rounded,filled",
 -- etldoc:     label="layer_transportation_name | <z6> z6 | <z7> z7 | <z8> z8 |<z9> z9 |<z10> z10 |<z11> z11 |<z12> z12|<z13> z13|<z14_> z14+" ] ;
+
 CREATE OR REPLACE FUNCTION layer_transportation_name(bbox geometry, zoom_level integer)
     RETURNS TABLE
             (
@@ -10,7 +11,7 @@ CREATE OR REPLACE FUNCTION layer_transportation_name(bbox geometry, zoom_level i
                 ref           text,
                 ref_length    int,
                 network       text,
-                id_via        text,
+                codi_via      text,
                 class         text,
                 subclass      text,
                 brunnel       text,
@@ -28,7 +29,7 @@ SELECT
       ref,       
       ref_length,
       network,   
-      id_via,    
+      codi_via,    
       class,     
       subclass,  
       brunnel,
@@ -45,7 +46,7 @@ FROM (
             NULL::text AS ref,
             6::int AS ref_length,
             ''::text AS network,
-            codi_via AS id_via,
+            codi_via,
             class,
             NULL::text AS subclass,
             brunnel,
@@ -66,7 +67,7 @@ FROM (
             ref,
             ref_length,
             network,
-            id_via,
+            id_via as codi_via,
             class,
             subclass,
             brunnel,
@@ -88,7 +89,7 @@ FROM (
             ref,
             ref_length,
             network,
-            id_via,
+            id_via as codi_via,
             class,
             subclass,
             brunnel,

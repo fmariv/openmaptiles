@@ -13,6 +13,7 @@ layer:
   srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
   fields:
     name: The OSM [`name`](http://wiki.openstreetmap.org/wiki/Highways#Names_and_references) value of the highway.
+    "name:latin": pendent.
     ref: The OSM [`ref`](http://wiki.openstreetmap.org/wiki/Key:ref) tag of the motorway or its network.
     ref_length: Length of the `ref` field. Useful for having a shield icon as background for labeling motorways.
     network:
@@ -72,6 +73,13 @@ layer:
       - corridor
       - platform
       - junction
+    brunnel:
+      description: |
+          Mark whether way is a bridge, a tunnel or a ford.
+      values:
+      - bridge
+      - tunnel
+      - ford
     level:
       description: |
           Experimental feature! Filled only for steps and footways. Original
@@ -86,19 +94,11 @@ layer:
           value of [`indoor`](http://wiki.openstreetmap.org/wiki/Key:indoor) tag.
       values:
       - 1
-    id_via: Pendent d'informar.
-    mtc25m: Pendent d'informar.
-    colorcaixa: Pendent d'informar.
-    rank: Pendent d'informar.
-    codigeo: Pendent d'informar.
-    z_order: Pendent d'informar.
+    codi_via: Pendent d'informar.
   datasource:
     geometry_field: geometry
     srid: 900913
-    query: (SELECT geometry, name, ref, ref_length, network::text, id_via, class::text, subclass, layer, level, indoor, mtc25m, colorcaixa, rank, codigeo, z_order  FROM layer_transportation_name(!bbox!, z(!scale_denominator!))) AS t
+    query: (SELECT geometry, name, "name:latin", ref, ref_length, network::text, codi_via, class::text, subclass, brunnel, layer, level, indoor FROM layer_transportation_name(!bbox!, z(!scale_denominator!))) AS t
 schema:
   - ./highway_classification.sql
   - ./transportation_name.sql
-datasources:
-  - type: imposm3
-    mapping_file: ../transportation/mapping.yaml

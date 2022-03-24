@@ -43,9 +43,6 @@ layer:
     srid: 900913
     query: (SELECT osm_id, icgc_id, geometry, name, name_en, name_de, {name_languages}, class, intermittent, zoom, rank, codigeo, fontsize FROM layer_water_name(!bbox!, z(!scale_denominator!))) AS t
 schema:
-  - ./update_marine_point.sql
-  - ./update_water_lakeline.sql
-  - ./update_water_point.sql
   - ./water_name.sql
 datasources:
   - type: imposm3

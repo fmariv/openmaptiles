@@ -65,7 +65,6 @@ layer:
     geometry_field: geometry
     query: (SELECT geometry, admin_level, adm0_l, adm0_r, disputed, disputed_name, claimed_by, maritime, icgc_id, minzoom, maxzoom FROM layer_boundary(!bbox!, z(!scale_denominator!))) AS t
 schema:
-  - ./boundary_name.sql
   - ./boundary.sql
 datasources:
   - type: imposm3

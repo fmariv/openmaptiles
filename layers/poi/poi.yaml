@@ -141,7 +141,6 @@ layer:
 schema:
   - ./public_transport_stop_type.sql
   - ./class.sql
-  - ./poi_stop_agg.sql
   - ./poi.sql
 datasources:
   - type: imposm3

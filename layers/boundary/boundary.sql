@@ -3,66 +3,50 @@
 CREATE OR REPLACE FUNCTION layer_boundary(bbox geometry, zoom_level int)
     RETURNS TABLE
             (
-                icgc_id       int,
+                icgc_id       integer,
                 geometry      geometry,
-                nom           text,
-                admin_level   bigint,
-                adm0_l        text,
-                adm0_r        text,
-                disputed      int,
-                disputed_name text,
-                claimed_by    text,
-                maritime      int
+                name          text,
+                class         text,
+                rank          bigint,
+                admin_level   bigint
             )
 AS
 $$
-SELECT icgc_id,
+SELECT id AS icgc_id,
        geometry,
-       nom,
-       adm_level,
-       adm0_l,
-       adm0_r,
-       disputed,
-       disp_name,
-       claimed_by,
-       maritime
-FROM icgc_data.boundary_mon_0_l
-WHERE adm_level = 2 
-    AND (maritime IS NULL or maritime = 0)
-    AND (disputed = 0 OR disputed IS NULL)
-    AND geometry && bbox
+       'Comunitat Autònom de Catalunya' AS name,
+       'Comunitat Autònom' AS class,
+       NULL::int AS rank,
+       2 AS adminlevel
+FROM icgc_data.catalunya
+WHERE geometry && bbox
+   AND zoom_level >= 6
 UNION ALL 
 
 SELECT icgc_id,
        geometry,
-       nom,
-       adm_level,
-       adm0_l,
-       adm0_r,
-       disputed,
-       disp_name,
-       NULL::text AS claimed_by,
-       maritime
-FROM icgc_data.boundary_mon_1_l
-WHERE adm_level IN (2, 3, 4, 6)
-   AND maritime = 1
+       name,
+       class,
+       rank,
+       adminlevel
+FROM icgc_data.boundary_div_admin
+WHERE class = 'comarca' 
+   AND adminlevel IS NOT NULL
    AND geometry && bbox
+   AND zoom_level >= 8
 UNION ALL 
 
 SELECT icgc_id,
        geometry,
-       nom,
-       adm_level,
-       adm0_l,
-       adm0_r,
-       disputed,
-       disp_name,
-       NULL::text AS claimed_by,
-       maritime
-FROM icgc_data.boundary_mon_1_l
-WHERE adm_level IN (3, 4, 6, 7, 8)
-    AND maritime = 0
-    AND geometry && bbox;
+       name,
+       class,
+       rank,
+       adminlevel
+FROM icgc_data.boundary_div_admin
+WHERE class = 'municipi' 
+   AND adminlevel IS NOT NULL
+   AND geometry && bbox
+   AND zoom_level >= 10;
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

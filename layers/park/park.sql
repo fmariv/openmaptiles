@@ -17,7 +17,7 @@ AS
 $$
 SELECT osm_id,
        icgc_id,
-       geom,
+       ST_Intersection(zoom_levels.geom, muni.muni_geom) as geometry,
        class,
        NULLIF(name, '') AS name,
        NULLIF(name_en, '') AS name_en,

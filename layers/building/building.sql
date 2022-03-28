@@ -15,7 +15,7 @@ CREATE OR REPLACE FUNCTION layer_building(bbox geometry, zoom_level int)
             )
 AS
 $$
-SELECT geom,
+SELECT ST_Intersection(zoom_levels.geom, muni.muni_geom) as geometry,
        osm_id,
        icgc_id,
        render_height,

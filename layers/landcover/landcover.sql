@@ -8,7 +8,7 @@ CREATE OR REPLACE FUNCTION layer_landcover(bbox geometry, zoom_level int)
             )
 AS
 $$
-SELECT geom,
+SELECT ST_Intersection(zoom_levels.geom, muni.muni_geom) as geometry,
        class,
        null::text as subclass,
        NULLIF(icgc_id, 0) AS icgc_id
@@ -58,9 +58,7 @@ FROM (
         WHERE name = 'Santa Coloma de Gramenet' 
         AND class = 'municipi' 
         AND adminlevel IS NOT NULL
-      ) AS muni
-WHERE ST_Intersects(muni.muni_geom, zoom_levels.geom)
-     ;
+      ) AS muni;
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

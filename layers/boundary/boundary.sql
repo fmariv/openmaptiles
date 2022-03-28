@@ -21,7 +21,7 @@ $$
         adminlevel as admin_level
  FROM icgc_data.boundary_div_admin
  WHERE geometry && bbox
-    AND name = 'Santa Coloma de Gramenet' 
+    AND name = 'Tremp' 
     AND class = 'municipi' 
     AND adminlevel IS NOT NULL;
 $$ LANGUAGE SQL STABLE

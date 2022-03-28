@@ -10,7 +10,11 @@ tileset:
     #- layers/building/building.yaml
     #- layers/water_name/water_name.yaml
     #- layers/transportation_name/transportation_name.yaml
+<<<<<<< HEAD
     #- layers/place/place.yaml
+=======
+    - layers/place/place.yaml
+>>>>>>> b78e8be0bc942c2da4548bb299ef16778ff0a5a6
     #- layers/poi/poi.yaml
     #- layers/aerodrome_label/aerodrome_label.yaml
     #- layers/contour/contour.yaml

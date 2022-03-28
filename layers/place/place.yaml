@@ -47,13 +47,15 @@ layer:
     icgc_id:
       description:
           Identificador únic de l'ICGC.  
-    codigeo: Pendent d'informar.
-    icgc_id_match: Pendent d'informar.
+    codi_geogr: Pendent d'informar.
+    estat: Pendent d'informar.
+    codi_estat: Pendent d'informar.
+    concepte_g: Pendent d'informar.
   buffer_size: 256
   datasource:
     geometry_field: geometry
-    key_field: osm_id
+    key_field: icgc_id
     key_field_as_attribute: no
-    query: (SELECT osm_id, geometry, name, class, rank, icgc_id, codigeo, icgc_id_match FROM layer_place(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
+    query: (SELECT icgc_id, geometry, name, class, rank, codi_geogr, estat, codi_estat, concepte_g FROM layer_place(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
 schema:
   - ./place.sql

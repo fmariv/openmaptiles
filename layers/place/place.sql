@@ -3,29 +3,31 @@
 CREATE OR REPLACE FUNCTION layer_place(bbox geometry, zoom_level int, pixel_width numeric)
     RETURNS TABLE
             (
-                osm_id         bigint,
-                icgc_id        bigint,
+                icgc_id        int,
                 geometry       geometry,
                 name           text,
                 class          text,
-                "rank"         smallint,
-                codigeo        integer,
-                icgc_id_match  bigint
+                "rank"         integer,
+                codi_geogr     text,
+                estat          text,
+                codi_estat     text,
+                concepte_g     text
             )
 AS
 $$
 SELECT 
     -- icgc place
-    NULL::bigint AS osm_id,
     icgc_id,
     geom,
     name,
     class,
     rank,
-    codigeo,
-    icgc_id_match
-FROM icgc_data.place
-WHERE zoom <= zoom_level and geom && bbox;
+    codi_geogr,
+    estat,
+    codi_estat,
+    concepte_g
+FROM icgc_test.toponimia_mundial
+WHERE geom && bbox;
 $$ LANGUAGE SQL STABLE
                 PARALLEL SAFE;
 -- TODO: Check if the above can be made STRICT -- i.e. if pixel_width could be NULL

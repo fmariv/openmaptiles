@@ -90,7 +90,7 @@ FROM (
      (
         SELECT geometry AS muni_geom 
         FROM icgc_data.boundary_div_admin 
-        WHERE name = 'Santa Coloma de Gramenet' 
+        WHERE name = 'Tremp' 
         AND class = 'municipi' 
         AND adminlevel IS NOT NULL
         ) AS muni

@@ -14,14 +14,14 @@ AS
 $$
  -- icgc boundary
  SELECT icgc_id,
-        geometry,
+        ST_Boundary(geometry),
         name,
         class,
         rank,
         adminlevel as admin_level
  FROM icgc_data.boundary_div_admin
  WHERE geometry && bbox
-    AND name = 'Santa Coloma de Gramenet' 
+    AND name = 'Tremp' 
     AND class = 'municipi' 
     AND adminlevel IS NOT NULL;
 $$ LANGUAGE SQL STABLE

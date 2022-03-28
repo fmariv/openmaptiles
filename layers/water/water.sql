@@ -34,7 +34,7 @@ CREATE OR REPLACE FUNCTION layer_water(bbox geometry, zoom_level int)
             )
 AS
 $$
-SELECT geom,
+SELECT ST_Intersection(zoom_levels.geom, muni.muni_geom) as geometry,
        class::text,
        waterway_brunnel(is_bridge, is_tunnel) AS brunnel,
        is_intermittent::int AS intermittent,

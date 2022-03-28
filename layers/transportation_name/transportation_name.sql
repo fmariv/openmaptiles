@@ -23,7 +23,7 @@ AS
 $$
 SELECT
       icgc_id,
-      geom,  
+      ST_Intersection(zoom_levels.geom, muni.muni_geom) as geometry,  
       name,
       "name:latin",      
       ref,       

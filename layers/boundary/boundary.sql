@@ -12,41 +12,18 @@ CREATE OR REPLACE FUNCTION layer_boundary(bbox geometry, zoom_level int)
             )
 AS
 $$
-SELECT id AS icgc_id,
-       geometry,
-       'Comunitat Autònom de Catalunya' AS name,
-       'Comunitat Autònom' AS class,
-       NULL::int AS rank,
-       2 AS adminlevel
-FROM icgc_data.catalunya
-WHERE geometry && bbox
-   AND zoom_level >= 6
-UNION ALL 
-
-SELECT icgc_id,
-       geometry,
-       name,
-       class,
-       rank,
-       adminlevel
-FROM icgc_data.boundary_div_admin
-WHERE class = 'comarca' 
-   AND adminlevel IS NOT NULL
-   AND geometry && bbox
-   AND zoom_level >= 8
-UNION ALL 
-
-SELECT icgc_id,
-       geometry,
-       name,
-       class,
-       rank,
-       adminlevel
-FROM icgc_data.boundary_div_admin
-WHERE class = 'municipi' 
-   AND adminlevel IS NOT NULL
-   AND geometry && bbox
-   AND zoom_level >= 10;
+ -- icgc boundary
+ SELECT icgc_id,
+        geometry,
+        name,
+        class,
+        rank,
+        adminlevel as admin_level
+ FROM icgc_data.boundary_div_admin
+ WHERE geometry && bbox
+    AND name = 'Santa Coloma de Gramenet' 
+    AND class = 'municipi' 
+    AND adminlevel IS NOT NULL;
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

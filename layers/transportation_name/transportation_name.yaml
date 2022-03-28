@@ -94,10 +94,10 @@ layer:
           value of [`indoor`](http://wiki.openstreetmap.org/wiki/Key:indoor) tag.
       values:
       - 1
-    id_via: Pendent d'informar.
+    codi_via: Pendent d'informar.
   datasource:
     geometry_field: geometry
     srid: 900913
-    query: (SELECT geometry, name, ref, ref_length, network::text, id_via, class::text, subclass, layer, level, indoor, mtc25m, colorcaixa, rank, codigeo, z_order  FROM layer_transportation_name(!bbox!, z(!scale_denominator!))) AS t
+    query: (SELECT geometry, name, "name:latin", ref, ref_length, network::text, codi_via, class::text, subclass, brunnel, layer, level, indoor FROM layer_transportation_name(!bbox!, z(!scale_denominator!))) AS t
 schema:
   - ./transportation_name.sql

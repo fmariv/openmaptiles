@@ -19,8 +19,16 @@ FROM (
          SELECT icgc_id, geom, class AS aeroway, NULL::text AS ref, tipus
          FROM icgc_data.aeroway
          WHERE zoom_level >= 10 AND geom && bbox
-     ) AS zoom_levels
-WHERE geom && bbox;
+      ) AS zoom_levels,
+      (
+        SELECT geometry AS muni_geom 
+        FROM icgc_data.boundary_div_admin 
+        WHERE name = 'Santa Coloma de Gramenet' 
+        AND class = 'municipi' 
+        AND adminlevel IS NOT NULL
+        ) AS muni
+WHERE geom && bbox
+   AND ST_Disjoint(muni.muni_geom, zoom_levels.geom);
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

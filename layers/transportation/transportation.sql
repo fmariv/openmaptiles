@@ -12,7 +12,7 @@ CREATE OR REPLACE FUNCTION layer_transportation(bbox geometry, zoom_level int)
     RETURNS TABLE
             (
                 osm_id     bigint,
-                icgc_id    bigint,
+                icgc_id    int,
                 geometry   geometry,
                 class      text,
                 subclass   text,
@@ -50,9 +50,9 @@ SELECT osm_id,
        layer,
        level,
        indoor,
-       surface,
        d_categori,
        codi_via,
+       surface,
        observacio
 FROM (
         -- z_6_8mtc_vials
@@ -73,9 +73,9 @@ FROM (
             NULL::int AS layer,
             NULL::int AS level,
             NULL::int AS indoor,
-            NULL::text AS surface,
             layer as d_categori,
             codi_via,
+            NULL::text AS surface,
             NULL::text AS observacio
         FROM icgc_data.z_6_8_mtc_vials 
         WHERE zoom_level BETWEEN 6 AND 8
@@ -85,12 +85,12 @@ FROM (
         SELECT
             NULL::bigint AS osm_id,
             icgc_id,
-            geom,
+            geometry,
             class,
             subclass,
             ramp,
             oneway,
-            NULL::text AS network,
+            network,
             brunnel,
             service,
             NULL::text AS access,
@@ -99,25 +99,25 @@ FROM (
             layer,
             level,
             indoor,
-            NULL::text AS surface,
             d_categori,
             codi_via,
+            surface,
             observacio
         FROM icgc_test.transportation_bdu
-            AND class IN ('motorway', 'primary', 'tertiary', 'secondary', 'minor')
-        WHERE zoom_level BETWEEN 9 AND 12
+        WHERE class IN ('motorway', 'primary', 'tertiary', 'secondary', 'minor')
+        	AND zoom_level BETWEEN 9 AND 12
         UNION ALL
 
         -- transportation_bdu
         SELECT
             NULL::bigint AS osm_id,
             icgc_id,
-            geom,
+            geometry,
             class,
             subclass,
             ramp,
             oneway,
-            NULL::text AS network,
+            network,
             brunnel,
             service,
             NULL::text AS access,
@@ -126,14 +126,25 @@ FROM (
             layer,
             level,
             indoor,
-            NULL::text AS surface,
             d_categori,
             codi_via,
+            surface,
             observacio
-        FROM icgc_data.transportation_bdu 
-        WHERE zoom_level >= 13
-) AS icgc_zoom_levels
-WHERE geom && bbox;
+        FROM icgc_test.transportation_bdu 
+        WHERE class IN ('motorway', 'primary', 'secondary', 'tertiary', 'minor', 'busway', 'service', 
+                        'pedestrian', 'track', 'path', 'rail', 'gondola', 'chair_lift', 'cable_car', 
+                        'magic_carpet', 'tram', 'funicular')
+            AND zoom_level >= 13
+) AS zoom_levels,
+(
+SELECT geometry AS muni_geom 
+FROM icgc_data.boundary_div_admin 
+WHERE name = 'Santa Coloma de Gramenet' 
+AND class = 'municipi' 
+AND adminlevel IS NOT NULL
+) AS muni
+WHERE geom && bbox
+   AND ST_Disjoint(muni.muni_geom, zoom_levels.geom);
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

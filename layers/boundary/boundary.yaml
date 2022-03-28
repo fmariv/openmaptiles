@@ -14,47 +14,15 @@ layer:
         The `admin_level` corresponds to the lowest `admin_level`
         the line participates in.
         At low zoom levels the Natural Earth boundaries are mapped to the equivalent admin levels.
-    adm0_l: |
-        State name on the left of the border. For country boundaries only (`admin_level = 2`).
-    adm0_r: |
-        State name on the right of the border. For country boundaries only (`admin_level = 2`).
-    disputed:
-      description: |
-          Mark with `1` if the border is disputed.
-      values: [0, 1]
-    disputed_name:
-      description: |
-          Field containing name of the disputed area (extracted from border relation in OSM, without spaces).
-          For country boundaries only (`admin_level = 2`).
-          Value examples from Asian OSM pbf extract
-      values:
-      - AbuMusaIsland
-      - BaraHotiiValleys
-      - ChineseClaim
-      - Crimea
-      - Demchok
-      - Dokdo
-      - IndianClaim-North
-      - IndianClaimwesternKashmir
-      - PakistaniClaim
-      - SamduValleys
-      - TirpaniValleys
-    claimed_by:
-      description: |
-          ISO2 code of country, which wants to see the boundary line.
-          For country boundaries only (`admin_level = 2`).
-    maritime:
-      description: |
-          Mark with `1` if it is a maritime border.
-      values: [0, 1]
     icgc_id:
       description:
           Identificador únic de l'ICGC.
-    minzoom: Pendent d'informar.
-    maxzoom: Pendent d'informar.
+    name: Nom de l'entitat.
+    class: Classe de l'entitat.
+    rank: Rang de l'entitat.
   buffer_size: 4
   datasource:
     geometry_field: geometry
-    query: (SELECT geometry, admin_level, adm0_l, adm0_r, disputed, disputed_name, claimed_by, maritime, icgc_id, minzoom, maxzoom FROM layer_boundary(!bbox!, z(!scale_denominator!))) AS t
+    query: (SELECT icgc_id, geometry, name, class, rank, admin_level FROM layer_boundary(!bbox!, z(!scale_denominator!))) AS t
 schema:
   - ./boundary.sql

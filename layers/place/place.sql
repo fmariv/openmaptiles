@@ -3,7 +3,6 @@
 CREATE OR REPLACE FUNCTION layer_place(bbox geometry, zoom_level int, pixel_width numeric)
     RETURNS TABLE
             (
-                osm_id         bigint,
                 icgc_id        bigint,
                 geometry       geometry,
                 name           text,
@@ -16,7 +15,6 @@ AS
 $$
 SELECT 
     -- icgc place
-    NULL::bigint AS osm_id,
     icgc_id,
     geom,
     name,
@@ -33,7 +31,7 @@ FROM icgc_data.place, (
                         ) AS muni
 WHERE zoom <= zoom_level 
     AND geom && bbox
-    AND ST_Disjoint(muni.muni_geom, icgc_data.place.geom);
+    AND ST_Intersects(muni.muni_geom, icgc_data.place.geom);
 $$ LANGUAGE SQL STABLE
                 PARALLEL SAFE;
 -- TODO: Check if the above can be made STRICT -- i.e. if pixel_width could be NULL

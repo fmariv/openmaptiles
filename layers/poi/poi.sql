@@ -41,7 +41,7 @@ FROM icgc_data.poi, (
 WHERE geom && bbox
     AND zoom_level >= zoom
     AND zoom <> 0
-    AND ST_Disjoint(muni.muni_geom, icgc_data.poi.geom)
+    AND ST_Intersects(muni.muni_geom, icgc_data.poi.geom)
 ;
 $$ LANGUAGE SQL STABLE
                 PARALLEL SAFE;

@@ -14,7 +14,7 @@ AS
 $$
  -- icgc boundary
  SELECT icgc_id,
-        geometry,
+        ST_Boundary(geometry),
         name,
         class,
         rank,

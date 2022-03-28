@@ -135,8 +135,16 @@ FROM (
                         'pedestrian', 'track', 'path', 'rail', 'gondola', 'chair_lift', 'cable_car', 
                         'magic_carpet', 'tram', 'funicular')
             AND zoom_level >= 13
-) AS icgc_zoom_levels
-WHERE geom && bbox;
+) AS zoom_levels,
+(
+SELECT geometry AS muni_geom 
+FROM icgc_data.boundary_div_admin 
+WHERE name = 'Santa Coloma de Gramenet' 
+AND class = 'municipi' 
+AND adminlevel IS NOT NULL
+) AS muni
+WHERE geom && bbox
+   AND ST_Disjoint(muni.muni_geom, zoom_levels.geom);
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

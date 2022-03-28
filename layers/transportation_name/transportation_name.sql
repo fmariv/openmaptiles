@@ -99,8 +99,16 @@ FROM (
         FROM icgc_test.transportation_name_bdu 
         WHERE zoom_level >= 13 
             AND name <> ''
-) as zoom_levels
-WHERE geom && bbox;
+) as zoom_levels,
+(
+SELECT geometry AS muni_geom 
+FROM icgc_data.boundary_div_admin 
+WHERE name = 'Santa Coloma de Gramenet' 
+AND class = 'municipi' 
+AND adminlevel IS NOT NULL
+) AS muni
+WHERE geom && bbox
+   AND ST_Disjoint(muni.muni_geom, zoom_levels.geom);
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

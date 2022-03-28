@@ -24,8 +24,16 @@ SELECT
     rank,
     codigeo,
     icgc_id_match
-FROM icgc_data.place
-WHERE zoom <= zoom_level and geom && bbox;
+FROM icgc_data.place, (
+                        SELECT geometry AS muni_geom 
+                        FROM icgc_data.boundary_div_admin 
+                        WHERE name = 'Santa Coloma de Gramenet' 
+                        AND class = 'municipi' 
+                        AND adminlevel IS NOT NULL
+                        ) AS muni
+WHERE zoom <= zoom_level 
+    AND geom && bbox
+    AND ST_Disjoint(muni.muni_geom, icgc_data.place.geom);
 $$ LANGUAGE SQL STABLE
                 PARALLEL SAFE;
 -- TODO: Check if the above can be made STRICT -- i.e. if pixel_width could be NULL

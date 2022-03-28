@@ -37,7 +37,16 @@ FROM (
                 NULL::int AS rank
          FROM icgc_data.park
          WHERE zoom_level >= 6 AND geom && bbox
-     ) AS park_all;
+     ) AS zoom_levels,
+     (
+        SELECT geometry AS muni_geom 
+        FROM icgc_data.boundary_div_admin 
+        WHERE name = 'Santa Coloma de Gramenet' 
+        AND class = 'municipi' 
+        AND adminlevel IS NOT NULL
+    ) AS muni
+WHERE ST_DISJOINT(muni.muni_geom, zoom_levels.geom)
+     ;
 $$ LANGUAGE SQL STABLE
                 PARALLEL SAFE;
 -- TODO: Check if the above can be made STRICT -- i.e. if pixel_width could be NULL

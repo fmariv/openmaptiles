@@ -52,7 +52,15 @@ FROM (
                 icgc_id
          FROM icgc_data.landcover_bt5m
          WHERE (zoom_level > 14 AND geom && bbox )
-     ) AS zoom_levels;
+     ) AS zoom_levels,
+     (SELECT geometry AS muni_geom 
+        FROM icgc_data.boundary_div_admin 
+        WHERE name = 'Santa Coloma de Gramenet' 
+        AND class = 'municipi' 
+        AND adminlevel IS NOT NULL
+      ) AS muni
+WHERE ST_DISJOINT(muni.muni_geom, zoom_levels.geom)
+     ;
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

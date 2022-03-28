@@ -3,34 +3,27 @@
 CREATE OR REPLACE FUNCTION layer_boundary(bbox geometry, zoom_level int)
     RETURNS TABLE
             (
-                icgc_id       bigint,
+                icgc_id       integer,
                 geometry      geometry,
-                admin_level   int,
-                adm0_l        text,
-                adm0_r        text,
-                disputed      int,
-                disputed_name text,
-                claimed_by    text,
-                maritime      int,
-                minzoom       int,
-                maxzoom       int
+                name          text,
+                class         text,
+                rank          bigint,
+                admin_level   bigint
             )
 AS
 $$
  -- icgc boundary
  SELECT icgc_id,
-        geom,
-        admin_level,
-        NULL::text AS adm0_l,
-        NULL::text AS adm9_r,
-        disputed,
-        NULL::text AS disputed_name,
-        NULL::text AS claimed_by,
-        maritime,
-        minzoom,
-        maxzoom
- FROM icgc_data.boundary
- WHERE (zoom_level BETWEEN minzoom AND maxzoom) AND geom && bbox;
+        geometry,
+        name,
+        class,
+        rank,
+        adminlevel as admin_level
+ FROM icgc_data.boundary_div_admin
+ WHERE geometry && bbox
+    AND name = 'Santa Coloma de Gramenet' 
+    AND class = 'municipi' 
+    AND adminlevel IS NOT NULL;
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

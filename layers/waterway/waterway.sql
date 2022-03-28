@@ -60,8 +60,16 @@ FROM (
             ((zoom_level BETWEEN 12 AND 13) AND (w.strahler_order > 2 OR w.jsel in ('3A','3B','3C','2A','2B') ) AND w.geom && bbox) OR
             ((zoom_level = 14)  AND (w.strahler_order >1 OR w.jsel in ('3A','3B','3C','2A','2B') ) AND w.geom && bbox) OR
             ((zoom_level >14)  AND w.geom && bbox) )
-     ) AS zoom_levels
-WHERE geom && bbox;
+     ) AS zoom_levels,
+     (
+        SELECT geometry AS muni_geom 
+        FROM icgc_data.boundary_div_admin 
+        WHERE name = 'Santa Coloma de Gramenet' 
+        AND class = 'municipi' 
+        AND adminlevel IS NOT NULL
+        ) AS muni
+WHERE geom && bbox
+   AND ST_Disjoint(muni.muni_geom, zoom_levels.geom);
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

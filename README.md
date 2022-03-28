@@ -153,14 +153,4 @@ En lloc de cridar `make download area=spain`, es pot afegir un fitxer .osm.pbf a
 
 ## Llicènsia
 
-Tot el codi d'aquest repositori es troba sota la [llicència BSD](./LICENSE.md) i les decisions de cartografia codificades a l'esquema i SQL tenen llicència [CC-BY](./LICENSE.md).
-
-Els productes o serveis que utilitzen mapes derivats de l'esquema OpenMapTiles han d'acreditar visiblement "OpenMapTiles.org" o fer referència a "OpenMapTiles" amb un enllaç a https://openmaptiles.org/. Es poden concedir excepcions al requisit d'atribució a petició.
-
-Per a un mapa electrònic navegable basat en dades d'OpenMapTiles i OpenStreetMap, el
-el crèdit hauria d'aparèixer a la cantonada del mapa. Per exemple:
-
-[© OpenMapTiles](https://openmaptiles.org/) [© Col·laboradors d'OpenStreetMap](https://www.openstreetmap.org/copyright)
-
-Per als mapes impresos i estàtics s'ha de fer una atribució similar en un textual
-descripció a prop de la imatge, de la mateixa manera que si es cita una fotografia.
+Tot el codi d'aquest repositori es troba sota la llicència de Reconeixement 4.0 Internacional de Creative Commons [ICGC/OSM](./LICENSE.md). Per aquest motiu, quan es reutilitza, només cal citar-ne l’autoria; no és necessari fer cap altre tràmit ni signar cap document.

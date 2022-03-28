@@ -12,7 +12,7 @@ CREATE OR REPLACE FUNCTION layer_transportation(bbox geometry, zoom_level int)
     RETURNS TABLE
             (
                 osm_id     bigint,
-                icgc_id    bigint,
+                icgc_id    int,
                 geometry   geometry,
                 class      text,
                 subclass   text,
@@ -50,9 +50,9 @@ SELECT osm_id,
        layer,
        level,
        indoor,
-       surface,
        d_categori,
        codi_via,
+       surface,
        observacio
 FROM (
         -- z_6_8mtc_vials
@@ -73,9 +73,9 @@ FROM (
             NULL::int AS layer,
             NULL::int AS level,
             NULL::int AS indoor,
-            NULL::text AS surface,
             layer as d_categori,
             codi_via,
+            NULL::text AS surface,
             NULL::text AS observacio
         FROM icgc_data.z_6_8_mtc_vials 
         WHERE zoom_level BETWEEN 6 AND 8
@@ -85,7 +85,7 @@ FROM (
         SELECT
             NULL::bigint AS osm_id,
             icgc_id,
-            geom,
+            geometry,
             class,
             subclass,
             ramp,
@@ -99,20 +99,20 @@ FROM (
             layer,
             level,
             indoor,
-            surface,
             d_categori,
             codi_via,
+            surface,
             observacio
         FROM icgc_test.transportation_bdu
-            AND class IN ('motorway', 'primary', 'tertiary', 'secondary', 'minor')
-        WHERE zoom_level BETWEEN 9 AND 12
+        WHERE class IN ('motorway', 'primary', 'tertiary', 'secondary', 'minor')
+        	AND zoom_level BETWEEN 9 AND 12
         UNION ALL
 
         -- transportation_bdu
         SELECT
             NULL::bigint AS osm_id,
             icgc_id,
-            geom,
+            geometry,
             class,
             subclass,
             ramp,
@@ -126,11 +126,11 @@ FROM (
             layer,
             level,
             indoor,
-            surface,
             d_categori,
             codi_via,
+            surface,
             observacio
-        FROM icgc_data.transportation_bdu 
+        FROM icgc_test.transportation_bdu 
         WHERE zoom_level >= 13
 ) AS icgc_zoom_levels
 WHERE geom && bbox;

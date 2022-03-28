@@ -11,7 +11,6 @@ tileset:
     #- layers/water_name/water_name.yaml
     - layers/transportation_name/transportation_name.yaml
     - layers/place/place.yaml
-    - layers/place/place.yaml
     - layers/poi/poi.yaml
     - layers/aerodrome_label/aerodrome_label.yaml
     - layers/contour/contour.yaml

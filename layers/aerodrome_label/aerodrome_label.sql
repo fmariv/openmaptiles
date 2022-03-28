@@ -43,7 +43,7 @@ FROM icgc_data.aerodrome_label, (
                                 ) AS muni
 WHERE zoom_level >= 10 
    AND geom && bbox
-   AND ST_Disjoint(muni.muni_geom, icgc_data.aerodrome_label.geom);
+   AND ST_Intersects(muni.muni_geom, icgc_data.aerodrome_label.geom);
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

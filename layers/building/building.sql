@@ -139,7 +139,7 @@ FROM (
         AND class = 'municipi' 
         AND adminlevel IS NOT NULL
       ) AS muni
-WHERE ST_Disjoint(muni.muni_geom, zoom_levels.geom)
+WHERE ST_Intersects(muni.muni_geom, zoom_levels.geom)
 ORDER BY render_height ASC, ST_YMin(geom) DESC;
 $$ LANGUAGE SQL STABLE
                 -- STRICT

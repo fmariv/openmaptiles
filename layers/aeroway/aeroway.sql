@@ -28,7 +28,7 @@ FROM (
         AND adminlevel IS NOT NULL
         ) AS muni
 WHERE geom && bbox
-   AND ST_Disjoint(muni.muni_geom, zoom_levels.geom);
+   AND ST_Intersects(muni.muni_geom, zoom_levels.geom);
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

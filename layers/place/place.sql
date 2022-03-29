@@ -7,7 +7,7 @@ CREATE OR REPLACE FUNCTION layer_place(bbox geometry, zoom_level int, pixel_widt
                 geometry       geometry,
                 name           text,
                 class          text,
-                "rank"         integer,
+                "rank"         bigint,
                 codi_geogr     text,
                 estat          text,
                 codi_estat     text,
@@ -27,7 +27,37 @@ SELECT
     codi_estat,
     concepte_g
 FROM icgc_test.toponimia_mundial
-WHERE geom && bbox;
+WHERE geom && bbox
+UNION ALL
+
+SELECT 
+    -- icgc place
+    icgc_id,
+    geometry,
+    nom,
+    class,
+    rank,
+    NULL::text AS codi_geogr,
+    estat,
+    sov_a3,
+    NULL::text AS concepte_g
+FROM icgc_data.admin_0_p
+WHERE geometry && bbox
+UNION ALL
+
+SELECT 
+    -- icgc place
+    icgc_id,
+    geometry,
+    nom,
+    class,
+    rank,
+    NULL::text AS codi_geogr,
+    estat,
+    sov_a3,
+    NULL::text AS concepte_g
+FROM icgc_data.admin_0_p
+WHERE geometry && bbox;
 $$ LANGUAGE SQL STABLE
                 PARALLEL SAFE;
 -- TODO: Check if the above can be made STRICT -- i.e. if pixel_width could be NULL

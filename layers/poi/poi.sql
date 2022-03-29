@@ -7,6 +7,7 @@ CREATE OR REPLACE FUNCTION layer_poi(bbox geometry, zoom_level integer, pixel_wi
                 icgc_id        bigint,
                 geometry       geometry,
                 name           text,
+                "name:latin"   text,
                 class          text,
                 subclass       text,
                 categoria      text,
@@ -14,7 +15,7 @@ CREATE OR REPLACE FUNCTION layer_poi(bbox geometry, zoom_level integer, pixel_wi
                 "rank"         int,
                 classicgc      text,
                 icgc_id_match  bigint
-                -- No s'inclou zoom per què dona error al generar les mbtiles
+                icgc_zoom      int
             )
 AS
 $$
@@ -24,13 +25,15 @@ SELECT
        icgc_id,
        geom,
        name,
+       name AS "name:latin",
        class,
        subclass,
        categoria,
        layer,
        rank,
        classicgc,
-       icgc_id_match
+       icgc_id_match,
+       zoom AS icgc_zoom
 FROM icgc_data.poi, (
                     SELECT geometry AS muni_geom 
                     FROM icgc_data.boundary_div_admin 

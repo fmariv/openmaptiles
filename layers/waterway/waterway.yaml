@@ -17,6 +17,7 @@ layer:
     name: |
         The OSM [`name`](http://wiki.openstreetmap.org/wiki/Key:name) value of the waterway.
         The `name` field may be empty for NaturalEarth data or at lower zoom levels.
+    "name:latin": Name of the waterway.
     class:
       description: |
         The original value of the [`waterway`](http://wiki.openstreetmap.org/wiki/Key:waterway) tag.
@@ -32,9 +33,6 @@ layer:
     entorn: Pendent d'informar.
   datasource:
     geometry_field: geometry
-    query: (SELECT geometry, name, class, icgc_id, entorn FROM layer_waterway(!bbox!, z(!scale_denominator!))) AS t
+    query: (SELECT geometry, name, "name:latin", class, icgc_id, entorn FROM layer_waterway(!bbox!, z(!scale_denominator!))) AS t
 schema:
   - ./waterway.sql
-datasources:
-  - type: imposm3
-    mapping_file: ./mapping.yaml

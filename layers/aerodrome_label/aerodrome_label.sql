@@ -5,18 +5,19 @@ CREATE OR REPLACE FUNCTION layer_aerodrome_label(bbox geometry,
                                                  zoom_level integer)
     RETURNS TABLE
             (
-                id       bigint,
-                icgc_id  bigint,
-                geometry geometry,
-                name     text,
-                name_en  text,
-                name_de  text,
-                tags     hstore,
-                class    text,
-                iata     text,
-                icao     text,
-                ele      int,
-                ele_ft   int
+                id              bigint,
+                icgc_id         bigint,
+                geometry        geometry,
+                name            text,
+                "name:latin"    text,
+                name_en         text,
+                name_de         text,
+                tags            hstore,
+                class           text,
+                iata            text,
+                icao            text,
+                ele             int,
+                ele_ft          int
             )
 AS
 $$
@@ -27,6 +28,7 @@ SELECT
     NULL::int as icgc_id,
     oalp.geometry,
     oalp.name,
+    oalp.name AS "name:latin",
     COALESCE(NULLIF(name_en, ''), name) AS name_en,
     COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
     oalp.tags,
@@ -50,6 +52,7 @@ SELECT
     NULL::int as icgc_id,
     oalp.geometry,
     oalp.name,
+    oalp.name AS "name:latin"
     COALESCE(NULLIF(name_en, ''), name) AS name_en,
     COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
     oalp.tags,
@@ -71,6 +74,7 @@ SELECT
     icgc_id,
     geom,
     name,
+    name AS "name:latin",
     name_en,
     name_de,
     NULL::hstore AS tags,

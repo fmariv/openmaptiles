@@ -8,10 +8,12 @@ CREATE OR REPLACE FUNCTION layer_place(bbox geometry, zoom_level int, pixel_widt
                 icgc_id        bigint,
                 geometry       geometry,
                 name           text,
+                "name:latin"   text,
                 class          text,
                 "rank"         integer,
                 codigeo        integer,
                 icgc_id_match  bigint
+                icgc_zoom      smallint
             )
 AS
 $$
@@ -21,10 +23,12 @@ SELECT
     icgc_id,
     geom,
     name,
+    name AS "name:latin",
     class,
     rank,
     codigeo,
-    icgc_id_match
+    icgc_id_match,
+    zoom AS icgc_zoom
 FROM icgc_data.place
 WHERE zoom <= zoom_level and geom && bbox
 
@@ -37,7 +41,8 @@ SELECT osm_id,
        class,
        rank,
        NULL::int AS codigeo,
-       NULL::int AS icgc_id_match
+       NULL::int AS icgc_id_match,
+       NULL::int AS icgc_zoom
 FROM (
          SELECT
              -- etldoc: osm_continent_point -> layer_place:z0_3

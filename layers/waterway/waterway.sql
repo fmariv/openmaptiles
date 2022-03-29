@@ -8,6 +8,7 @@ CREATE OR REPLACE FUNCTION layer_waterway(bbox geometry, zoom_level int)
                 geometry     geometry,
                 class        text,
                 name         text,
+                "name:latin" text,
                 entorn       text
             )
 AS
@@ -16,6 +17,7 @@ SELECT icgc_id,
        geometry,
        class,
        NULLIF(name, '') AS name,
+       name AS "name:latin",
        entorn
 FROM (
          -- etldoc: waterway_z3 ->  layer_waterway:z3

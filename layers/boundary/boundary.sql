@@ -44,7 +44,7 @@ SELECT icgc_id,
        NULL::text AS claimed_by,
        maritime
 FROM icgc_data.boundary_mon_1_l
-WHERE adm_level IN (2, 3, 4, 6)
+WHERE adm_level IN (2, 3, 4, 5, 6, 7)
    AND maritime = 1
    AND geometry && bbox
 UNION ALL 
@@ -60,11 +60,9 @@ SELECT icgc_id,
        NULL::text AS claimed_by,
        maritime
 FROM icgc_data.boundary_mon_1_l
-WHERE adm_level IN (3, 4, 6, 7, 8)
+WHERE adm_level IN ( 3, 4, 5, 6, 7, 8)
     AND maritime = 0
     AND geometry && bbox;
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;
-
-

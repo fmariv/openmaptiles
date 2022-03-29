@@ -56,7 +56,7 @@ SELECT
     estat,
     sov_a3,
     NULL::text AS concepte_g
-FROM icgc_data.admin_0_p
+FROM icgc_data.admin_1_p
 WHERE geometry && bbox;
 $$ LANGUAGE SQL STABLE
                 PARALLEL SAFE;

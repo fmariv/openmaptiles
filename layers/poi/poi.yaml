@@ -138,9 +138,9 @@ layer:
         Pendent d'informar.
   datasource:
     geometry_field: geometry
-    key_field: osm_id
+    key_field: icgc_id
     key_field_as_attribute: no
     srid: 900913
-    query: (SELECT icgc_id, geometry, name, "name:latin", class, subclass, layer, rank, icgc_id, categoria, classicgc, icgc_id_match, icgc_zoom FROM layer_poi(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
+    query: (SELECT icgc_id, geometry, name, "name:latin", class, subclass, layer, rank, categoria, classicgc, icgc_id_match, icgc_zoom FROM layer_poi(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
 schema:
   - ./poi.sql

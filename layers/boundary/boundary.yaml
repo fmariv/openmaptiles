@@ -51,10 +51,9 @@ layer:
       description:
           Identificador únic de l'ICGC.
     name: Nom de l'entitat.
-    "name:latin": Nom de l'entitat.
   buffer_size: 4
   datasource:
     geometry_field: geometry
-    query: (SELECT geometry, name, "name:latin", admin_level, adm0_l, adm0_r, disputed, disputed_name, claimed_by, maritime, icgc_id FROM layer_boundary(!bbox!, z(!scale_denominator!))) AS t
+    query: (SELECT geometry, name, admin_level, adm0_l, adm0_r, disputed, disputed_name, claimed_by, maritime, icgc_id FROM layer_boundary(!bbox!, z(!scale_denominator!))) AS t
 schema:
   - ./boundary.sql

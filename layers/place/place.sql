@@ -14,12 +14,13 @@ $$
 SELECT 
     -- icgc place
     icgc_id,
-    geom,
+    geometry,
     name,
     class,
     rank
 FROM icgc_data.place_div_admin
-WHERE geom && bbox;
+WHERE geometry && bbox
+    AND zoom_level >= 6;
 $$ LANGUAGE SQL STABLE
                 PARALLEL SAFE;
 -- TODO: Check if the above can be made STRICT -- i.e. if pixel_width could be NULL

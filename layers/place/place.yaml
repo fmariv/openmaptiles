@@ -46,16 +46,12 @@ layer:
           within a grid for cities that do not have a Natural Earth `scalerank`.
     icgc_id:
       description:
-          Identificador únic de l'ICGC.  
-    codi_geogr: Pendent d'informar.
-    estat: Pendent d'informar.
-    codi_estat: Pendent d'informar.
-    concepte_g: Pendent d'informar.
+          Identificador únic de l'ICGC. 
   buffer_size: 256
   datasource:
     geometry_field: geometry
     key_field: icgc_id
     key_field_as_attribute: no
-    query: (SELECT icgc_id, geometry, name, class, rank, codi_geogr, estat, codi_estat, concepte_g FROM layer_place(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
+    query: (SELECT icgc_id, geometry, name, class, rank FROM layer_place(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
 schema:
   - ./place.sql

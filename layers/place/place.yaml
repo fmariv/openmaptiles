@@ -7,6 +7,7 @@ layer:
       We suggest you use different font styles and sizes to create a text hierarchy.
   fields:
     name: The OSM [`name`](http://wiki.openstreetmap.org/wiki/Key:name) value of the POI.
+    "name:latin": The name of the POI.
     class:
       description: |
           Original value of the
@@ -56,6 +57,6 @@ layer:
     geometry_field: geometry
     key_field: icgc_id
     key_field_as_attribute: no
-    query: (SELECT icgc_id, geometry, name, class, rank, codi_geogr, estat, codi_estat, concepte_g FROM layer_place(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
+    query: (SELECT icgc_id, geometry, name, "name:latin", class, rank, codi_geogr, estat, codi_estat, concepte_g FROM layer_place(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
 schema:
   - ./place.sql

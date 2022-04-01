@@ -5,7 +5,7 @@ CREATE OR REPLACE FUNCTION layer_boundary(bbox geometry, zoom_level int)
             (
                 icgc_id       int,
                 geometry      geometry,
-                nom           text,
+                name          text,
                 admin_level   bigint,
                 adm0_l        text,
                 adm0_r        text,
@@ -18,7 +18,7 @@ AS
 $$
 SELECT icgc_id,
        geometry,
-       nom,
+       name,
        adm_level,
        adm0_l,
        adm0_r,
@@ -35,7 +35,7 @@ UNION ALL
 
 SELECT icgc_id,
        geometry,
-       nom,
+       name,
        adm_level,
        adm0_l,
        adm0_r,
@@ -51,7 +51,7 @@ UNION ALL
 
 SELECT icgc_id,
        geometry,
-       nom,
+       name,
        adm_level,
        adm0_l,
        adm0_r,

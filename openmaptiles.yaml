@@ -1,6 +1,6 @@
 tileset:
   layers:
-    #- layers/water/water.yaml
+    - layers/water/water.yaml
     #- layers/waterway/waterway.yaml
     #- layers/landcover/landcover.yaml
     #- layers/park/park.yaml

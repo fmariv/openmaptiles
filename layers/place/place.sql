@@ -7,11 +7,7 @@ CREATE OR REPLACE FUNCTION layer_place(bbox geometry, zoom_level int, pixel_widt
                 geometry       geometry,
                 name           text,
                 class          text,
-                "rank"         integer,
-                codi_geogr     text,
-                estat          text,
-                codi_estat     text,
-                concepte_g     text
+                "rank"         bigint
             )
 AS
 $$
@@ -21,12 +17,8 @@ SELECT
     geom,
     name,
     class,
-    rank,
-    codi_geogr,
-    estat,
-    codi_estat,
-    concepte_g
-FROM icgc_test.toponimia_mundial
+    rank
+FROM icgc_data.place_div_admin
 WHERE geom && bbox;
 $$ LANGUAGE SQL STABLE
                 PARALLEL SAFE;

@@ -12,16 +12,44 @@ CREATE OR REPLACE FUNCTION layer_boundary(bbox geometry, zoom_level int)
             )
 AS
 $$
-SELECT id AS icgc_id,
+SELECT icgc_id,
        geometry,
-       'Comunitat Autònom de Catalunya' AS name,
-       'Comunitat Autònom' AS class,
-       NULL::int AS rank,
-       2 AS adminlevel
-FROM icgc_data.catalunya
-WHERE geometry && bbox
+       name,
+       class,
+       rank,
+       adminlevel
+FROM icgc_data.boundary_div_admin
+WHERE class = 'country'
+   AND adminlevel IS NOT NULL
+   AND geometry && bbox
    AND zoom_level >= 6
 UNION ALL 
+
+SELECT icgc_id,
+       geometry,
+       name,
+       class,
+       rank,
+       adminlevel
+FROM icgc_data.boundary_div_admin
+WHERE class = 'provincia' 
+   AND adminlevel IS NOT NULL
+   AND geometry && bbox
+   AND zoom_level >= 6
+UNION ALL 
+
+SELECT icgc_id,
+       geometry,
+       name,
+       class,
+       rank,
+       adminlevel
+FROM icgc_data.boundary_div_admin
+WHERE class = 'vegueria' 
+   AND adminlevel IS NOT NULL
+   AND geometry && bbox
+   AND zoom_level >= 6
+UNION ALL
 
 SELECT icgc_id,
        geometry,
@@ -33,7 +61,7 @@ FROM icgc_data.boundary_div_admin
 WHERE class = 'comarca' 
    AND adminlevel IS NOT NULL
    AND geometry && bbox
-   AND zoom_level >= 8
+   AND zoom_level >= 6
 UNION ALL 
 
 SELECT icgc_id,
@@ -46,7 +74,7 @@ FROM icgc_data.boundary_div_admin
 WHERE class = 'municipi' 
    AND adminlevel IS NOT NULL
    AND geometry && bbox
-   AND zoom_level >= 10;
+   AND zoom_level >= 6;
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

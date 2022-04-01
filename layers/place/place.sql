@@ -34,7 +34,7 @@ SELECT
     -- icgc place
     icgc_id,
     geometry,
-    nom,
+    name,
     class,
     rank,
     NULL::text AS codi_geogr,
@@ -49,7 +49,7 @@ SELECT
     -- icgc place
     icgc_id,
     geometry,
-    nom,
+    name,
     class,
     rank,
     NULL::text AS codi_geogr,

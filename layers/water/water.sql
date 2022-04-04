@@ -22,7 +22,7 @@ $$ LANGUAGE SQL IMMUTABLE
 
 -- etldoc:     layer_water [shape=record fillcolor=lightpink, style="rounded,filled",
 -- etldoc:     label="layer_water |<z0> z0|<z1>z1|<z2>z2|<z3>z3 |<z4> z4|<z5>z5|<z6>z6|<z7>z7| <z8> z8 |<z9> z9 |<z10> z10 |<z11> z11 |<z12> z12+" ] ;
-
+DROP FUNCTION IF EXISTS layer_water(bbox geometry, zoom_level int);
 CREATE OR REPLACE FUNCTION layer_water(bbox geometry, zoom_level int)
     RETURNS TABLE
             (
@@ -73,21 +73,20 @@ FROM (
                 null::BOOLEAN as is_tunnel,
                 icgc_id
          FROM icgc_data.water_z_10_11_carto
-         WHERE (zoom_level BETWEEN 10 AND 11 ) AND geom && bbox
-         UNION ALL
+         WHERE (zoom_level BETWEEN 10 AND 11 ) AND geom && bbox) 
+         AS zoom_levels
+WHERE geom && bbox
+UNION ALL
 
-         -- water
-         SELECT 
-                geom,
-                class,
-                NULL::BOOLEAN AS is_intermittent,
-                NULL::BOOLEAN AS is_bridge,
-                null::BOOLEAN as is_tunnel,
-                icgc_id
-         FROM icgc_data.water
-         WHERE zoom_level >= 12 AND geom && bbox
-     ) AS zoom_levels
-WHERE geom && bbox;
+-- water5m
+SELECT 
+    geometry,
+    class,
+    brunnel,
+    CAST(intermittent AS int),
+    icgc_id
+FROM icgc_data.water5m
+WHERE zoom_level >= 12 AND geometry && bbox;
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

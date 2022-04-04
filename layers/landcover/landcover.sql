@@ -1,3 +1,4 @@
+DROP FUNCTION IF EXISTS layer_landcover(bbox geometry, zoom_level int);
 CREATE OR REPLACE FUNCTION layer_landcover(bbox geometry, zoom_level int)
     RETURNS TABLE
             (

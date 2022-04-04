@@ -1,6 +1,6 @@
 -- etldoc: layer_transportation_name[shape=record fillcolor=lightpink, style="rounded,filled",
 -- etldoc:     label="layer_transportation_name | <z6> z6 | <z7> z7 | <z8> z8 |<z9> z9 |<z10> z10 |<z11> z11 |<z12> z12|<z13> z13|<z14_> z14+" ] ;
-
+DROP FUNCTION IF EXISTS layer_transportation_name(bbox geometry, zoom_level integer);
 CREATE OR REPLACE FUNCTION layer_transportation_name(bbox geometry, zoom_level integer)
     RETURNS TABLE
             (

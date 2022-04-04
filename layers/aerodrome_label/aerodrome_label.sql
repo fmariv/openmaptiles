@@ -1,8 +1,7 @@
 
 -- etldoc: layer_aerodrome_label[shape=record fillcolor=lightpink, style="rounded,filled", label="layer_aerodrome_label | <z8> z8 | <z9> z9 | <z10_> z10+" ] ;
-
-CREATE OR REPLACE FUNCTION layer_aerodrome_label(bbox geometry,
-                                                 zoom_level integer)
+DROP FUNCTION IF EXISTS layer_aerodrome_label(bbox geometry, zoom_level integer);
+CREATE OR REPLACE FUNCTION layer_aerodrome_label(bbox geometry, zoom_level integer)
     RETURNS TABLE
             (
                 id              bigint,

@@ -1,5 +1,6 @@
 -- etldoc: layer_poi[shape=record fillcolor=lightpink, style="rounded,filled",
 -- etldoc:     label="layer_poi | <z12> z12 | <z13> z13 | <z14_> z14+" ] ;
+DROP FUNCTION IF EXISTS layer_poi(bbox geometry, zoom_level integer, pixel_width numeric);
 CREATE OR REPLACE FUNCTION layer_poi(bbox geometry, zoom_level integer, pixel_width numeric)
     RETURNS TABLE
             (

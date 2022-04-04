@@ -151,21 +151,21 @@ FROM (
                 null::BOOLEAN as is_tunnel,
                 icgc_id
          FROM icgc_data.water_z_10_11_carto
-         WHERE (zoom_level BETWEEN 10 AND 11 ) AND geom && bbox
-         UNION ALL
+         WHERE (zoom_level BETWEEN 10 AND 11 ) AND geom && bbox)
+        AS zoom_levels
+WHERE geometry && bbox
+UNION ALL
 
-         -- water
-         SELECT 
-                geom,
-                class,
-                NULL::BOOLEAN AS is_intermittent,
-                NULL::BOOLEAN AS is_bridge,
-                null::BOOLEAN as is_tunnel,
-                icgc_id
-         FROM icgc_data.water
-         WHERE zoom_level >= 12 AND geom && bbox
-     ) AS zoom_levels
-WHERE geometry && bbox;
+-- water5m
+SELECT 
+    geometry,
+    class,
+    brunnel,
+    CAST(intermittent AS int),
+    icgc_id
+FROM icgc_data.water5m
+WHERE zoom_level >= 12 AND geometry && bbox
+;
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

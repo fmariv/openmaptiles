@@ -1,6 +1,6 @@
 -- etldoc: layer_building[shape=record fillcolor=lightpink, style="rounded,filled",
 -- etldoc:     label="layer_building | <z13> z13 | <z14_> z14+ " ] ;
-
+DROP FUNCTION IF EXISTS layer_building(bbox geometry, zoom_level int);
 CREATE OR REPLACE FUNCTION layer_building(bbox geometry, zoom_level int)
     RETURNS TABLE
             (

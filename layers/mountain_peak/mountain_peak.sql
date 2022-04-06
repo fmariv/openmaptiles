@@ -4,12 +4,12 @@
 CREATE OR REPLACE FUNCTION layer_mountain_peak(bbox geometry, zoom_level integer, pixel_width numeric)
     RETURNS TABLE
             (
-                icgc_id      bigint,
+                icgc_id      int,
                 geometry     geometry,
                 name         text,
                 "name:latin" text,
                 class        text,
-                codigeo      int,
+                codigeo      bigint,
                 mtc1m        text,
                 mtc2m        text,
                 layer        text

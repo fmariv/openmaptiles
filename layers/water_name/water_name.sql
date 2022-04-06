@@ -4,12 +4,12 @@ DROP FUNCTION IF EXISTS layer_water_name(bbox geometry, zoom_level integer);
 CREATE OR REPLACE FUNCTION layer_water_name(bbox geometry, zoom_level integer)
     RETURNS TABLE
             (
-                icgc_id      bigint,
+                icgc_id      int,
                 geometry     geometry,
                 name         text,
                 "name:latin" text,
                 class        text,
-                codigeo      int,
+                codigeo      bigint,
                 mtc1m        text,
                 mtc2m        text,
                 layer        text

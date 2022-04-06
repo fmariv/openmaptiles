@@ -9,41 +9,27 @@ CREATE OR REPLACE FUNCTION layer_water_name(bbox geometry, zoom_level integer)
                 name         text,
                 "name:latin" text,
                 class        text,
-                icgc_zoom    smallint,
-                rank         smallint,
                 codigeo      int,
-                fontsize     float
+                mtc1m        text,
+                mtc2m        text,
+                layer        text
             )
 AS
 $$
 SELECT 
      -- water_name icgc
-     w.icgc_id,
-     w.geom,
-     w.name,
+     icgc_id,
+     geometry,
+     name,
      name AS "name:latin",
-     w.class,
-     w.zoom AS icgc_zoom,
-     w.rank,
-     w.codigeo,
-     w.fontsize
-FROM icgc_data.water_name w
-WHERE zoom_level >= w.zoom AND w.geom && bbox
-UNION ALL
-
-SELECT
-     -- waterway icgc
-     w.icgc_id,
-     w.geom,
-     w.name,
-     name AS "name:latin",
-     w.class,
-     w.zoom AS icgc_zoom,
-     w.rank,
-     w.codigeo,
-     w.fontsize
-FROM icgc_data.waterway w
-WHERE zoom_level >= w.zoom AND w.geom && bbox;
+     class,
+     codigeo,
+     mtc1m,
+     mtc2m,
+     layer
+FROM icgc_test.mtc1m
+WHERE geometry && bbox
+   AND layer = 'water_name';
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

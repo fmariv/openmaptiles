@@ -6,6 +6,9 @@ layer:
       Apart from the roads this is also one of the more important layers to create a beautiful map.
       We suggest you use different font styles and sizes to create a text hierarchy.
   fields:
+    icgc_id:
+      description:
+          Identificador únic de l'ICGC.  
     name: The OSM [`name`](http://wiki.openstreetmap.org/wiki/Key:name) value of the POI.
     "name:latin": Name of the POI.
     class:
@@ -45,17 +48,15 @@ layer:
           and states and for cities consists out of a shifted
           Natural Earth `scalerank` combined with a local rank
           within a grid for cities that do not have a Natural Earth `scalerank`.
-    icgc_id:
-      description:
-          Identificador únic de l'ICGC.  
     codigeo: Pendent d'informar.
-    icgc_id_match: Pendent d'informar.
-    icgc_zoom: Pendent d'informar.
+    mtc1m: Pendent d'informar.
+    mtc2m: Pendent d'informar.
+    layer: Pendent d'informar.
   buffer_size: 256
   datasource:
     geometry_field: geometry
     key_field: icgc_id
     key_field_as_attribute: no
-    query: (SELECT icgc_id, geometry, name, "name:latin", class, rank, codigeo, icgc_id_match, icgc_zoom FROM layer_place(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
+    query: (SELECT icgc_id, geometry, name, "name:latin", class, codigeo, mtc1m, mtc2m, layer FROM layer_place(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
 schema:
   - ./place.sql

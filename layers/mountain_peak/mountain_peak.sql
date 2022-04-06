@@ -1,7 +1,7 @@
--- etldoc: layer_place[shape=record fillcolor=lightpink, style="rounded,filled",
--- etldoc:     label="layer_place | <z0_3> z0-3|<z4_7> z4-7|<z8_11> z8-11| <z12_14> z12-z14+" ] ;
-DROP FUNCTION IF EXISTS layer_place(bbox geometry, zoom_level int, pixel_width numeric);
-CREATE OR REPLACE FUNCTION layer_place(bbox geometry, zoom_level int, pixel_width numeric)
+-- etldoc: layer_mountain_peak[shape=record fillcolor=lightpink,
+-- etldoc:     style="rounded,filled", label="layer_mountain_peak | <z7_> z7+ | <z13_> z13+" ] ;
+
+CREATE OR REPLACE FUNCTION layer_mountain_peak(bbox geometry, zoom_level integer, pixel_width numeric)
     RETURNS TABLE
             (
                 icgc_id      bigint,
@@ -17,7 +17,7 @@ CREATE OR REPLACE FUNCTION layer_place(bbox geometry, zoom_level int, pixel_widt
 AS
 $$
 SELECT 
-     -- place icgc
+     -- mountain_peak icgc
      icgc_id,
      geometry,
      name,
@@ -29,7 +29,8 @@ SELECT
      layer
 FROM icgc_test.mtc1m
 WHERE geometry && bbox
-   AND layer = 'place';
+   AND layer = 'mountain_peak';
+
 $$ LANGUAGE SQL STABLE
                 PARALLEL SAFE;
 -- TODO: Check if the above can be made STRICT -- i.e. if pixel_width could be NULL

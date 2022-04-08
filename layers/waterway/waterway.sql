@@ -57,7 +57,7 @@ FROM (
                 name,
                 NULL::text AS entorn
          FROM icgc_data.waterway5m
-         WHERE zoom >= 12
+         WHERE zoom_level >= 12
      ) AS zoom_levels
 WHERE geom && bbox;
 $$ LANGUAGE SQL STABLE

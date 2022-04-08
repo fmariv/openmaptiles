@@ -300,3 +300,10 @@ INTO icgc_data.z_9_10mtc_poblament_poligon
 FROM z_9_10mtc_poblament_poligon;
 CREATE INDEX idx_z_9_10mtc_poblament_poligon_geom ON icgc_data.z_9_10mtc_poblament_poligon USING gist (geom);
 DROP TABLE public.z_9_10mtc_poblament_poligon;
+
+-- waterway
+SELECT *
+INTO icgc_data.waterway
+FROM waterway;
+CREATE INDEX idx_waterway_geom ON icgc_data.waterway USING gist (geom);
+DROP TABLE public.waterway;

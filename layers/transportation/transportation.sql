@@ -8,6 +8,7 @@ $$ LANGUAGE SQL IMMUTABLE
 
 -- etldoc: layer_transportation[shape=record fillcolor=lightpink, style="rounded,filled",
 -- etldoc: label="<sql> layer_transportation |<z4> z4 |<z5> z5 |<z6> z6 |<z7> z7 |<z8> z8 |<z9> z9 |<z10> z10 |<z11> z11 |<z12> z12|<z13> z13|<z14_> z14+" ] ;
+DROP FUNCTION IF EXISTS layer_transportation(bbox geometry, zoom_level int);
 CREATE OR REPLACE FUNCTION layer_transportation(bbox geometry, zoom_level int)
     RETURNS TABLE
             (
@@ -131,7 +132,10 @@ FROM (
             surface,
             observacio
         FROM icgc_test.transportation_bdu 
-        WHERE zoom_level >= 13
+        WHERE class IN ('motorway', 'primary', 'secondary', 'tertiary', 'minor', 'busway', 'service', 
+                        'pedestrian', 'track', 'path', 'rail', 'gondola', 'chair_lift', 'cable_car', 
+                        'magic_carpet', 'tram', 'funicular')
+            AND zoom_level >= 13
 ) AS icgc_zoom_levels
 WHERE geom && bbox;
 $$ LANGUAGE SQL STABLE

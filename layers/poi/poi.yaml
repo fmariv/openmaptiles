@@ -7,6 +7,7 @@ layer:
   srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over
   fields:
     name: The OSM [`name`](http://wiki.openstreetmap.org/wiki/Key:name) value of the POI.
+    "name:latin": Name of the POI.
     class:
       description: |
         More general classes of POIs. If there is no more general `class` for the `subclass`
@@ -132,11 +133,14 @@ layer:
     icgc_id_match:
       description:
         Pendent d'informar.
+    icgc_zoom:
+      description:
+        Pendent d'informar.
   datasource:
     geometry_field: geometry
-    key_field: osm_id
+    key_field: icgc_id
     key_field_as_attribute: no
     srid: 900913
-    query: (SELECT osm_id, geometry, name, class, subclass, layer, rank, icgc_id, categoria, classicgc, icgc_id_match FROM layer_poi(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
+    query: (SELECT icgc_id, geometry, name, "name:latin", class, subclass, layer, rank, categoria, classicgc, icgc_id_match, icgc_zoom FROM layer_poi(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
 schema:
   - ./poi.sql

@@ -1,6 +1,6 @@
 -- etldoc: layer_waterway[shape=record fillcolor=lightpink, style="rounded,filled",
 -- etldoc: label="layer_waterway | <z3> z3 |<z4> z4 |<z5> z5 |<z6> z6 |<z7> z7 |<z8> z8 | <z9> z9 |<z10> z10 |<z11> z11 |<z12> z12|<z13> z13|<z14> z14+" ];
-
+DROP FUNCTION IF EXISTS layer_waterway(bbox geometry, zoom_level int);
 CREATE OR REPLACE FUNCTION layer_waterway(bbox geometry, zoom_level int)
     RETURNS TABLE
             (   
@@ -8,6 +8,7 @@ CREATE OR REPLACE FUNCTION layer_waterway(bbox geometry, zoom_level int)
                 geometry     geometry,
                 class        text,
                 name         text,
+                "name:latin" text,
                 entorn       text
             )
 AS
@@ -16,6 +17,7 @@ SELECT icgc_id,
        geom,
        class,
        NULLIF(name, '') AS name,
+       name AS "name:latin",
        entorn
 FROM (
          -- icgc waterway_z_7_8_carto
@@ -48,18 +50,14 @@ FROM (
          WHERE (zoom_level BETWEEN 10 AND 11) AND geom && bbox
          UNION ALL
 
-         -- waterway strahler
+         -- waterway5m
          SELECT icgc_id,
-                geom,
+                geometry,
                 class,
                 name,
-                entorn
-         FROM icgc_data.waterway_bt5mv30_strahler w
-         WHERE 
-         (w.entorn <> 'UR' ) AND (
-            ((zoom_level BETWEEN 12 AND 13) AND (w.strahler_order > 2 OR w.jsel in ('3A','3B','3C','2A','2B') ) AND w.geom && bbox) OR
-            ((zoom_level = 14)  AND (w.strahler_order >1 OR w.jsel in ('3A','3B','3C','2A','2B') ) AND w.geom && bbox) OR
-            ((zoom_level >14)  AND w.geom && bbox) )
+                NULL::text AS entorn
+         FROM icgc_data.waterway5m
+         WHERE zoom >= 12
      ) AS zoom_levels
 WHERE geom && bbox;
 $$ LANGUAGE SQL STABLE

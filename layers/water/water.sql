@@ -30,7 +30,10 @@ CREATE OR REPLACE FUNCTION layer_water(bbox geometry, zoom_level int)
                 class        text,
                 brunnel      text,
                 intermittent int,
-                icgc_id      bigint
+                icgc_id      bigint,
+                jsel         text,
+                "rank"       integer,
+                contextmaps  text
             )
 AS
 $$
@@ -38,7 +41,10 @@ SELECT geom,
        class::text,
        waterway_brunnel(is_bridge, is_tunnel) AS brunnel,
        is_intermittent::int AS intermittent,
-       NULLIF(icgc_id, 0) AS icgc_id
+       NULLIF(icgc_id, 0) AS icgc_id,
+       jsel,
+       "rank",
+       contextmaps
 FROM (
          -- water_z_7_8_carto
          SELECT 
@@ -47,7 +53,10 @@ FROM (
                 NULL::BOOLEAN AS is_intermittent,
                 NULL::BOOLEAN AS is_bridge,
                 null::BOOLEAN as is_tunnel,
-                icgc_id
+                icgc_id,
+                NULL::text AS jsel,
+                NULL::int AS "rank",
+                NULL::text AS contextmaps
          FROM icgc_data.water_z_7_8_carto
          WHERE (zoom_level <= 8 ) AND geom && bbox
          UNION ALL
@@ -59,7 +68,10 @@ FROM (
                 NULL::BOOLEAN AS is_intermittent,
                 NULL::BOOLEAN AS is_bridge,
                 null::BOOLEAN as is_tunnel,
-                icgc_id
+                icgc_id,
+                NULL::text AS jsel,
+                NULL::int AS "rank",
+                NULL::text AS contextmaps
          FROM icgc_data.water_z_9_10_carto
          WHERE (zoom_level = 9 ) AND geom && bbox
          UNION ALL
@@ -71,7 +83,10 @@ FROM (
                 NULL::BOOLEAN AS is_intermittent,
                 NULL::BOOLEAN AS is_bridge,
                 null::BOOLEAN as is_tunnel,
-                icgc_id
+                icgc_id,
+                NULL::text AS jsel,
+                NULL::int AS "rank",
+                NULL::text AS contextmaps
          FROM icgc_data.water_z_10_11_carto
          WHERE (zoom_level BETWEEN 10 AND 11 ) AND geom && bbox) 
          AS zoom_levels
@@ -84,7 +99,10 @@ SELECT
     class,
     brunnel,
     CAST(intermittent AS int),
-    icgc_id
+    icgc_id,
+    jsel,
+    "rank",
+    contextmaps
 FROM icgc_data.water5m
 WHERE zoom_level >= 12 AND geometry && bbox;
 $$ LANGUAGE SQL STABLE

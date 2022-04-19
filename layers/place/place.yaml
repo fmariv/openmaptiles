@@ -51,11 +51,14 @@ layer:
     codigeo: Pendent d'informar.
     icgc_id_match: Pendent d'informar.
     icgc_zoom: Pendent d'informar.
+    mtc1m: Pendent d'informar.
+    mtc2m: Pendent d'informar.
+    layer: Pendent d'informar.
   buffer_size: 256
   datasource:
     geometry_field: geometry
     key_field: icgc_id
     key_field_as_attribute: no
-    query: (SELECT icgc_id, geometry, name, "name:latin", class, rank, codigeo, icgc_id_match, icgc_zoom FROM layer_place(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
+    query: (SELECT icgc_id, geometry, name, "name:latin", class, rank, codigeo, icgc_id_match, icgc_zoom, mtc1m, mtc2m, layer FROM layer_place(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
 schema:
   - ./place.sql

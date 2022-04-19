@@ -31,8 +31,11 @@ layer:
       description:
         Identificador de l'ICGC.
     entorn: Pendent d'informar.
+    jsel: Pendent d'informar.
+    rank: Pendent d'informar.
+    contextmaps: Pendent d'informar.
   datasource:
     geometry_field: geometry
-    query: (SELECT geometry, name, "name:latin", class, icgc_id, entorn FROM layer_waterway(!bbox!, z(!scale_denominator!))) AS t
+    query: (SELECT geometry, name, "name:latin", class, icgc_id, entorn, jsel, rank, contextmaps FROM layer_waterway(!bbox!, z(!scale_denominator!))) AS t
 schema:
   - ./waterway.sql

@@ -4,12 +4,15 @@ DROP FUNCTION IF EXISTS layer_waterway(bbox geometry, zoom_level int);
 CREATE OR REPLACE FUNCTION layer_waterway(bbox geometry, zoom_level int)
     RETURNS TABLE
             (   
-            	icgc_id      bigint,
+            	  icgc_id      bigint,
                 geometry     geometry,
                 class        text,
                 name         text,
                 "name:latin" text,
-                entorn       text
+                entorn       text,
+                jsel         text,
+                "rank"       integer,
+                contextmaps  text
             )
 AS
 $$
@@ -18,7 +21,10 @@ SELECT icgc_id,
        class,
        NULLIF(name, '') AS name,
        name AS "name:latin",
-       entorn
+       entorn,
+       NULL::text AS jsel,
+       NULL::int AS "rank",
+       NULL::text AS contextmaps
 FROM (
          -- etldoc: waterway_z3 ->  layer_waterway:z3
          SELECT *
@@ -90,14 +96,29 @@ FROM (
          SELECT *
          FROM waterway_z14
          WHERE zoom_level = 14
-         UNION ALL
+     ) AS zoom zoom_levels
+WHERE geometry && bbox
+UNION ALL
 
-         -- icgc waterway_z_7_8_carto
+SELECT icgc_id,
+       geometry,
+       class,
+       NULLIF(name, '') AS name,
+       name AS "name:latin",
+       entorn,
+       jsel,
+       "rank",
+       contextmaps
+FROM (
+       -- icgc waterway_z_7_8_carto
          SELECT icgc_id,
                 geom,
                 class,
                 name,
-                'GE' AS entorn
+                'GE' AS entorn,
+                NULL::text AS jsel,
+                NULL::int AS "rank",
+                NULL::text AS contextmaps
          FROM icgc_data.waterway_z_7_8_carto
          WHERE (zoom_level BETWEEN 7 AND 8) AND geom && bbox
          UNION ALL
@@ -107,7 +128,10 @@ FROM (
                 geom,
                 class,
                 name,
-                'GE' AS entorn
+                'GE' AS entorn,
+                NULL::text AS jsel,
+                NULL::int AS "rank",
+                NULL::text AS contextmaps
          FROM icgc_data.waterway_z_9_10_carto 
          WHERE (zoom_level = 9) AND geom && bbox
          UNION ALL
@@ -117,7 +141,10 @@ FROM (
                 geom,
                 class,
                 name,
-                'GE' AS entorn
+                'GE' AS entorn,
+                NULL::text AS jsel,
+                NULL::int AS "rank",
+                NULL::text AS contextmaps
          FROM icgc_data.waterway_z_10_11_carto 
          WHERE (zoom_level BETWEEN 10 AND 11) AND geom && bbox
          UNION ALL
@@ -127,10 +154,13 @@ FROM (
                 geometry,
                 class,
                 name,
-                NULL::text AS entorn
+                NULL::text AS entorn,
+                jsel,
+                "rank",
+                contextmaps
          FROM icgc_data.waterway5m
          WHERE zoom >= 12
-     ) AS zoom_levels
+) AS zoom_levels_icgc
 WHERE geometry && bbox;
 $$ LANGUAGE SQL STABLE
                 -- STRICT

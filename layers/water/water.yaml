@@ -41,9 +41,12 @@ layer:
     icgc_id:
       description:
         Identificador únic de l'ICGC.
+    jsel: Pendent d'informar.
+    rank: Pendent d'informar.
+    contextmaps: Pendent d'informar.
   buffer_size: 4
   datasource:
-    query: (SELECT geometry, class, intermittent, brunnel, icgc_id FROM layer_water(!bbox!, z(!scale_denominator!))) AS t
+    query: (SELECT geometry, class, intermittent, brunnel, icgc_id, jsel, rank, contextmaps FROM layer_water(!bbox!, z(!scale_denominator!))) AS t
 schema:
   - ./water.sql
 datasources:

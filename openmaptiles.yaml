@@ -14,6 +14,7 @@ tileset:
     - layers/poi/poi.yaml
     - layers/aerodrome_label/aerodrome_label.yaml
     - layers/contour/contour.yaml
+    - layers/mountain_peak/mountain_peak.yaml
   name: ContextMaps
   version: 0.1.0
   id: contextmaps

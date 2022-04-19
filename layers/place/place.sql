@@ -12,8 +12,11 @@ CREATE OR REPLACE FUNCTION layer_place(bbox geometry, zoom_level int, pixel_widt
                 class          text,
                 "rank"         integer,
                 codigeo        integer,
-                icgc_id_match  bigint
-                icgc_zoom      smallint
+                icgc_id_match  bigint,
+                icgc_zoom      smallint,
+                mtc1m          text,
+                mtc2m          text,
+                layer          text
             )
 AS
 $$
@@ -25,13 +28,73 @@ SELECT
     name,
     name AS "name:latin",
     class,
-    rank,
+    "rank",
     codigeo,
     icgc_id_match,
-    zoom AS icgc_zoom
+    zoom AS icgc_zoom,
+    NULL::text AS mtc1m,
+    NULL::text AS mtc2m,
+    NULL::text AS layer
 FROM icgc_data.place
 WHERE zoom <= zoom_level and geom && bbox
+UNION ALL
 
+SELECT 
+     -- mtc1m icgc
+     icgc_id,
+     geometry,
+     name,
+     name AS "name:latin",
+     class,
+     NULL::smallint AS "rank",
+     codigeo,
+     NULL::bigint AS icgc_id_match,
+     NULL::smallint AS icgc_zoom,
+     mtc1m,
+     mtc2m,
+     layer
+FROM icgc_test.mtc1m
+WHERE geometry && bbox
+   AND layer = 'place'
+   AND zoom_level BETWEEN 6 AND 10
+UNION ALL
+
+SELECT 
+     -- place5m icgc
+     icgc_id,
+     geometry,
+     name,
+     name AS "name:latin",
+     class,
+     "rank",
+     codigeo,
+     NULL::bigint AS icgc_id_match,
+     NULL::smallint AS icgc_zoom,
+     NULL::text AS mtc1m,
+     NULL::text AS mtc2m,
+     layer
+FROM icgc_data.place5m
+WHERE geometry && bbox
+   AND zoom_level >= 12
+UNION ALL
+
+SELECT 
+     -- place5m along icgc
+     icgc_id,
+     geometry,
+     name,
+     name AS "name:latin",
+     class,
+     "rank",
+     codigeo,
+     NULL::bigint AS icgc_id_match,
+     NULL::smallint AS icgc_zoom,
+     NULL::text AS mtc1m,
+     NULL::text AS mtc2m,
+     layer
+FROM icgc_data.place5m_along
+WHERE geometry && bbox
+   AND zoom_level >= 12
 UNION ALL
 
 SELECT osm_id,
@@ -42,7 +105,10 @@ SELECT osm_id,
        rank,
        NULL::int AS codigeo,
        NULL::int AS icgc_id_match,
-       NULL::int AS icgc_zoom
+       NULL::int AS icgc_zoom,
+       NULL::text AS mtc1m,
+       NULL::text AS mtc2m,
+       NULL::text AS layer
 FROM (
          SELECT
              -- etldoc: osm_continent_point -> layer_place:z0_3

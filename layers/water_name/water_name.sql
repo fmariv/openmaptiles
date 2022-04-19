@@ -13,7 +13,10 @@ CREATE OR REPLACE FUNCTION layer_water_name(bbox geometry, zoom_level integer)
                 icgc_zoom    int,
                 rank         int,
                 codigeo      int,
-                fontsize     float
+                fontsize     float,
+                mtc1m        text,
+                mtc2m        text,
+                layer        text
             )
 AS
 $$
@@ -32,7 +35,10 @@ SELECT
     NULL::INT AS icgc_zoom,
     NULL::INT AS rank,
     NULL::INT AS codigeo,
-    NULL::FLOAT AS fontsize
+    NULL::FLOAT AS fontsize,
+    NULL::text AS mtc1m,
+    NULL::text AS mtc2m,
+    NULL::text AS layer
 FROM osm_water_lakeline w, icgc_data.catalunya c
 WHERE w.geometry && bbox
   AND ST_Disjoint(c.geometry, w.geometry)
@@ -55,7 +61,10 @@ SELECT
     NULL::INT AS icgc_zoom,
     NULL::INT AS rank,
     NULL::INT AS codigeo,
-    NULL::FLOAT AS fontsize
+    NULL::FLOAT AS fontsize,
+    NULL::text AS mtc1m,
+    NULL::text AS mtc2m,
+    NULL::text AS layer
 FROM osm_water_point w, icgc_data.catalunya c
 WHERE w.geometry && bbox
   AND ST_Disjoint(c.geometry, w.geometry)
@@ -78,7 +87,10 @@ SELECT
     NULL::INT AS icgc_zoom,
     NULL::INT AS rank,
     NULL::INT AS codigeo,
-    NULL::FLOAT AS fontsize
+    NULL::FLOAT AS fontsize,
+    NULL::text AS mtc1m,
+    NULL::text AS mtc2m,
+    NULL::text AS layer
 FROM osm_marine_point 
 WHERE geometry && bbox
   AND (
@@ -91,34 +103,59 @@ UNION ALL
 SELECT 
      -- water_name icgc
      NULL::INT as osm_id,
-     w.icgc_id,
-     w.geom,
-     w.name,
+     icgc_id,
+     geom,
+     name,
      name AS "name:latin",
-     w.class,
-     w.zoom AS icgc_zoom,
-     w.rank,
-     w.codigeo,
-     w.fontsize
-FROM icgc_data.water_name w
-WHERE zoom_level >= w.zoom AND w.geom && bbox
+     class,
+     zoom AS icgc_zoom,
+     "rank",
+     codigeo,
+     fontsize,
+     NULL::text AS mtc1m,
+     NULL::text AS mtc2m,
+     NULL::text AS layer
+FROM icgc_data.water_name 
+WHERE zoom_level >= zoom AND geom && bbox
 UNION ALL
 
 SELECT
      -- waterway icgc
      NULL::INT as osm_id,
-     w.icgc_id,
-     w.geom,
-     w.name,
+     icgc_id,
+     geom,
+     name,
      name AS "name:latin",
-     w.class,
-     w.zoom AS icgc_zoom,
-     w.rank,
-     w.codigeo,
-     w.fontsize
-FROM icgc_data.waterway w
-WHERE zoom_level >= w.zoom AND w.geom && bbox
-    ;
+     class,
+     zoom AS icgc_zoom,
+     "rank",
+     codigeo,
+     fontsize,
+     NULL::text AS mtc1m,
+     NULL::text AS mtc2m,
+     NULL::text AS layer
+FROM icgc_data.waterway 
+WHERE zoom_level >= zoom AND geom && bbox
+UNION ALL
+
+SELECT 
+     -- water_name icgc
+     icgc_id,
+     geometry,
+     name,
+     name AS "name:latin",
+     class,
+     NULL::smallint AS icgc_zoom,
+     NULL::smallint AS "rank",
+     codigeo,
+     NULL::float AS fontsize,
+     mtc1m,
+     mtc2m,
+     layer
+FROM icgc_test.mtc1m
+WHERE geometry && bbox
+   AND layer = 'water_name'
+   AND zoom_level BETWEEN 6 AND 10;
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

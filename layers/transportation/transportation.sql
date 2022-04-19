@@ -131,11 +131,8 @@ FROM (
             codi_via,
             surface,
             observacio
-        FROM icgc_test.transportation_bdu 
-        WHERE class IN ('motorway', 'primary', 'secondary', 'tertiary', 'minor', 'busway', 'service', 
-                        'pedestrian', 'track', 'path', 'rail', 'gondola', 'chair_lift', 'cable_car', 
-                        'magic_carpet', 'tram', 'funicular')
-            AND zoom_level >= 13
+        FROM icgc_test.transportation_bdu
+        WHERE zoom_level >= 13
 ) AS icgc_zoom_levels
 WHERE geom && bbox;
 $$ LANGUAGE SQL STABLE

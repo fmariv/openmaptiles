@@ -98,6 +98,7 @@ FROM (
             indoor
         FROM icgc_test.transportation_name_bdu 
         WHERE zoom_level >= 13 
+            AND class in ('motorway', 'primary', 'secondary', 'tertiary', 'minor', 'minor_bustax', 'minor_pedestrian', 'minor_parquin')
             AND name <> ''
 ) as zoom_levels
 WHERE geom && bbox;

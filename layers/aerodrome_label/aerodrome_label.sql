@@ -23,7 +23,7 @@ SELECT
     -- icgc aerodrome label
     NULL::bigint AS id,
     icgc_id,
-    geom,
+    geometry,
     name,
     name AS "name:latin",
     name_en,
@@ -35,7 +35,7 @@ SELECT
     CAST(ele AS int) AS ele,
     CAST(ele AS int) AS ele_ft
 FROM icgc_data.aerodrome_label
-WHERE zoom_level >= 10 AND geom && bbox;
+WHERE zoom_level >= 10 AND geometry && bbox;
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

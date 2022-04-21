@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS layer_poi(bbox geometry, zoom_level integer, pixel_width
 CREATE OR REPLACE FUNCTION layer_poi(bbox geometry, zoom_level integer, pixel_width numeric)
     RETURNS TABLE
             (
-                icgc_id        bigint,
+                icgc_id        int,
                 geometry       geometry,
                 name           text,
                 "name:latin"   text,
@@ -13,8 +13,6 @@ CREATE OR REPLACE FUNCTION layer_poi(bbox geometry, zoom_level integer, pixel_wi
                 categoria      text,
                 layer          text,
                 "rank"         int,
-                classicgc      text,
-                icgc_id_match  bigint,
                 icgc_zoom      int
             )
 AS
@@ -22,7 +20,7 @@ $$
 SELECT 
        -- icgc POI 
        icgc_id,
-       geom,
+       geometry,
        name,
        name AS "name:latin",
        class,
@@ -30,11 +28,9 @@ SELECT
        categoria,
        layer,
        rank,
-       classicgc,
-       icgc_id_match,
        zoom AS icgc_zoom
 FROM icgc_data.poi
-WHERE geom && bbox
+WHERE geometry && bbox
     AND zoom_level >= zoom
     AND zoom <> 0
 ;

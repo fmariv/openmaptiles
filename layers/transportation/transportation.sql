@@ -105,7 +105,7 @@ FROM (
             surface,
             observacio
         FROM icgc_test.transportation_bdu
-        WHERE class IN ('motorway', 'primary', 'tertiary', 'secondary', 'minor')
+        WHERE class IN ('motorway', 'primary', 'secondary', 'tertiary', 'minor', 'rail')
         	AND zoom_level BETWEEN 9 AND 12
         UNION ALL
 

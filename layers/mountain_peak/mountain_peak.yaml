@@ -21,6 +21,7 @@ layer:
     codigeo:
       description:
         Pendent d'informar.
+    rank: Pendent d'informar.
     mtc1m: Pendent d'informar.
     mtc2m: Pendent d'informar.
     layer: Pendent d'informar.
@@ -29,6 +30,6 @@ layer:
     key_field: icgc_id
     key_field_as_attribute: no
     srid: 900913
-    query: (SELECT icgc_id, geometry, name, "name:latin", class, codigeo, mtc1m, mtc2m, layer FROM layer_mountain_peak(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
+    query: (SELECT icgc_id, geometry, name, "name:latin", class, codigeo, rank, mtc1m, mtc2m, layer FROM layer_mountain_peak(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
 schema:
   - ./mountain_peak.sql

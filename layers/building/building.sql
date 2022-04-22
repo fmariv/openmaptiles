@@ -5,7 +5,6 @@ CREATE OR REPLACE FUNCTION layer_building(bbox geometry, zoom_level int)
     RETURNS TABLE
             (
                 geometry          geometry,
-                osm_id            bigint,
                 icgc_id           bigint,
                 render_height     integer,
                 render_min_height integer,
@@ -16,7 +15,6 @@ CREATE OR REPLACE FUNCTION layer_building(bbox geometry, zoom_level int)
 AS
 $$
 SELECT geom,
-       osm_id,
        icgc_id,
        render_height,
        render_min_height,
@@ -46,7 +44,6 @@ FROM (
 
         -- poblament
         SELECT
-             NULL::bigint AS osm_id,
              icgc_id,
              geom,
              NULL::int as render_height,
@@ -61,7 +58,6 @@ FROM (
 
          -- building_z12
          SELECT
-             NULL::bigint AS osm_id,
              icgc_id,
              geom,
              render_height,
@@ -76,7 +72,6 @@ FROM (
 
          -- building
          SELECT
-             NULL::bigint AS osm_id,
              icgc_id,
              geom,
              render_height,
@@ -91,7 +86,6 @@ FROM (
 
          -- building_bt5m
          SELECT
-             NULL::bigint AS osm_id,
              icgc_id,
              geom,
              render_height,
@@ -106,7 +100,6 @@ FROM (
 
          -- building_bt5m
          SELECT
-             NULL::bigint AS osm_id,
              icgc_id,
              geom,
              render_height,
@@ -121,7 +114,6 @@ FROM (
 
          -- ascensors
          SELECT
-             NULL::bigint AS osm_id,
              icgc_id,
              geom,
              NULL::int as render_height,

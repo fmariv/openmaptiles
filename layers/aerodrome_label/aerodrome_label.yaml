@@ -42,9 +42,9 @@ layer:
         Identificador únic de l'ICGC.
   datasource:
     geometry_field: geometry
-    key_field: id
+    key_field: icgc_id
     key_field_as_attribute: no
     srid: 900913
-    query: (SELECT id, geometry, name, "name:latin", name_en, name_de, {name_languages}, class, iata, icao, ele, ele_ft, icgc_id FROM layer_aerodrome_label(!bbox!, z(!scale_denominator!))) AS t
+    query: (SELECT icgc_id, geometry, name, "name:latin", name_en, name_de, {name_languages}, class, iata, icao, ele, ele_ft FROM layer_aerodrome_label(!bbox!, z(!scale_denominator!))) AS t
 schema:
   - ./aerodrome_label.sql

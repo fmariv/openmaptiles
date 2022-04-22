@@ -4,7 +4,6 @@ DROP FUNCTION IF EXISTS layer_park(bbox geometry, zoom_level int, pixel_width nu
 CREATE OR REPLACE FUNCTION layer_park(bbox geometry, zoom_level int, pixel_width numeric)
     RETURNS TABLE
             (
-                osm_id   bigint,
                 icgc_id  bigint,
                 geometry geometry,
                 class    text,
@@ -16,8 +15,7 @@ CREATE OR REPLACE FUNCTION layer_park(bbox geometry, zoom_level int, pixel_width
             )
 AS
 $$
-SELECT osm_id,
-       icgc_id,
+SELECT icgc_id,
        geom,
        class,
        NULLIF(name, '') AS name,
@@ -27,8 +25,7 @@ SELECT osm_id,
        rank
 FROM (
          -- icgc park
-         SELECT NULL::bigint AS osm_id,
-                icgc_id,
+         SELECT icgc_id,
                 geom,
                 class,
                 NULL::text AS name,

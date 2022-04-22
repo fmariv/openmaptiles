@@ -3,7 +3,6 @@ DROP FUNCTION IF EXISTS layer_aerodrome_label(bbox geometry, zoom_level integer)
 CREATE OR REPLACE FUNCTION layer_aerodrome_label(bbox geometry, zoom_level integer)
     RETURNS TABLE
             (
-                id              bigint,
                 icgc_id         bigint,
                 geometry        geometry,
                 name            text,
@@ -21,7 +20,6 @@ AS
 $$
 SELECT 
     -- icgc aerodrome label
-    NULL::bigint AS id,
     icgc_id,
     geometry,
     name,

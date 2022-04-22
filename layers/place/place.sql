@@ -82,7 +82,7 @@ SELECT
      geometry,
      name,
      name AS "name:latin",
-     class,
+     CAST(codigeo AS text) AS class,
      "rank",
      codigeo,
      NULL::bigint AS icgc_id_match,
@@ -92,7 +92,8 @@ SELECT
      layer
 FROM icgc_data.place5m_along
 WHERE geometry && bbox
-   AND zoom_level >= 12;
+   AND zoom_level >= 12
+   AND codigeo NOT BETWEEN 50000 AND 59999;
 $$ LANGUAGE SQL STABLE
                 PARALLEL SAFE;
 -- TODO: Check if the above can be made STRICT -- i.e. if pixel_width could be NULL

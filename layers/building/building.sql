@@ -135,7 +135,7 @@ FROM (
      ) AS zoom_levels,
      (SELECT geometry AS muni_geom 
         FROM icgc_data.boundary_div_admin 
-        WHERE name = 'Tremp' 
+         WHERE codimuni = '431212'
         AND class = 'municipi' 
         AND adminlevel IS NOT NULL
       ) AS muni

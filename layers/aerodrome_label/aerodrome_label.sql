@@ -38,9 +38,9 @@ SELECT
         CAST(ele AS int) AS ele_ft
 FROM icgc_data.aerodrome_label, (
                                 SELECT geometry AS muni_geom 
-                                FROM icgc_data.boundary_div_admin 
-                                WHERE name = 'Tremp' 
-                                AND class = 'municipi' 
+                                FROM icgc_data.boundary_div_admin
+                                WHERE codimuni = '431212'
+                                AND class = 'municipi'
                                 AND adminlevel IS NOT NULL
                                 ) AS muni
 WHERE zoom_level >= 10 

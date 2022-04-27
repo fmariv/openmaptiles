@@ -20,8 +20,8 @@ $$
         rank,
         adminlevel as admin_level
  FROM icgc_data.boundary_div_admin
- WHERE geometry && bbox
-    AND name = 'Tremp' 
+ WHERE codimuni = '431212'
+    AND geometry && bbox
     AND class = 'municipi' 
     AND adminlevel IS NOT NULL;
 $$ LANGUAGE SQL STABLE

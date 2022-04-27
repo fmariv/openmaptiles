@@ -1,18 +1,18 @@
 tileset:
   layers:
-    - layers/water/water.yaml
-    - layers/waterway/waterway.yaml
-    - layers/landcover/landcover.yaml
-    - layers/park/park.yaml
-    - layers/boundary/boundary.yaml
-    - layers/aeroway/aeroway.yaml
-    - layers/transportation/transportation.yaml
-    - layers/building/building.yaml
+    #- layers/water/water.yaml
+    #- layers/waterway/waterway.yaml
+    #- layers/landcover/landcover.yaml
+    #- layers/park/park.yaml
+    #- layers/boundary/boundary.yaml
+    #- layers/aeroway/aeroway.yaml
+    #- layers/transportation/transportation.yaml
+    #- layers/building/building.yaml
     #- layers/water_name/water_name.yaml
-    - layers/transportation_name/transportation_name.yaml
-    - layers/place/place.yaml
-    - layers/poi/poi.yaml
-    - layers/aerodrome_label/aerodrome_label.yaml
+    #- layers/transportation_name/transportation_name.yaml
+    #- layers/place/place.yaml
+    #- layers/poi/poi.yaml
+    #- layers/aerodrome_label/aerodrome_label.yaml
     - layers/contour/contour.yaml
   name: ContextMaps
   version: 0.1.0
@@ -20,9 +20,9 @@ tileset:
   description: "A tileset showcasing layers in ContextMaps and OpenMapTiles as the world. https://openmaptiles.org"
   attribution: '<a href="https://www.openmaptiles.org/" target="_blank">&copy; OpenMapTiles</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
   center: [0, 0, 1]
-  bounds: [-180.0,-85.0511,180.0,85.0511]
-  maxzoom: 16
-  minzoom: 0
+  bounds: [2.1874,41.4332,2.2224,41.4735]
+  maxzoom: 7
+  minzoom: 6
   pixel_scale: 256
   languages:
     - ca # Catalan, Latin

@@ -20,11 +20,11 @@ layer_name = parser.parse_args().layer_name
 
 # Create a new folder for the layer in the layers directory
 dir_path = os.path.dirname(__file__)
-dir_layer = os.path.join(dir_path, 'layers', layer_name)
+dir_layer = os.path.join(dir_path, '../../layers', layer_name)
 os.mkdir(dir_layer)
 
 # Copy template SQL and YAML files to the new directory
-template_dir = os.path.join(dir_path, 'utils/add_layer')
+template_dir = os.path.join(dir_path, '')
 sql_template = os.path.join(template_dir, 'template.sql')
 yaml_template = os.path.join(template_dir, 'template.yaml')
 sql_layer = os.path.join(dir_layer, '%s.sql' % layer_name)

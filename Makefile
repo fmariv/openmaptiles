@@ -579,6 +579,10 @@ clean-unnecessary-docker:
 	@echo "Deleting unnecessary image(s)..."
 	@docker images | awk -F" " '/<none>/{print $$3}' | $(XARGS) docker rmi
 
+.PHONY: run-muni
+run-muni:
+	@python3 utils/municipality_mvt_generator/municipality_mvt_generator.py
+
 .PHONY: test-perf-null
 test-perf-null: init-dirs
 	$(DOCKER_COMPOSE) run $(DC_OPTS) openmaptiles-tools test-perf $(TILESET_FILE) --test null --no-color

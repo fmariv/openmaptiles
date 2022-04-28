@@ -152,7 +152,7 @@ FROM (
             NULL::text AS surface,
             observacio
         FROM icgc_test.osca
-        WHERE zoom_level >= 9
+        WHERE zoom_level >= 6
         UNION ALL
 
         -- voreres
@@ -177,7 +177,7 @@ FROM (
             NULL::text AS surface,
             NULL::text AS observacio
         FROM icgc_test.voreres
-        WHERE zoom_level >= 9
+        WHERE zoom_level >= 12
 ) AS icgc_zoom_levels
 WHERE geom && bbox;
 $$ LANGUAGE SQL STABLE

@@ -12,7 +12,6 @@ DROP FUNCTION IF EXISTS layer_transportation(bbox geometry, zoom_level int);
 CREATE OR REPLACE FUNCTION layer_transportation(bbox geometry, zoom_level int)
     RETURNS TABLE
             (
-                osm_id     bigint,
                 icgc_id    int,
                 geometry   geometry,
                 class      text,
@@ -35,8 +34,7 @@ CREATE OR REPLACE FUNCTION layer_transportation(bbox geometry, zoom_level int)
             )
 AS
 $$
-SELECT osm_id,
-       icgc_id,
+SELECT icgc_id,
        geom,
        class,
        subclass,
@@ -58,7 +56,6 @@ SELECT osm_id,
 FROM (
         -- z_6_8mtc_vials
         SELECT
-            NULL::bigint AS osm_id,
             icgc_id,
             geom,
             class,
@@ -84,7 +81,6 @@ FROM (
 
         -- transportation_bdu - xarxa catalogada
         SELECT
-            NULL::bigint AS osm_id,
             icgc_id,
             geometry,
             class,
@@ -111,7 +107,6 @@ FROM (
 
         -- transportation_bdu
         SELECT
-            NULL::bigint AS osm_id,
             icgc_id,
             geometry,
             class,
@@ -133,6 +128,56 @@ FROM (
             observacio
         FROM icgc_test.transportation_bdu
         WHERE zoom_level >= 13
+        UNION ALL
+
+        -- osca
+        SELECT
+            icgc_id,
+            geom,
+            class,
+            NULL::text AS subclass,
+            NULL::int AS ramp,
+            NULL::int AS oneway,
+            NULL::text AS network,
+            NULL::text AS brunnel,
+            NULL::text AS service,
+            NULL::text AS access,
+            NULL::int AS toll,
+            NULL::int AS expressway,
+            NULL::int AS layer,
+            NULL::int AS level,
+            NULL::int AS indoor,
+            d_categori,
+            codi_via,
+            NULL::text AS surface,
+            observacio
+        FROM icgc_test.osca
+        WHERE zoom_level >= 9
+        UNION ALL
+
+        -- voreres
+        SELECT
+            icgc_id,
+            geom,
+            class,
+            NULL::text AS subclass,
+            NULL::int as ramp,
+            NULL::int as oneway,
+            NULL::text AS network,
+            NULL::text AS brunnel,
+            NULL::text AS service,
+            NULL::text AS access,
+            NULL::int AS toll,
+            NULL::int AS expressway,
+            NULL::int AS layer,
+            NULL::int AS level,
+            NULL::int AS indoor,
+            NULL::text AS d_categori,
+            NULL::text AS codi_via,
+            NULL::text AS surface,
+            NULL::text AS observacio
+        FROM icgc_test.voreres
+        WHERE zoom_level >= 9
 ) AS icgc_zoom_levels
 WHERE geom && bbox;
 $$ LANGUAGE SQL STABLE

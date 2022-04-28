@@ -19,7 +19,7 @@ CREATE OR REPLACE FUNCTION layer_water_name(bbox geometry, zoom_level integer)
             )
 AS
 $$
-SELECT 
+SELECT
      -- water_name icgc
      icgc_id,
      geom,
@@ -33,7 +33,7 @@ SELECT
      NULL::text AS mtc1m,
      NULL::text AS mtc2m,
      NULL::text AS layer
-FROM icgc_data.water_name 
+FROM icgc_data.water_name
 WHERE zoom_level >= zoom AND geom && bbox
 UNION ALL
 
@@ -51,7 +51,7 @@ SELECT
      NULL::text AS mtc1m,
      NULL::text AS mtc2m,
      NULL::text AS layer
-FROM icgc_data.waterway 
+FROM icgc_data.waterway
 WHERE zoom_level >= zoom AND geom && bbox
 UNION ALL
 
@@ -69,7 +69,7 @@ SELECT
      mtc1m,
      mtc2m,
      layer
-FROM icgc_test.mtc1m
+FROM icgc_data.mtc1m
 WHERE geometry && bbox
    AND layer = 'water_name'
    AND zoom_level BETWEEN 6 AND 10;

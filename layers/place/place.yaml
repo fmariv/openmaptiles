@@ -57,8 +57,6 @@ layer:
   buffer_size: 256
   datasource:
     geometry_field: geometry
-    key_field: icgc_id
-    key_field_as_attribute: no
     query: (SELECT icgc_id, geometry, name, "name:latin", class, rank, codigeo, icgc_id_match, icgc_zoom, mtc1m, mtc2m, layer FROM layer_place(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
 schema:
   - ./place.sql

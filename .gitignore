@@ -7,7 +7,6 @@ data.xml
 # quickstart
 quickstart.log
 
-
 # imput / output data
 data/*
 
@@ -21,3 +20,6 @@ cache/*
 .idea/
 .vscode/
 .github
+
+# Venv
+venv/

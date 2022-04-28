@@ -53,6 +53,14 @@ FROM (
                 icgc_id
          FROM icgc_data.landcover_bt5m
          WHERE (zoom_level > 14 AND geom && bbox )
+         UNION ALL
+
+         -- landcover ACA
+         SELECT geometry,
+                class,
+                icgc_id
+         FROM icgc_data.landcover_aca
+         WHERE (zoom_level > 12 AND geometry && bbox )
      ) AS zoom_levels;
 $$ LANGUAGE SQL STABLE
                 -- STRICT

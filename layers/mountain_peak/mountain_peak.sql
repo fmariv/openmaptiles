@@ -4,7 +4,7 @@ DROP FUNCTION IF EXISTS layer_mountain_peak(bbox geometry, zoom_level integer, p
 CREATE OR REPLACE FUNCTION layer_mountain_peak(bbox geometry, zoom_level integer, pixel_width numeric)
     RETURNS TABLE
             (
-                icgc_id      int,
+                icgc_id      bigint,
                 geometry     geometry,
                 name         text,
                 "name:latin" text,
@@ -29,7 +29,7 @@ SELECT
      mtc1m,
      mtc2m,
      layer
-FROM icgc_test.mtc1m
+FROM icgc_data.mtc1m
 WHERE geometry && bbox
    AND layer = 'mountain_peak'
    AND zoom_level BETWEEN 6 AND 10

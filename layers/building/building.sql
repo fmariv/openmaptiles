@@ -8,8 +8,6 @@ CREATE OR REPLACE FUNCTION layer_building(bbox geometry, zoom_level int)
                 icgc_id           bigint,
                 render_height     integer,
                 render_min_height integer,
-                colour            text,
-                hide_3d           boolean,
                 building          text
             )
 AS
@@ -18,39 +16,14 @@ SELECT geom,
        icgc_id,
        render_height,
        render_min_height,
-       COALESCE(colour, CASE material
-           -- Ordered by count from taginfo
-                            WHEN 'cement_block' THEN '#6a7880'
-                            WHEN 'brick' THEN '#bd8161'
-                            WHEN 'plaster' THEN '#dadbdb'
-                            WHEN 'wood' THEN '#d48741'
-                            WHEN 'concrete' THEN '#d3c2b0'
-                            WHEN 'metal' THEN '#b7b1a6'
-                            WHEN 'stone' THEN '#b4a995'
-                            WHEN 'mud' THEN '#9d8b75'
-                            WHEN 'steel' THEN '#b7b1a6' -- same as metal
-                            WHEN 'glass' THEN '#5a81a0'
-                            WHEN 'traditional' THEN '#bd8161' -- same as brick
-                            WHEN 'masonry' THEN '#bd8161' -- same as brick
-                            WHEN 'Brick' THEN '#bd8161' -- same as brick
-                            WHEN 'tin' THEN '#b7b1a6' -- same as metal
-                            WHEN 'timber_framing' THEN '#b3b0a9'
-                            WHEN 'sandstone' THEN '#b4a995' -- same as stone
-                            WHEN 'clay' THEN '#9d8b75' -- same as mud
-           END) AS colour,
-       CASE WHEN hide_3d THEN TRUE END AS hide_3d,
-       NULLIF(building, '') AS building
+       building
 FROM (
-
         -- poblament
         SELECT
              icgc_id,
              geom,
-             NULL::int as render_height,
+             NULL::int AS render_height,
              NULL::int AS render_min_height,
-             NULL::text AS material,
-             NULL::text AS colour,
-             NULL::boolean AS hide_3d,
              building
          FROM icgc_data.poblament
          WHERE zoom_level = 11 AND geom && bbox
@@ -62,9 +35,6 @@ FROM (
              geom,
              render_height,
              render_min_height,
-             NULL::text AS material,
-             NULL::text AS colour,
-             NULL::boolean AS hide_3d,
              building
          FROM icgc_data.building_z12
          WHERE zoom_level = 12 AND geom && bbox
@@ -76,9 +46,6 @@ FROM (
              geom,
              render_height,
              render_min_height,
-             NULL::text AS material,
-             NULL::text AS colour,
-             NULL::boolean AS hide_3d,
              building
          FROM icgc_data.building
          WHERE zoom_level = 13 AND geom && bbox
@@ -90,11 +57,8 @@ FROM (
              geom,
              render_height,
              render_min_height,
-             NULL::text AS material,
-             NULL::text AS colour,
-             NULL::boolean AS hide_3d,
-             building
-         FROM icgc_data.building
+             'industrial' AS building
+         FROM icgc_data.building_bt5m
          WHERE zoom_level > 13 AND building IN ('industrial', 'cns-XE', 'dip') AND geom && bbox
          UNION ALL
 
@@ -104,11 +68,8 @@ FROM (
              geom,
              render_height,
              render_min_height,
-             NULL::text AS material,
-             NULL::text AS colour,
-             NULL::boolean AS hide_3d,
              building
-         FROM icgc_data.building
+         FROM icgc_data.building_bt5m
          WHERE zoom_level > 13 AND building NOT IN ('industrial', 'cns-XE', 'dip') AND geom && bbox
          UNION ALL
 
@@ -116,12 +77,9 @@ FROM (
          SELECT
              icgc_id,
              geom,
-             NULL::int as render_height,
+             NULL::int AS render_height,
              NULL::int AS render_min_height,
-             NULL::text AS material,
-             NULL::text AS colour,
-             NULL::boolean AS hide_3d,
-             building
+             NULL::text AS building
          FROM icgc_data.ascensors
          WHERE zoom_level > 13 AND geom && bbox
      ) AS zoom_levels

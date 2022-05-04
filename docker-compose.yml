@@ -21,6 +21,7 @@ services:
     ports:
       - "5432"
     env_file: .env-postgres
+    command: ["postgres", "-c", "log_statement=all"]
 
   import-data:
     image: "openmaptiles/import-data:${TOOLS_VERSION}"

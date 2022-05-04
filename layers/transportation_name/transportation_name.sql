@@ -44,7 +44,7 @@ FROM (
             codi_via AS name,
             codi_via AS "name:latin",
             codi_via AS ref,
-            6::int AS ref_length,
+            LENGTH(codi_via) AS ref_length,
             ''::text AS network,
             codi_via,
             class,
@@ -74,7 +74,7 @@ FROM (
             layer,
             level,
             indoor
-        FROM icgc_test.transportation_name_bdu 
+        FROM icgc_data.transportation_name_bdu
         WHERE zoom_level BETWEEN 9 AND 13
             AND class in ('motorway', 'primary', 'secondary', 'tertiary')
             AND name <> ''
@@ -96,7 +96,7 @@ FROM (
             layer,
             level,
             indoor
-        FROM icgc_test.transportation_name_bdu 
+        FROM icgc_data.transportation_name_bdu
         WHERE zoom_level >= 13 
             AND class in ('motorway', 'primary', 'secondary', 'tertiary', 'minor', 'minor_bustax', 'minor_pedestrian', 'minor_parquin')
             AND name <> ''

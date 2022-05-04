@@ -100,7 +100,7 @@ FROM (
             codi_via,
             surface,
             observacio
-        FROM icgc_test.transportation_bdu
+        FROM icgc_data.transportation_bdu
         WHERE class IN ('motorway', 'primary', 'secondary', 'tertiary', 'minor', 'rail')
         	AND zoom_level BETWEEN 9 AND 12
         UNION ALL
@@ -126,14 +126,14 @@ FROM (
             codi_via,
             surface,
             observacio
-        FROM icgc_test.transportation_bdu
+        FROM icgc_data.transportation_bdu
         WHERE zoom_level >= 13
         UNION ALL
 
         -- osca
         SELECT
             icgc_id,
-            geom,
+            geometry,
             class,
             NULL::text AS subclass,
             NULL::int AS ramp,
@@ -151,14 +151,14 @@ FROM (
             codi_via,
             NULL::text AS surface,
             observacio
-        FROM icgc_test.osca
+        FROM icgc_data.osca
         WHERE zoom_level >= 6
         UNION ALL
 
         -- voreres
         SELECT
             icgc_id,
-            geom,
+            geometry,
             class,
             NULL::text AS subclass,
             NULL::int as ramp,
@@ -176,7 +176,7 @@ FROM (
             NULL::text AS codi_via,
             NULL::text AS surface,
             NULL::text AS observacio
-        FROM icgc_test.voreres
+        FROM icgc_data.voreres
         WHERE zoom_level >= 12
 ) AS icgc_zoom_levels
 WHERE geom && bbox;

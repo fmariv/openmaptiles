@@ -18,6 +18,16 @@ SELECT geom,
        render_min_height,
        building
 FROM (
+        -- z_9_10mtc_poblament_poligon
+        SELECT
+             icgc_id,
+             geom,
+             NULL::int AS render_height,
+             NULL::int AS render_min_height,
+             building
+         FROM icgc_data.z_9_10mtc_poblament_poligon
+         WHERE zoom_level BETWEEN 7 AND 10 AND geom && bbox
+         UNION ALL
         -- poblament
         SELECT
              icgc_id,

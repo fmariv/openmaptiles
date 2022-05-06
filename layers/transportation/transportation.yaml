@@ -185,9 +185,13 @@ layer:
     d_categori: Pendent d'informar.
     codi_via: Pendent d'informar.
     observacio: Pendent d'informar.
+    width: Pendent d'informar.
+    highspeed: Pendent d'informar.
+    conveying: Pendent d'informar.
+    gauge: Pendent d'informar.
   datasource:
     geometry_field: geometry
     srid: 900913
-    query: (SELECT icgc_id, geometry, class, subclass, ramp, oneway, network, brunnel, service, access, toll, expressway, layer, level, indoor, d_categori, codi_via, surface, observacio FROM layer_transportation(!bbox!, z(!scale_denominator!))) AS t
+    query: (SELECT icgc_id, geometry, class, subclass, ramp, oneway, network, brunnel, service, access, toll, expressway, layer, level, indoor, d_categori, codi_via, surface, width, highspeed, conveying, gauge, observacio FROM layer_transportation(!bbox!, z(!scale_denominator!))) AS t
 schema:
   - ./transportation.sql

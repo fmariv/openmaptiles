@@ -104,7 +104,22 @@ SELECT
     "rank",
     contextmaps
 FROM icgc_data.water5m
-WHERE zoom_level >= 12 AND geometry && bbox;
+WHERE zoom_level >= 12 AND geometry && bbox
+UNION ALL
+
+-- mediterranean box
+SELECT
+    geometry,
+    class,
+    NULL::text AS brunnel,
+    NULL::int AS intermittent,
+    icgc_id,
+    NULL::text AS jsel,
+    NULL::int AS "rank",
+    NULL::text AS contextmaps
+FROM icgc_test.mediterranean_box
+WHERE zoom_level >= 6 AND geometry && bbox
+;
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

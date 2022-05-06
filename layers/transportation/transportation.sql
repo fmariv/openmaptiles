@@ -12,25 +12,29 @@ DROP FUNCTION IF EXISTS layer_transportation(bbox geometry, zoom_level int);
 CREATE OR REPLACE FUNCTION layer_transportation(bbox geometry, zoom_level int)
     RETURNS TABLE
             (
-                icgc_id    int,
-                geometry   geometry,
-                class      text,
-                subclass   text,
-                ramp       integer,
-                oneway     integer,
-                network    text,
-                brunnel    text,
-                service    text,
-                access     text,
-                toll       integer,
-                expressway integer,
-                layer      integer,
-                level      integer,
-                indoor     integer,
-                d_categori text,
-                codi_via   text,
-                surface    text,
-                observacio text
+                icgc_id         int,
+                geometry        geometry,
+                class           text,
+                subclass        text,
+                ramp            integer,
+                oneway          integer,
+                network         text,
+                brunnel         text,
+                service         text,
+                access          text,
+                toll            integer,
+                expressway      integer,
+                layer           integer,
+                level           integer,
+                indoor          integer,
+                d_categori      text,
+                codi_via        text,
+                surface         text,
+                width           double precision,
+                highspeed       text,
+                conveying       text,
+                gauge           int,
+                observacio      text
             )
 AS
 $$
@@ -52,6 +56,10 @@ SELECT icgc_id,
        d_categori,
        codi_via,
        surface,
+       width,
+       highspeed,
+       conveying,
+       gauge,
        observacio
 FROM (
         -- z_6_8mtc_vials
@@ -74,6 +82,10 @@ FROM (
             layer as d_categori,
             codi_via,
             NULL::text AS surface,
+            NULL::int AS width,
+            NULL::text AS highspeed,
+            NULL::text AS conveying,
+            NULL::int AS gauge,
             NULL::text AS observacio
         FROM icgc_data.z_6_8_mtc_vials 
         WHERE zoom_level BETWEEN 6 AND 8
@@ -99,8 +111,12 @@ FROM (
             d_categori,
             codi_via,
             surface,
+            width,
+            highspeed,
+            conveying,
+            gauge,
             observacio
-        FROM icgc_data.transportation_bdu
+        FROM icgc_test.transportation
         WHERE class IN ('motorway', 'primary', 'secondary', 'tertiary', 'minor', 'rail')
         	AND zoom_level BETWEEN 9 AND 12
         UNION ALL
@@ -125,8 +141,12 @@ FROM (
             d_categori,
             codi_via,
             surface,
+            width,
+            highspeed,
+            conveying,
+            gauge,
             observacio
-        FROM icgc_data.transportation_bdu
+        FROM icgc_test.transportation
         WHERE zoom_level >= 13
         UNION ALL
 
@@ -150,6 +170,10 @@ FROM (
             d_categori,
             codi_via,
             NULL::text AS surface,
+            NULL::int AS width,
+            NULL::text AS highspeed,
+            NULL::text AS conveying,
+            NULL::int AS gauge,
             observacio
         FROM icgc_data.osca
         WHERE zoom_level >= 6
@@ -175,6 +199,10 @@ FROM (
             NULL::text AS d_categori,
             NULL::text AS codi_via,
             NULL::text AS surface,
+            NULL::int AS width,
+            NULL::text AS highspeed,
+            NULL::text AS conveying,
+            NULL::int AS gauge,
             NULL::text AS observacio
         FROM icgc_data.voreres
         WHERE zoom_level >= 12

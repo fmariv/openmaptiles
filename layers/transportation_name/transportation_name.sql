@@ -9,7 +9,7 @@ CREATE OR REPLACE FUNCTION layer_transportation_name(bbox geometry, zoom_level i
                 name          text,
                 "name:latin"  text,
                 ref           text,
-                ref_length    int,
+                ref_length    bigint,
                 network       text,
                 codi_via      text,
                 class         text,
@@ -58,6 +58,26 @@ FROM (
             AND codi_via <> ''
         UNION ALL
 
+        -- transportation_name_line3_3857
+        SELECT
+            icgc_id,
+            geometry,
+            name,
+            name AS "name:latin",
+            ref,
+            ref_length,
+            ''::text AS network,
+            name AS codi_via,
+            class,
+            NULL::text AS subclass,
+            NULL::text AS brunnel,
+            NULL::INT AS layer,
+            NULL::INT AS level,
+            NULL::INT AS indoor
+        FROM icgc_data.transportation_name_line3_3857
+        WHERE zoom_level >= 10
+        UNION ALL
+
         -- transportation_name_bdu - xarxa catalogada
         SELECT
             icgc_id,
@@ -74,8 +94,8 @@ FROM (
             layer,
             level,
             indoor
-        FROM icgc_data.transportation_name_bdu
-        WHERE zoom_level BETWEEN 9 AND 13
+        FROM icgc_test.transportation_name
+        WHERE zoom_level BETWEEN 9 AND 12
             AND class in ('motorway', 'primary', 'secondary', 'tertiary')
             AND name <> ''
         UNION ALL
@@ -96,9 +116,8 @@ FROM (
             layer,
             level,
             indoor
-        FROM icgc_data.transportation_name_bdu
-        WHERE zoom_level >= 13 
-            AND class in ('motorway', 'primary', 'secondary', 'tertiary', 'minor', 'minor_bustax', 'minor_pedestrian', 'minor_parquin')
+        FROM icgc_test.transportation_name
+        WHERE zoom_level >= 13
             AND name <> ''
 ) as zoom_levels
 WHERE geom && bbox;

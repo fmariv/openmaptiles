@@ -30,7 +30,7 @@ $$
         maritime,
         minzoom,
         maxzoom
- FROM icgc_data.boundary
+ FROM contextmaps.boundary
  WHERE (zoom_level BETWEEN minzoom AND maxzoom) AND geom && bbox;
 $$ LANGUAGE SQL STABLE
                 -- STRICT

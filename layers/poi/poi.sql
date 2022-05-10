@@ -29,7 +29,7 @@ SELECT
        layer,
        rank,
        zoom AS icgc_zoom
-FROM icgc_data.poi
+FROM contextmaps.poi
 WHERE geometry && bbox
     AND zoom_level >= zoom
     AND zoom <> 0

@@ -33,6 +33,8 @@ services:
     volumes:
       - /dades_entrada/backups/:/backups
     env_file: .env-backups
+    networks:
+      - postgres
     depends_on:
       - postgres
 

@@ -29,7 +29,7 @@ SELECT
      mtc1m,
      mtc2m,
      layer
-FROM icgc_data.mtc1m
+FROM contextmaps.mtc1m
 WHERE geometry && bbox
    AND layer = 'mountain_peak'
    AND zoom_level BETWEEN 6 AND 10
@@ -47,7 +47,7 @@ SELECT
      NULL::text AS mtc1m,
      NULL::text AS mtc2m,
      layer
-FROM icgc_data.place5m_along
+FROM contextmaps.place5m_along
 WHERE geometry && bbox
    AND zoom_level >= 12
    AND codigeo BETWEEN 50000 AND 59999;

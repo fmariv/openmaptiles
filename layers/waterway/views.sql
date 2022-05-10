@@ -42,8 +42,8 @@ SELECT NULL::bigint AS icgc_id,
        class,
        name,
        NULL::text AS entorn
-FROM waterway_relation_gen_z6 w, icgc_data.catalunya
-WHERE ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
+FROM waterway_relation_gen_z6 w, contextmaps.catalunya
+WHERE ST_DISJOINT(contextmaps.catalunya.geometry, w.geometry)
     );
 CREATE INDEX IF NOT EXISTS waterway_z6_idx ON waterway_z6 USING gist (geometry);
 
@@ -56,8 +56,8 @@ SELECT NULL::bigint AS icgc_id,
        class,
        name,
        NULL::text AS entorn
-FROM waterway_relation_gen_z7 w, icgc_data.catalunya
-WHERE ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
+FROM waterway_relation_gen_z7 w, contextmaps.catalunya
+WHERE ST_DISJOINT(contextmaps.catalunya.geometry, w.geometry)
     );
 CREATE INDEX IF NOT EXISTS waterway_z7_idx ON waterway_z7 USING gist (geometry);
 
@@ -70,8 +70,8 @@ SELECT NULL::bigint AS icgc_id,
        class,
        name,
        NULL::text AS entorn
-FROM waterway_relation_gen_z8 w, icgc_data.catalunya
-WHERE ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
+FROM waterway_relation_gen_z8 w, contextmaps.catalunya
+WHERE ST_DISJOINT(contextmaps.catalunya.geometry, w.geometry)
     );
 CREATE INDEX IF NOT EXISTS waterway_z8_idx ON waterway_z8 USING gist (geometry);
 
@@ -84,8 +84,8 @@ SELECT NULL::bigint AS icgc_id,
        'river'::text AS class,
        name,
        NULL::text AS entorn
-FROM osm_important_waterway_linestring_gen_z9 w, icgc_data.catalunya
-WHERE ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
+FROM osm_important_waterway_linestring_gen_z9 w, contextmaps.catalunya
+WHERE ST_DISJOINT(contextmaps.catalunya.geometry, w.geometry)
     );
 CREATE INDEX IF NOT EXISTS waterway_z9_idx ON waterway_z9 USING gist (geometry);
 
@@ -98,8 +98,8 @@ SELECT NULL::bigint AS icgc_id,
        'river'::text AS class,
        name,
        NULL::text AS entorn
-FROM osm_important_waterway_linestring_gen_z10 w, icgc_data.catalunya
-WHERE ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
+FROM osm_important_waterway_linestring_gen_z10 w, contextmaps.catalunya
+WHERE ST_DISJOINT(contextmaps.catalunya.geometry, w.geometry)
     );
 CREATE INDEX IF NOT EXISTS waterway_z10_idx ON waterway_z10 USING gist (geometry);
 
@@ -112,8 +112,8 @@ SELECT NULL::bigint AS icgc_id,
        'river'::text AS class,
        name,
        NULL::text AS entorn
-FROM osm_important_waterway_linestring_gen_z11 w, icgc_data.catalunya
-WHERE ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
+FROM osm_important_waterway_linestring_gen_z11 w, contextmaps.catalunya
+WHERE ST_DISJOINT(contextmaps.catalunya.geometry, w.geometry)
     );
 CREATE INDEX IF NOT EXISTS waterway_z11_idx ON waterway_z11 USING gist (geometry);
 
@@ -126,9 +126,9 @@ SELECT NULL::bigint AS icgc_id,
        waterway::text AS class,
        name,
        NULL::text AS entorn
-FROM osm_waterway_linestring w, icgc_data.catalunya
+FROM osm_waterway_linestring w, contextmaps.catalunya
 WHERE w.waterway IN ('river', 'canal') 
-AND ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
+AND ST_DISJOINT(contextmaps.catalunya.geometry, w.geometry)
     );
 CREATE INDEX IF NOT EXISTS waterway_z12_idx ON waterway_z12 USING gist (geometry);
 
@@ -141,9 +141,9 @@ SELECT NULL::bigint AS icgc_id,
        waterway::text AS class,
        name,
        NULL::text AS entorn
-FROM osm_waterway_linestring w, icgc_data.catalunya
+FROM osm_waterway_linestring w, contextmaps.catalunya
 WHERE w.waterway IN ('river', 'canal', 'stream', 'drain', 'ditch')
-AND ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
+AND ST_DISJOINT(contextmaps.catalunya.geometry, w.geometry)
     );
 CREATE INDEX IF NOT EXISTS waterway_z13_idx ON waterway_z13 USING gist (geometry);
 
@@ -156,7 +156,7 @@ SELECT NULL::bigint AS icgc_id,
        waterway::text AS class,
        name,
        NULL::text AS entorn
-FROM osm_waterway_linestring w, icgc_data.catalunya
-WHERE ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
+FROM osm_waterway_linestring w, contextmaps.catalunya
+WHERE ST_DISJOINT(contextmaps.catalunya.geometry, w.geometry)
     );
 CREATE INDEX IF NOT EXISTS waterway_z14_idx ON waterway_z14 USING gist (geometry);

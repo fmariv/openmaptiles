@@ -87,7 +87,7 @@ FROM (
             NULL::text AS conveying,
             NULL::int AS gauge,
             NULL::text AS observacio
-        FROM icgc_data.z_6_8_mtc_vials 
+        FROM contextmaps.z_6_8_mtc_vials
         WHERE zoom_level BETWEEN 6 AND 8
         UNION ALL
 
@@ -175,7 +175,7 @@ FROM (
             NULL::text AS conveying,
             NULL::int AS gauge,
             observacio
-        FROM icgc_data.osca
+        FROM contextmaps.osca
         WHERE zoom_level >= 6
         UNION ALL
 
@@ -204,7 +204,7 @@ FROM (
             NULL::text AS conveying,
             NULL::int AS gauge,
             NULL::text AS observacio
-        FROM icgc_data.voreres
+        FROM contextmaps.voreres
         WHERE zoom_level >= 12
 ) AS icgc_zoom_levels
 WHERE geom && bbox;

@@ -25,7 +25,7 @@ FROM (
              NULL::int AS render_height,
              NULL::int AS render_min_height,
              building
-         FROM icgc_data.z_9_10mtc_poblament_poligon
+         FROM contextmaps.z_9_10mtc_poblament_poligon
          WHERE zoom_level BETWEEN 7 AND 10 AND geom && bbox
          UNION ALL
         -- poblament
@@ -35,7 +35,7 @@ FROM (
              NULL::int AS render_height,
              NULL::int AS render_min_height,
              building
-         FROM icgc_data.poblament
+         FROM contextmaps.poblament
          WHERE zoom_level = 11 AND geom && bbox
          UNION ALL
 
@@ -46,7 +46,7 @@ FROM (
              render_height,
              render_min_height,
              building
-         FROM icgc_data.building_z12
+         FROM contextmaps.building_z12
          WHERE zoom_level = 12 AND geom && bbox
          UNION ALL
 
@@ -57,7 +57,7 @@ FROM (
              render_height,
              render_min_height,
              building
-         FROM icgc_data.building
+         FROM contextmaps.building
          WHERE zoom_level = 13 AND geom && bbox
          UNION ALL
 
@@ -68,7 +68,7 @@ FROM (
              render_height,
              render_min_height,
              'industrial' AS building
-         FROM icgc_data.building_bt5m
+         FROM contextmaps.building_bt5m
          WHERE zoom_level > 13 AND building IN ('industrial', 'cns-XE', 'dip') AND geom && bbox
          UNION ALL
 
@@ -79,7 +79,7 @@ FROM (
              render_height,
              render_min_height,
              building
-         FROM icgc_data.building_bt5m
+         FROM contextmaps.building_bt5m
          WHERE zoom_level > 13 AND building NOT IN ('industrial', 'cns-XE', 'dip') AND geom && bbox
          UNION ALL
 
@@ -90,7 +90,7 @@ FROM (
              NULL::int AS render_height,
              NULL::int AS render_min_height,
              NULL::text AS building
-         FROM icgc_data.ascensors
+         FROM contextmaps.ascensors
          WHERE zoom_level > 13 AND geom && bbox
      ) AS zoom_levels
 ORDER BY render_height ASC, ST_YMin(geom) DESC;

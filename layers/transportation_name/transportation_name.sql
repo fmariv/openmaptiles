@@ -53,7 +53,7 @@ FROM (
             NULL::INT AS layer,
             NULL::INT AS level,
             NULL::INT AS indoor
-        FROM icgc_data.z_6_8_mtc_vials
+        FROM contextmaps.z_6_8_mtc_vials
         WHERE zoom_level BETWEEN 6 AND 8
             AND codi_via <> ''
         UNION ALL
@@ -74,7 +74,7 @@ FROM (
             NULL::INT AS layer,
             NULL::INT AS level,
             NULL::INT AS indoor
-        FROM icgc_data.transportation_name_line3_3857
+        FROM contextmaps.transportation_name_line3_3857
         WHERE zoom_level >= 10
         UNION ALL
 

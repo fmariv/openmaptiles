@@ -57,7 +57,7 @@ FROM (
                 NULL::text AS jsel,
                 NULL::int AS "rank",
                 NULL::text AS contextmaps
-         FROM icgc_data.water_z_7_8_carto
+         FROM contextmaps.water_z_7_8_carto
          WHERE (zoom_level <= 8 ) AND geom && bbox
          UNION ALL
 
@@ -72,7 +72,7 @@ FROM (
                 NULL::text AS jsel,
                 NULL::int AS "rank",
                 NULL::text AS contextmaps
-         FROM icgc_data.water_z_9_10_carto
+         FROM contextmaps.water_z_9_10_carto
          WHERE (zoom_level = 9 ) AND geom && bbox
          UNION ALL
 
@@ -87,7 +87,7 @@ FROM (
                 NULL::text AS jsel,
                 NULL::int AS "rank",
                 NULL::text AS contextmaps
-         FROM icgc_data.water_z_10_11_carto
+         FROM contextmaps.water_z_10_11_carto
          WHERE (zoom_level BETWEEN 10 AND 11 ) AND geom && bbox) 
          AS zoom_levels
 WHERE geom && bbox
@@ -103,7 +103,7 @@ SELECT
     jsel,
     "rank",
     contextmaps
-FROM icgc_data.water5m
+FROM contextmaps.water5m
 WHERE zoom_level >= 12 AND geometry && bbox
 UNION ALL
 

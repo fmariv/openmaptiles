@@ -4,6 +4,7 @@ version: "3"
 volumes:
   pgdata:
 
+
 networks:
   postgres:
     driver: bridge
@@ -14,14 +15,26 @@ services:
     image: "${POSTGIS_IMAGE:-openmaptiles/postgis}:${TOOLS_VERSION}"
     # Use "command: postgres -c jit=off" for PostgreSQL 11+ because of slow large MVT query processing
     volumes:
-      # - pgdata:/var/lib/postgresql/data
-      - /dades_entrada/docker/openmaptiles/data:/var/lib/postgresql/data   # sfproces mount
+      - pgdata:/var/lib/postgresql/data
+      #- /dades_entrada/docker/openmaptiles/data:/var/lib/postgresql/data   # sfproces mount
     networks:
       - postgres
     ports:
       - "5432"
+    environment:
+      - POSTGRES_HOST=postgres
+      - CRON_SCHEDULE="0 23 * * 5"
+      - REMOVE_BEFORE=30
     env_file: .env-postgres
     command: ["postgres", "-c", "log_statement=all"]
+
+  backups:
+    image: "kartoza/pg-backup:9.6"
+    volumes:
+      - /dades_entrada/backups/:backups
+    env_file: .env-backups
+    depends_on:
+      - postgres
 
   import-data:
     image: "openmaptiles/import-data:${TOOLS_VERSION}"

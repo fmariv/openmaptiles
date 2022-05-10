@@ -130,11 +130,13 @@ layer:
     icgc_zoom:
       description:
         Pendent d'informar.
+    classicgc: Pendent.
+    icgc_id_match: Pendent.
   datasource:
     geometry_field: geometry
     key_field: icgc_id
     key_field_as_attribute: no
     srid: 900913
-    query: (SELECT icgc_id, geometry, name, "name:latin", class, subclass, layer, rank, categoria, icgc_zoom FROM layer_poi(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
+    query: (SELECT icgc_id, geometry, name, "name:latin", class, subclass, layer, rank, categoria, icgc_zoom, classicgc, icgc_id_match FROM layer_poi(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
 schema:
   - ./poi.sql

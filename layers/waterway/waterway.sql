@@ -4,80 +4,119 @@ DROP FUNCTION IF EXISTS layer_waterway(bbox geometry, zoom_level int);
 CREATE OR REPLACE FUNCTION layer_waterway(bbox geometry, zoom_level int)
     RETURNS TABLE
             (   
-            	icgc_id      bigint,
+              icgc_id      integer,
               geometry     geometry,
-              class        text,
+              localtype    text,
+              localid      text,
               name         text,
-              "name:latin" text,
-              entorn       text,
-              jsel         text,
-              "rank"       integer,
-              contextmaps  text
+              origin       text,
+              namespace    text,
+              cas          text,
+              ordre        integer,
+              grau         integer,
+              codi         text,
+              codi_short   text
             )
 AS
 $$
 SELECT icgc_id,
-       geom,
-       class,
-       NULLIF(name, '') AS name,
-       name AS "name:latin",
-       entorn,
-       jsel,
-       "rank",
-       contextmaps
+       geometry,
+       localtype,
+       localid,
+       name,
+       origin,
+       namespace,
+       cas,
+       ordre,
+       grau,
+       codi,
+       codi_short
 FROM (
-         -- icgc waterway_z_7_8_carto
-         SELECT icgc_id,
-                geom,
-                class,
-                name,
-                'GE' AS entorn,
-                NULL::text AS jsel,
-                NULL::int AS "rank",
-                NULL::text AS contextmaps
-         FROM icgc_data.waterway_z_7_8_carto
-         WHERE (zoom_level BETWEEN 7 AND 8) AND geom && bbox
-         UNION ALL
+         -- xarxa_50
+        SELECT
+            icgc_id,
+            geometry,
+            NULL::text AS localtype,
+            NULL::text AS localid,
+            NULL::text AS name,
+            NULL::text AS origin,
+            NULL::text AS namespace,
+            cas,
+            ordre,
+            grau,
+            codi,
+            codi_short
+        FROM icgc_data.xarxa_50m
+        UNION ALL
 
-         -- waterway_z_9_10_carto
-         SELECT icgc_id,
-                geom,
-                class,
-                name,
-                'GE' AS entorn,
-                NULL::text AS jsel,
-                NULL::int AS "rank",
-                NULL::text AS contextmaps
-         FROM icgc_data.waterway_z_9_10_carto 
-         WHERE (zoom_level = 9) AND geom && bbox
-         UNION ALL
+        -- water_course
+        SELECT
+            icgc_id,
+            geometry,
+            NULL::text AS localtype,
+            localid,
+            NULL::text AS name,
+            origin,
+            namespace,
+            NULL::text AS cas,
+            NULL::int AS ordre,
+            NULL::int AS grau,
+            NULL::text AS codi,
+            NULL::text AS codi_short
+        FROM icgc_data.water_course
+        UNION ALL
 
-         -- waterway_z_10_11_carto
-         SELECT icgc_id,
-                geom,
-                class,
-                name,
-                'GE' AS entorn,
-                NULL::text AS jsel,
-                NULL::int AS "rank",
-                NULL::text AS contextmaps
-         FROM icgc_data.waterway_z_10_11_carto 
-         WHERE (zoom_level BETWEEN 10 AND 11) AND geom && bbox
-         UNION ALL
+        -- land water boundary
+        SELECT
+            icgc_id,
+            geometry,
+            localtype,
+            localid,
+            NULL::text AS name,
+            NULL::text AS origin,
+            NULL::text AS namespace,
+            NULL::text AS cas,
+            NULL::int AS ordre,
+            null::int AS grau,
+            NULL::text AS codi,
+            NULL::text AS codi_short
+        FROM icgc_data.land_water_boundary
+        UNION ALL
 
-         -- waterway5m
-         SELECT icgc_id,
-                geometry,
-                class,
-                name,
-                NULL::text AS entorn,
-                jsel,
-                "rank",
-                contextmaps
-         FROM icgc_data.waterway5m
-         WHERE zoom_level >= 12
+        -- shoreline_construction
+        SELECT
+            icgc_id,
+            geometry,
+            localtype,
+            localid,
+            NULL::text AS name,
+            NULL::text AS origin,
+            NULL::text AS namespace,
+            NULL::text AS cas,
+            NULL::int AS ordre,
+            NULL::int AS grau,
+            NULL::text AS codi,
+            NULL::text AS codi_short
+        FROM icgc_data.shoreline_construction
+        UNION ALL
+
+        -- darm_or_weir
+        SELECT
+            icgc_id,
+            geometry,
+            NULL::text AS localtype,
+            localid,
+            name,
+            NULL::text AS origin,
+            NULL::text AS namespace,
+            NULL::text AS cas,
+            NULL::int AS ordre,
+            NULL::int AS grau,
+            NULL::text AS codi,
+            NULL::text AS codi_short
+        FROM icgc_data.dam_or_weir
      ) AS zoom_levels
-WHERE geom && bbox;
+WHERE geometry && bbox;
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

@@ -17,25 +17,20 @@ layer:
     name: |
         The OSM [`name`](http://wiki.openstreetmap.org/wiki/Key:name) value of the waterway.
         The `name` field may be empty for NaturalEarth data or at lower zoom levels.
-    "name:latin": Name of the waterway.
-    class:
-      description: |
-        The original value of the [`waterway`](http://wiki.openstreetmap.org/wiki/Key:waterway) tag.
-      values:
-      - stream
-      - river
-      - canal
-      - drain
-      - ditch
     icgc_id:
       description:
         Identificador de l'ICGC.
-    entorn: Pendent d'informar.
-    jsel: Pendent d'informar.
-    rank: Pendent d'informar.
-    contextmaps: Pendent d'informar.
+    localtype: Pendent.
+    localid: Pendent.
+    origin: Pendent.
+    namespace: Pendent.
+    cas: Pendent.
+    ordre: Pendent.
+    grau: Pendent.
+    codi: Pendent.
+    codi_short: Pendent.
   datasource:
     geometry_field: geometry
-    query: (SELECT geometry, name, "name:latin", class, icgc_id, entorn, jsel, rank, contextmaps FROM layer_waterway(!bbox!, z(!scale_denominator!))) AS t
+    query: (SELECT icgc_id, geometry, name, localtype, localid, origin, namespace, cas, ordre, grau, codi, codi_short FROM layer_waterway(!bbox!, z(!scale_denominator!))) AS t
 schema:
   - ./waterway.sql

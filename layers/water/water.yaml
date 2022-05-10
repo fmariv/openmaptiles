@@ -9,40 +9,18 @@ layer:
       This however can lead to less rendering options in clients since these boundaries show up. So you might not be
       able to use border styling for ocean water features.
   fields:
-    class:
-      description: |
-          All water polygons from [OpenStreetMapData](http://osmdata.openstreetmap.de/) have the class `ocean`.
-          Water bodies with the [`waterway=riverbank`](http://wiki.openstreetmap.org/wiki/Tag:waterway=riverbank)
-          or [`water=river`](http://wiki.openstreetmap.org/wiki/Tag:water=river) tag are classified as river.  Wet and dry docks
-          tagged [`waterway=dock`](http://wiki.openstreetmap.org/wiki/Tag:waterway=dock) are classified as a `dock`.
-          All other water bodies are classified as `lake`.
-      values:
-        dock:
-          waterway: 'dock'
-        river:
-          water: 'river'
-          waterway: 'riverbank'
-        lake:
-          waterway: ''
-        ocean:
-    intermittent:
-      description: |
-        Mark with `1` if it is an [intermittent](http://wiki.openstreetmap.org/wiki/Key:intermittent) water polygon.
-      values: [0, 1]
-    brunnel:
-      description: |
-        Identifies the type of crossing as either a bridge or a tunnel.
-      values:
-        - bridge
-        - tunnel
     icgc_id:
       description:
         Identificador únic de l'ICGC.
-    jsel: Pendent d'informar.
-    rank: Pendent d'informar.
-    contextmaps: Pendent d'informar.
+    localtype: Pendent.
+    localid: Pendent.
+    codi: Pendent.
+    origin: Pendent.
+    persistent: Pendent.
+    name: Pendent.
+    nom_conca: Pendent.
   buffer_size: 4
   datasource:
-    query: (SELECT geometry, class, intermittent, brunnel, icgc_id, jsel, rank, contextmaps FROM layer_water(!bbox!, z(!scale_denominator!))) AS t
+    query: (SELECT icgc_id, geometry, localtype, localid, codi, origin, persistent, name, nom_conca FROM layer_water(!bbox!, z(!scale_denominator!))) AS t
 schema:
   - ./water.sql

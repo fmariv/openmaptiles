@@ -31,7 +31,7 @@ services:
   backups:
     image: "kartoza/pg-backup:9.6"
     volumes:
-      - /dades_entrada/backups/:backups
+      - /dades_entrada/backups/:/backups
     env_file: .env-backups
     depends_on:
       - postgres

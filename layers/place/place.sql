@@ -33,7 +33,7 @@ SELECT
     NULL::text AS mtc1m,
     NULL::text AS mtc2m,
     NULL::text AS layer
-FROM icgc_data.place
+FROM contextmaps.place
 WHERE (zoom <= zoom_level AND zoom < 12) AND geom && bbox
 UNION ALL
 
@@ -51,7 +51,7 @@ SELECT
      mtc1m,
      mtc2m,
      layer
-FROM icgc_data.mtc1m
+FROM contextmaps.mtc1m
 WHERE geometry && bbox
    AND layer = 'place'
    AND zoom_level BETWEEN 6 AND 10
@@ -71,7 +71,7 @@ SELECT
      NULL::text AS mtc1m,
      NULL::text AS mtc2m,
      layer
-FROM icgc_data.place5m
+FROM contextmaps.place5m
 WHERE geometry && bbox
    AND zoom_level >= 12
 UNION ALL
@@ -90,7 +90,7 @@ SELECT
      NULL::text AS mtc1m,
      NULL::text AS mtc2m,
      layer
-FROM icgc_data.place5m_along
+FROM contextmaps.place5m_along
 WHERE geometry && bbox
    AND zoom_level >= 12
    AND codigeo NOT BETWEEN 50000 AND 59999;

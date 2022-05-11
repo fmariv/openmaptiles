@@ -19,7 +19,7 @@ SELECT
      localtype,
      localid,
      name
-FROM icgc_data.hydro_poi
+FROM contextmaps.hydro_poi
 WHERE geometry && bbox
 UNION ALL
 
@@ -30,7 +30,7 @@ SELECT
      NULL::text AS localtype,
      localid,
     name
-FROM icgc_data.falls
+FROM contextmaps.falls
 WHERE geometry && bbox;
 $$ LANGUAGE SQL STABLE
                 -- STRICT

@@ -33,7 +33,7 @@ FROM (
                 NULL::text AS name_de,
                 NULL::hstore AS tags,
                 NULL::int AS rank
-         FROM icgc_data.park
+         FROM contextmaps.park
          WHERE zoom_level >= 6 AND geom && bbox
      ) AS park_all;
 $$ LANGUAGE SQL STABLE

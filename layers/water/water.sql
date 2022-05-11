@@ -37,7 +37,7 @@ FROM (
             NULL::text AS persistent,
             NULL::text AS name,
             NULL::text AS nom_conca
-        FROM icgc_data.wetland
+        FROM contextmaps.wetland
         UNION ALL
 
         -- standing_water
@@ -51,7 +51,7 @@ FROM (
             persisten,
             name,
             NULL::text AS nom_conca
-        FROM icgc_data.standing_water
+        FROM contextmaps.standing_water
         UNION ALL
 
         -- conques_litoral
@@ -65,7 +65,7 @@ FROM (
             NULL::text AS persistent,
             NULL::text AS name,
             nom_conca
-        FROM icgc_data.conques50m_litoral
+        FROM contextmaps.conques50m_litoral
         UNION ALL
 
         -- conques
@@ -79,7 +79,7 @@ FROM (
             NULL::text AS persistent,
             NULL::text AS name,
             nom_conca
-        FROM icgc_data.conques50m
+        FROM contextmaps.conques50m
     ) AS zoom_levels
 WHERE geometry && bbox;
 $$ LANGUAGE SQL STABLE

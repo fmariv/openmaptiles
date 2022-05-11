@@ -29,8 +29,12 @@ layer:
     grau: Pendent.
     codi: Pendent.
     codi_short: Pendent.
+    class_area: Pendent.
+    class_long: Pendent.
+    class_codi: Pendent.
+    long_cod: Pendent.
   datasource:
     geometry_field: geometry
-    query: (SELECT icgc_id, geometry, name, localtype, localid, origin, namespace, cas, ordre, grau, codi, codi_short FROM layer_waterway(!bbox!, z(!scale_denominator!))) AS t
+    query: (SELECT icgc_id, geometry, name, localtype, localid, origin, namespace, cas, ordre, grau, codi, codi_short, class_area, class_long, class_codi, long_cod FROM layer_waterway(!bbox!, z(!scale_denominator!))) AS t
 schema:
   - ./waterway.sql

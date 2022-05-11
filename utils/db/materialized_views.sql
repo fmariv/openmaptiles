@@ -5,7 +5,7 @@ CREATE MATERIALIZED VIEW osm_poi_point_planet AS
 (
 SELECT opp.*,
        osm_id * 10 AS osm_id_hash
-FROM osm_poi_point opp, icgc_data.catalunya c
+FROM osm_poi_point opp, contextmaps.catalunya c
 WHERE ST_Disjoint(c.geometry, opp.geometry)
     );
 CREATE INDEX IF NOT EXISTS osm_poi_point_planet_idx ON osm_poi_point_planet USING gist (geometry);
@@ -19,7 +19,7 @@ SELECT  opp.*,
             WHEN osm_id < 0 THEN -osm_id * 10 + 4
             ELSE osm_id * 10 + 1
             END AS osm_id_hash
-FROM osm_poi_polygon opp, icgc_data.catalunya c
+FROM osm_poi_polygon opp, contextmaps.catalunya c
 WHERE ST_Disjoint(c.geometry, opp.geometry)
     );
 CREATE INDEX IF NOT EXISTS osm_poi_polygon_planet_idx ON osm_poi_polygon_planet USING gist (geometry);
@@ -30,7 +30,7 @@ DROP MATERIALIZED VIEW IF EXISTS osm_building_block_planet;
 CREATE MATERIALIZED VIEW osm_building_planet AS
 (
 SELECT *
-FROM osm_building_block_gen_z13 obbp, icgc_data.catalunya c
+FROM osm_building_block_gen_z13 obbp, contextmaps.catalunya c
 WHERE ST_DISJOINT(c.geometry, obbp.geometry)
 );
 CREATE INDEX IF NOT EXISTS osm_building_block_planet_idx ON osm_building_block_planet USING gist (geometry);
@@ -53,7 +53,7 @@ SELECT
     nullif(material, '') AS material,
     nullif(colour, '') AS colour,
     FALSE AS hide_3d
-FROM osm_building_relation b, icgc_data.catalunya c
+FROM osm_building_relation b, contextmaps.catalunya c
 WHERE building = ''
   AND ST_GeometryType(b.geometry) = 'ST_Polygon'
   AND ST_Disjoint(c.geometry, b.geometry)
@@ -76,7 +76,7 @@ FROM osm_building_polygon obp
         obp.osm_id >= 0 AND
         obr.member = obp.osm_id AND
         obr.role = 'outline',
-      icgc_data.catalunya c
+      contextmaps.catalunya c
 WHERE ST_GeometryType(obp.geometry) IN ('ST_Polygon', 'ST_MultiPolygon')
    AND ST_Disjoint(c.geometry, obp.geometry)
     );
@@ -90,7 +90,7 @@ CREATE MATERIALIZED VIEW osm_landcover_planet_z7 AS
 SELECT l.geometry, 
        subclass,
        NULL::int as icgc_id
-FROM osm_landcover_gen_z7 ol, icgc_data.catalunya c
+FROM osm_landcover_gen_z7 ol, contextmaps.catalunya c
 WHERE ST_Disjoint(c.geometry, ol.geometry)
     );
 CREATE INDEX IF NOT EXISTS osm_landcover_planet_z7_idx ON osm_landcover_planet_z7 USING gist (geometry);
@@ -101,7 +101,7 @@ CREATE MATERIALIZED VIEW osm_landcover_planet_z8 AS
 SELECT l.geometry, 
        subclass,
        NULL::int as icgc_id
-FROM osm_landcover_gen_z8 ol, icgc_data.catalunya c
+FROM osm_landcover_gen_z8 ol, contextmaps.catalunya c
 WHERE ST_Disjoint(c.geometry, ol.geometry)
     );
 CREATE INDEX IF NOT EXISTS osm_landcover_planet_z8_idx ON osm_landcover_planet_z8 USING gist (geometry);
@@ -112,7 +112,7 @@ CREATE MATERIALIZED VIEW osm_landcover_planet_z9 AS
 SELECT l.geometry, 
        subclass,
        NULL::int as icgc_id
-FROM osm_landcover_gen_z9 ol, icgc_data.catalunya c
+FROM osm_landcover_gen_z9 ol, contextmaps.catalunya c
 WHERE ST_Disjoint(c.geometry, ol.geometry)
     );
 CREATE INDEX IF NOT EXISTS osm_landcover_planet_z9_idx ON osm_landcover_planet_z9 USING gist (geometry);
@@ -123,7 +123,7 @@ CREATE MATERIALIZED VIEW osm_landcover_planet_z10 AS
 SELECT l.geometry, 
        subclass,
        NULL::int as icgc_id
-FROM osm_landcover_gen_z10 ol, icgc_data.catalunya c
+FROM osm_landcover_gen_z10 ol, contextmaps.catalunya c
 WHERE ST_Disjoint(c.geometry, ol.geometry)
     );
 CREATE INDEX IF NOT EXISTS osm_landcover_planet_z10_idx ON osm_landcover_planet_z10 USING gist (geometry);
@@ -134,7 +134,7 @@ CREATE MATERIALIZED VIEW osm_landcover_planet_z11 AS
 SELECT l.geometry, 
        subclass,
        NULL::int as icgc_id
-FROM osm_landcover_gen_z11 ol, icgc_data.catalunya c
+FROM osm_landcover_gen_z11 ol, contextmaps.catalunya c
 WHERE ST_Disjoint(c.geometry, ol.geometry)
     );
 CREATE INDEX IF NOT EXISTS osm_landcover_planet_z11_idx ON osm_landcover_planet_z11 USING gist (geometry);
@@ -145,7 +145,7 @@ CREATE MATERIALIZED VIEW osm_landcover_planet_z12 AS
 SELECT l.geometry, 
        subclass,
        NULL::int as icgc_id
-FROM osm_landcover_gen_z12 ol, icgc_data.catalunya c
+FROM osm_landcover_gen_z12 ol, contextmaps.catalunya c
 WHERE ST_Disjoint(c.geometry, ol.geometry)
     );
 CREATE INDEX IF NOT EXISTS osm_landcover_planet_z12_idx ON osm_landcover_planet_z12 USING gist (geometry);
@@ -156,7 +156,7 @@ CREATE MATERIALIZED VIEW osm_landcover_planet_z13 AS
 SELECT l.geometry, 
        subclass,
        NULL::int as icgc_id
-FROM osm_landcover_gen_z13 ol, icgc_data.catalunya c
+FROM osm_landcover_gen_z13 ol, contextmaps.catalunya c
 WHERE ST_Disjoint(c.geometry, ol.geometry)
     );
 CREATE INDEX IF NOT EXISTS osm_landcover_planet_z13_idx ON osm_landcover_planet_z13 USING gist (geometry);
@@ -167,7 +167,7 @@ CREATE MATERIALIZED VIEW osm_landcover_planet_z14 AS
 SELECT l.geometry, 
        subclass,
        NULL::int as icgc_id
-FROM osm_landcover_gen_z14 ol, icgc_data.catalunya c
+FROM osm_landcover_gen_z14 ol, contextmaps.catalunya c
 WHERE ST_Disjoint(c.geometry, ol.geometry)
     );
 CREATE INDEX IF NOT EXISTS osm_landcover_planet_z14_idx ON osm_landcover_planet_z14 USING gist (geometry);
@@ -182,7 +182,7 @@ SELECT osm_id * 10 AS osm_id,
              name,
              'island' AS class,
              7 AS "rank"
-FROM osm_island_point oip, icgc_data.catalunya c
+FROM osm_island_point oip, contextmaps.catalunya c
 WHERE ST_Disjoint(c.geometry, ol.geometry)
     );
 CREATE INDEX IF NOT EXISTS osm_island_point_planet_idx ON osm_island_point_planet USING gist (geometry);
@@ -195,7 +195,7 @@ SELECT  osm_id * 10 AS osm_id,
         oip.name,
         'island' AS class,
         island_rank(area) AS "rank"
-FROM osm_island_polygon oip, icgc_data.catalunya c
+FROM osm_island_polygon oip, contextmaps.catalunya c
 WHERE ST_Disjoint(c.geometry, oip.geometry)
     );
 CREATE INDEX IF NOT EXISTS osm_island_polygon_planet_idx ON osm_island_polygon_planet USING gist (geometry);
@@ -218,7 +218,7 @@ CREATE MATERIALIZED VIEW transportation_gen_planet_z6 AS
 		is_tunnel,
 		is_ford,
 		z_order
-	FROM osm_transportation_merge_linestring_gen_z6 otml, icgc_data.catalunya c
+	FROM osm_transportation_merge_linestring_gen_z6 otml, contextmaps.catalunya c
 );
 CREATE INDEX IF NOT EXISTS transportation_gen_planet_z6_idx ON transportation_gen_planet_z6 USING gist (geometry);
 
@@ -235,7 +235,7 @@ CREATE MATERIALIZED VIEW transportation_gen_planet_z7 AS
 		is_tunnel,
 		is_ford,
 		z_order
-	FROM osm_transportation_merge_linestring_gen_z7 otml, icgc_data.catalunya c
+	FROM osm_transportation_merge_linestring_gen_z7 otml, contextmaps.catalunya c
 );
 CREATE INDEX IF NOT EXISTS transportation_gen_planet_z7_idx ON transportation_gen_planet_z7 USING gist (geometry);
 
@@ -252,7 +252,7 @@ CREATE MATERIALIZED VIEW transportation_gen_planet_z8 AS
 		is_tunnel,
 		is_ford,
 		z_order
-	FROM osm_transportation_merge_linestring_gen_z8 otml, icgc_data.catalunya c
+	FROM osm_transportation_merge_linestring_gen_z8 otml, contextmaps.catalunya c
 );
 CREATE INDEX IF NOT EXISTS transportation_gen_planet_z8_idx ON transportation_gen_planet_z8 USING gist (geometry);
 
@@ -269,7 +269,7 @@ CREATE MATERIALIZED VIEW transportation_gen_planet_z9 AS
 			is_tunnel,
 			is_ford,
 			z_order
-	FROM osm_transportation_merge_linestring_gen_z9 otml, icgc_data.catalunya c
+	FROM osm_transportation_merge_linestring_gen_z9 otml, contextmaps.catalunya c
 );
 CREATE INDEX IF NOT EXISTS transportation_gen_planet_z9_idx ON transportation_gen_planet_z9 USING gist (geometry);
 
@@ -286,7 +286,7 @@ CREATE MATERIALIZED VIEW transportation_gen_planet_z10 AS
 			is_tunnel,
 			is_ford,
 			z_order
-	FROM osm_transportation_merge_linestring_gen_z10 otml, icgc_data.catalunya c
+	FROM osm_transportation_merge_linestring_gen_z10 otml, contextmaps.catalunya c
 );
 CREATE INDEX IF NOT EXISTS transportation_gen_planet_z10_idx ON transportation_gen_planet_z10 USING gist (geometry);
 
@@ -303,7 +303,7 @@ CREATE MATERIALIZED VIEW transportation_gen_planet_z11 AS
 			is_tunnel,
 			is_ford,
 			z_order
-	FROM osm_transportation_merge_linestring_gen_z11 otml, icgc_data.catalunya c
+	FROM osm_transportation_merge_linestring_gen_z11 otml, contextmaps.catalunya c
 );
 CREATE INDEX IF NOT EXISTS transportation_gen_planet_z11_idx ON transportation_gen_planet_z11 USING gist (geometry);
 
@@ -328,7 +328,7 @@ SELECT w.geometry,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
-FROM osm_water_polygon_gen_z6 w, icgc_data.catalunya c
+FROM osm_water_polygon_gen_z6 w, contextmaps.catalunya c
 WHERE "natural" != 'bay'
  AND ST_Disjoint(c.geometry, w.geometry)
     );
@@ -353,7 +353,7 @@ SELECT w.geometry,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
-FROM osm_water_polygon_gen_z7 w, icgc_data.catalunya c
+FROM osm_water_polygon_gen_z7 w, contextmaps.catalunya c
 WHERE "natural" != 'bay'
  AND ST_Disjoint(c.geometry, w.geometry)
     );
@@ -378,7 +378,7 @@ SELECT w.geometry,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
-FROM osm_water_polygon_gen_z8 w, icgc_data.catalunya c
+FROM osm_water_polygon_gen_z8 w, contextmaps.catalunya c
 WHERE "natural" != 'bay' 
  AND ST_Disjoint(c.geometry, w.geometry)
     );
@@ -403,7 +403,7 @@ SELECT w.geometry,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
-FROM osm_water_polygon_gen_z9 w, icgc_data.catalunya c
+FROM osm_water_polygon_gen_z9 w, contextmaps.catalunya c
 WHERE "natural" != 'bay'
  AND ST_Disjoint(c.geometry, w.geometry)
     );
@@ -428,7 +428,7 @@ SELECT w.geometry,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
-FROM osm_water_polygon_gen_z10 w, icgc_data.catalunya c
+FROM osm_water_polygon_gen_z10 w, contextmaps.catalunya c
 WHERE "natural" != 'bay'
  AND ST_Disjoint(c.geometry, w.geometry)
     );
@@ -453,7 +453,7 @@ SELECT w.geometry,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
-FROM osm_water_polygon_gen_z11 w, icgc_data.catalunya c
+FROM osm_water_polygon_gen_z11 w, contextmaps.catalunya c
 WHERE "natural" != 'bay'
  AND ST_Disjoint(c.geometry, w.geometry)
     );
@@ -478,7 +478,7 @@ SELECT w.geometry,
        w.is_bridge,
        w.is_tunnel,
        0::int AS icgc_id
-FROM osm_water_polygon w, icgc_data.catalunya c
+FROM osm_water_polygon w, contextmaps.catalunya c
 WHERE "natural" != 'bay'
  AND ST_Disjoint(c.geometry, w.geometry)
     );
@@ -494,8 +494,8 @@ SELECT NULL::bigint AS icgc_id,
        class,
        name,
        NULL::text AS entorn
-FROM waterway_relation_gen_z6 w, icgc_data.catalunya
-WHERE ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
+FROM waterway_relation_gen_z6 w, contextmaps.catalunya
+WHERE ST_DISJOINT(contextmaps.catalunya.geometry, w.geometry)
     );
 CREATE INDEX IF NOT EXISTS waterway_z6_idx ON waterway_z6 USING gist (geometry);
 
@@ -508,8 +508,8 @@ SELECT NULL::bigint AS icgc_id,
        class,
        name,
        NULL::text AS entorn
-FROM waterway_relation_gen_z7 w, icgc_data.catalunya
-WHERE ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
+FROM waterway_relation_gen_z7 w, contextmaps.catalunya
+WHERE ST_DISJOINT(contextmaps.catalunya.geometry, w.geometry)
     );
 CREATE INDEX IF NOT EXISTS waterway_z7_idx ON waterway_z7 USING gist (geometry);
 
@@ -522,8 +522,8 @@ SELECT NULL::bigint AS icgc_id,
        class,
        name,
        NULL::text AS entorn
-FROM waterway_relation_gen_z8 w, icgc_data.catalunya
-WHERE ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
+FROM waterway_relation_gen_z8 w, contextmaps.catalunya
+WHERE ST_DISJOINT(contextmaps.catalunya.geometry, w.geometry)
     );
 CREATE INDEX IF NOT EXISTS waterway_z8_idx ON waterway_z8 USING gist (geometry);
 
@@ -536,8 +536,8 @@ SELECT NULL::bigint AS icgc_id,
        'river'::text AS class,
        name,
        NULL::text AS entorn
-FROM osm_important_waterway_linestring_gen_z9 w, icgc_data.catalunya
-WHERE ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
+FROM osm_important_waterway_linestring_gen_z9 w, contextmaps.catalunya
+WHERE ST_DISJOINT(contextmaps.catalunya.geometry, w.geometry)
     );
 CREATE INDEX IF NOT EXISTS waterway_z9_idx ON waterway_z9 USING gist (geometry);
 
@@ -550,8 +550,8 @@ SELECT NULL::bigint AS icgc_id,
        'river'::text AS class,
        name,
        NULL::text AS entorn
-FROM osm_important_waterway_linestring_gen_z10 w, icgc_data.catalunya
-WHERE ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
+FROM osm_important_waterway_linestring_gen_z10 w, contextmaps.catalunya
+WHERE ST_DISJOINT(contextmaps.catalunya.geometry, w.geometry)
     );
 CREATE INDEX IF NOT EXISTS waterway_z10_idx ON waterway_z10 USING gist (geometry);
 
@@ -564,8 +564,8 @@ SELECT NULL::bigint AS icgc_id,
        'river'::text AS class,
        name,
        NULL::text AS entorn
-FROM osm_important_waterway_linestring_gen_z11 w, icgc_data.catalunya
-WHERE ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
+FROM osm_important_waterway_linestring_gen_z11 w, contextmaps.catalunya
+WHERE ST_DISJOINT(contextmaps.catalunya.geometry, w.geometry)
     );
 CREATE INDEX IF NOT EXISTS waterway_z11_idx ON waterway_z11 USING gist (geometry);
 
@@ -578,9 +578,9 @@ SELECT NULL::bigint AS icgc_id,
        waterway::text AS class,
        name,
        NULL::text AS entorn
-FROM osm_waterway_linestring w, icgc_data.catalunya
+FROM osm_waterway_linestring w, contextmaps.catalunya
 WHERE w.waterway IN ('river', 'canal') 
-AND ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
+AND ST_DISJOINT(contextmaps.catalunya.geometry, w.geometry)
     );
 CREATE INDEX IF NOT EXISTS waterway_z12_idx ON waterway_z12 USING gist (geometry);
 
@@ -593,9 +593,9 @@ SELECT NULL::bigint AS icgc_id,
        waterway::text AS class,
        name,
        NULL::text AS entorn
-FROM osm_waterway_linestring w, icgc_data.catalunya
+FROM osm_waterway_linestring w, contextmaps.catalunya
 WHERE w.waterway IN ('river', 'canal', 'stream', 'drain', 'ditch')
-AND ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
+AND ST_DISJOINT(contextmaps.catalunya.geometry, w.geometry)
     );
 CREATE INDEX IF NOT EXISTS waterway_z13_idx ON waterway_z13 USING gist (geometry);
 
@@ -608,8 +608,8 @@ SELECT NULL::bigint AS icgc_id,
        waterway::text AS class,
        name,
        NULL::text AS entorn
-FROM osm_waterway_linestring w, icgc_data.catalunya
-WHERE ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
+FROM osm_waterway_linestring w, contextmaps.catalunya
+WHERE ST_DISJOINT(contextmaps.catalunya.geometry, w.geometry)
     );
 CREATE INDEX IF NOT EXISTS waterway_z14_idx ON waterway_z14 USING gist (geometry);
 

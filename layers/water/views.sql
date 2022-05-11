@@ -313,7 +313,7 @@ SELECT w.geometry,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
-FROM osm_water_polygon_gen_z6 w, icgc_data.catalunya c
+FROM osm_water_polygon_gen_z6 w, contextmaps.catalunya c
 WHERE "natural" != 'bay'
  AND ST_Disjoint(c.geometry, w.geometry)
     );
@@ -338,7 +338,7 @@ SELECT w.geometry,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
-FROM osm_water_polygon_gen_z7 w, icgc_data.catalunya c
+FROM osm_water_polygon_gen_z7 w, contextmaps.catalunya c
 WHERE "natural" != 'bay'
  AND ST_Disjoint(c.geometry, w.geometry)
     );
@@ -363,7 +363,7 @@ SELECT w.geometry,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
-FROM osm_water_polygon_gen_z8 w, icgc_data.catalunya c
+FROM osm_water_polygon_gen_z8 w, contextmaps.catalunya c
 WHERE "natural" != 'bay' 
  AND ST_Disjoint(c.geometry, w.geometry)
     );
@@ -388,7 +388,7 @@ SELECT w.geometry,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
-FROM osm_water_polygon_gen_z9 w, icgc_data.catalunya c
+FROM osm_water_polygon_gen_z9 w, contextmaps.catalunya c
 WHERE "natural" != 'bay'
  AND ST_Disjoint(c.geometry, w.geometry)
     );
@@ -413,7 +413,7 @@ SELECT w.geometry,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
-FROM osm_water_polygon_gen_z10 w, icgc_data.catalunya c
+FROM osm_water_polygon_gen_z10 w, contextmaps.catalunya c
 WHERE "natural" != 'bay'
  AND ST_Disjoint(c.geometry, w.geometry)
     );
@@ -438,7 +438,7 @@ SELECT w.geometry,
        NULL::boolean AS is_bridge,
        NULL::boolean AS is_tunnel,
        0::int AS icgc_id
-FROM osm_water_polygon_gen_z11 w, icgc_data.catalunya c
+FROM osm_water_polygon_gen_z11 w, contextmaps.catalunya c
 WHERE "natural" != 'bay'
  AND ST_Disjoint(c.geometry, w.geometry)
     );
@@ -463,7 +463,7 @@ SELECT w.geometry,
        is_bridge,
        is_tunnel,
        0::int AS icgc_id
-FROM osm_water_polygon w, icgc_data.catalunya c
+FROM osm_water_polygon w, contextmaps.catalunya c
 WHERE "natural" != 'bay'
  AND ST_Disjoint(c.geometry, w.geometry)
     );

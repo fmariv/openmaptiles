@@ -32,7 +32,7 @@ SELECT
     icao,
     CAST(ele AS int) AS ele,
     CAST(ele AS int) AS ele_ft
-FROM icgc_data.aerodrome_label
+FROM contextmaps.aerodrome_label
 WHERE zoom_level >= 10 AND geometry && bbox;
 $$ LANGUAGE SQL STABLE
                 -- STRICT

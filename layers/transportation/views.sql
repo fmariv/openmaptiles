@@ -14,7 +14,7 @@ CREATE MATERIALIZED VIEW transportation_gen_planet_z6 AS
 		is_tunnel,
 		is_ford,
 		z_order
-	FROM osm_transportation_merge_linestring_gen_z6 otml, icgc_data.catalunya c
+	FROM osm_transportation_merge_linestring_gen_z6 otml, contextmaps.catalunya c
 );
 CREATE INDEX IF NOT EXISTS transportation_gen_planet_z6_idx ON transportation_gen_planet_z6 USING gist (geometry);
 
@@ -31,7 +31,7 @@ CREATE MATERIALIZED VIEW transportation_gen_planet_z7 AS
 		is_tunnel,
 		is_ford,
 		z_order
-	FROM osm_transportation_merge_linestring_gen_z7 otml, icgc_data.catalunya c
+	FROM osm_transportation_merge_linestring_gen_z7 otml, contextmaps.catalunya c
 );
 CREATE INDEX IF NOT EXISTS transportation_gen_planet_z7_idx ON transportation_gen_planet_z7 USING gist (geometry);
 
@@ -48,7 +48,7 @@ CREATE MATERIALIZED VIEW transportation_gen_planet_z8 AS
 		is_tunnel,
 		is_ford,
 		z_order
-	FROM osm_transportation_merge_linestring_gen_z8 otml, icgc_data.catalunya c
+	FROM osm_transportation_merge_linestring_gen_z8 otml, contextmaps.catalunya c
 );
 CREATE INDEX IF NOT EXISTS transportation_gen_planet_z8_idx ON transportation_gen_planet_z8 USING gist (geometry);
 
@@ -65,7 +65,7 @@ CREATE MATERIALIZED VIEW transportation_gen_planet_z9 AS
 			is_tunnel,
 			is_ford,
 			z_order
-	FROM osm_transportation_merge_linestring_gen_z9 otml, icgc_data.catalunya c
+	FROM osm_transportation_merge_linestring_gen_z9 otml, contextmaps.catalunya c
 );
 CREATE INDEX IF NOT EXISTS transportation_gen_planet_z9_idx ON transportation_gen_planet_z9 USING gist (geometry);
 
@@ -82,7 +82,7 @@ CREATE MATERIALIZED VIEW transportation_gen_planet_z10 AS
 			is_tunnel,
 			is_ford,
 			z_order
-	FROM osm_transportation_merge_linestring_gen_z10 otml, icgc_data.catalunya c
+	FROM osm_transportation_merge_linestring_gen_z10 otml, contextmaps.catalunya c
 );
 CREATE INDEX IF NOT EXISTS transportation_gen_planet_z10_idx ON transportation_gen_planet_z10 USING gist (geometry);
 
@@ -99,7 +99,7 @@ CREATE MATERIALIZED VIEW transportation_gen_planet_z11 AS
 			is_tunnel,
 			is_ford,
 			z_order
-	FROM osm_transportation_merge_linestring_gen_z11 otml, icgc_data.catalunya c
+	FROM osm_transportation_merge_linestring_gen_z11 otml, contextmaps.catalunya c
 );
 CREATE INDEX IF NOT EXISTS transportation_gen_planet_z11_idx ON transportation_gen_planet_z11 USING gist (geometry);
 
@@ -112,7 +112,7 @@ CREATE MATERIALIZED VIEW transportation_railway_planet_z8 AS
 			railway,
 			service_value(service) AS service,
 			z_order
-	FROM osm_railway_linestring_gen_z8 orl, icgc_data.catalunya c
+	FROM osm_railway_linestring_gen_z8 orl, contextmaps.catalunya c
 	WHERE railway = 'rail'
         AND service = ''
         AND usage = 'main'
@@ -129,7 +129,7 @@ CREATE MATERIALIZED VIEW transportation_railway_planet_z9 AS
 			service_value(service) AS service,
 			layer,
 			z_order
-	FROM osm_railway_linestring_gen_z9 orl, icgc_data.catalunya c
+	FROM osm_railway_linestring_gen_z9 orl, contextmaps.catalunya c
 	WHERE railway = 'rail'
         AND service = ''
         AND usage = 'main'
@@ -151,7 +151,7 @@ CREATE MATERIALIZED VIEW transportation_railway_planet_z10 AS
 			is_oneway,
 			layer,
 			z_order
-	FROM osm_railway_linestring_gen_z10 orl, icgc_data.catalunya c
+	FROM osm_railway_linestring_gen_z10 orl, contextmaps.catalunya c
 	WHERE railway IN ('rail', 'narrow_gauge')
         AND service = ''
 );
@@ -172,7 +172,7 @@ CREATE MATERIALIZED VIEW transportation_railway_planet_z11 AS
 			is_oneway,
 			layer,
 			z_order
-	FROM osm_railway_linestring_gen_z11 orl, icgc_data.catalunya c
+	FROM osm_railway_linestring_gen_z11 orl, contextmaps.catalunya c
 	WHERE railway IN ('rail', 'narrow_gauge', 'light_rail')
         AND service = ''
 );
@@ -193,7 +193,7 @@ CREATE MATERIALIZED VIEW transportation_railway_planet_z12 AS
 			is_oneway,
 			layer,
 			z_order
-	FROM osm_railway_linestring_gen_z12 orl, icgc_data.catalunya c
+	FROM osm_railway_linestring_gen_z12 orl, contextmaps.catalunya c
 	WHERE railway IN ('rail', 'narrow_gauge', 'light_rail')
         AND service = ''
 );
@@ -214,7 +214,7 @@ CREATE MATERIALIZED VIEW transportation_railway_planet_z13_14 AS
 			is_oneway,
 			layer,
 			z_order
-	FROM osm_railway_linestring orl, icgc_data.catalunya c
+	FROM osm_railway_linestring orl, contextmaps.catalunya c
 	WHERE railway IN ('rail', 'narrow_gauge', 'light_rail')
         AND service = ''
 );
@@ -239,7 +239,7 @@ CREATE MATERIALIZED VIEW transportation_highway_polygon_planet AS
 			man_made,
 			layer,
 			z_order
-	FROM osm_highway_polygon ohp, icgc_data.catalunya c
+	FROM osm_highway_polygon ohp, contextmaps.catalunya c
 	WHERE (
 			man_made IN ('bridge', 'pier')
 			OR (is_area AND COALESCE(layer, 0) >= 0)

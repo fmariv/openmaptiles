@@ -17,7 +17,7 @@ FROM (
 
          -- icgc aeroway
          SELECT icgc_id, geom, class AS aeroway, NULL::text AS ref, tipus
-         FROM icgc_data.aeroway
+         FROM contextmaps.aeroway
          WHERE zoom_level >= 10 AND geom && bbox
      ) AS zoom_levels
 WHERE geom && bbox;

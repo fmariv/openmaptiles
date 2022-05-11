@@ -4,18 +4,22 @@ DROP FUNCTION IF EXISTS layer_waterway(bbox geometry, zoom_level int);
 CREATE OR REPLACE FUNCTION layer_waterway(bbox geometry, zoom_level int)
     RETURNS TABLE
             (   
-              icgc_id      integer,
-              geometry     geometry,
-              localtype    text,
-              localid      text,
-              name         text,
-              origin       text,
-              namespace    text,
-              cas          text,
-              ordre        integer,
-              grau         integer,
-              codi         text,
-              codi_short   text
+              icgc_id           integer,
+              geometry          geometry,
+              localtype         text,
+              localid           text,
+              name              text,
+              origin            text,
+              namespace         text,
+              cas               text,
+              ordre             integer,
+              grau              integer,
+              codi              text,
+              codi_short        text,
+              class_area        integer,
+              class_long        integer,
+              class_codi        text,
+              long_cod          integer
             )
 AS
 $$
@@ -30,7 +34,11 @@ SELECT icgc_id,
        ordre,
        grau,
        codi,
-       codi_short
+       codi_short,
+       class_area,
+       class_long,
+       class_codi,
+       long_cod
 FROM (
          -- xarxa_50
         SELECT
@@ -45,8 +53,12 @@ FROM (
             ordre,
             grau,
             codi,
-            codi_short
-        FROM icgc_data.xarxa_50m
+            codi_short,
+            class_area,
+            class_long,
+            class_codi,
+            long_cod
+        FROM contextmaps.xarxa_50m
         UNION ALL
 
         -- water_course
@@ -62,8 +74,12 @@ FROM (
             NULL::int AS ordre,
             NULL::int AS grau,
             NULL::text AS codi,
-            NULL::text AS codi_short
-        FROM icgc_data.water_course
+            NULL::text AS codi_short,
+            NULL::int AS class_area,
+            NULL::int AS class_long,
+            NULL::text AS class_codi,
+            NULL::int AS long_cod
+        FROM contextmaps.water_course
         UNION ALL
 
         -- land water boundary
@@ -79,8 +95,12 @@ FROM (
             NULL::int AS ordre,
             null::int AS grau,
             NULL::text AS codi,
-            NULL::text AS codi_short
-        FROM icgc_data.land_water_boundary
+            NULL::text AS codi_short,
+            NULL::int AS class_area,
+            NULL::int AS class_long,
+            NULL::text AS class_codi,
+            NULL::int AS long_cod
+        FROM contextmaps.land_water_boundary
         UNION ALL
 
         -- shoreline_construction
@@ -96,25 +116,33 @@ FROM (
             NULL::int AS ordre,
             NULL::int AS grau,
             NULL::text AS codi,
-            NULL::text AS codi_short
-        FROM icgc_data.shoreline_construction
+            NULL::text AS codi_short,
+            NULL::int AS class_area,
+            NULL::int AS class_long,
+            NULL::text AS class_codi,
+            NULL::int AS long_cod
+        FROM contextmaps.shoreline_construction
         UNION ALL
 
-        -- darm_or_weir
+        -- dam_or_weir
         SELECT
             icgc_id,
             geometry,
             NULL::text AS localtype,
             localid,
-            name,
+            watername AS name,
             NULL::text AS origin,
             NULL::text AS namespace,
             NULL::text AS cas,
             NULL::int AS ordre,
             NULL::int AS grau,
             NULL::text AS codi,
-            NULL::text AS codi_short
-        FROM icgc_data.dam_or_weir
+            NULL::text AS codi_short,
+            NULL::int AS class_area,
+            NULL::int AS class_long,
+            NULL::text AS class_codi,
+            NULL::int AS long_cod
+        FROM contextmaps.dam_or_weir
      ) AS zoom_levels
 WHERE geometry && bbox;
 $$ LANGUAGE SQL STABLE

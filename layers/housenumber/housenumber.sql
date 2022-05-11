@@ -17,7 +17,7 @@ SELECT
     NULL::int AS icgc_id,
     ohp.geometry,
     ohp.housenumber
-FROM osm_housenumber_point ohp, icgc_data.catalunya c
+FROM osm_housenumber_point ohp, contextmaps.catalunya c
 WHERE zoom_level = 14
   AND ohp.geometry && bbox
   AND ST_Disjoint(c.geometry, ohp.geometry)
@@ -30,7 +30,7 @@ SELECT
      icgc_id,
      geom, 
      housenumber
-FROM icgc_data.housenumber
+FROM contextmaps.housenumber
 WHERE geom && bbox AND zoom_level >= 14 
   ;
 $$ LANGUAGE SQL STABLE

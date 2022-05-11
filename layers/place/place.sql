@@ -21,7 +21,7 @@ SELECT
     name AS "name:latin",
     class,
     rank
-FROM icgc_data.place_div_admin
+FROM divisions_administratives.place_div_admin
 WHERE geometry && bbox
     AND zoom_level >= 6;
 $$ LANGUAGE SQL STABLE

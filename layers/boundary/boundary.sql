@@ -18,7 +18,7 @@ SELECT icgc_id,
        class,
        rank,
        adminlevel
-FROM icgc_data.boundary_div_admin
+FROM divisions_administratives.boundary_div_admin
 WHERE class = 'country'
    AND adminlevel IS NOT NULL
    AND geometry && bbox
@@ -31,7 +31,7 @@ SELECT icgc_id,
        class,
        rank,
        adminlevel
-FROM icgc_data.boundary_div_admin
+FROM divisions_administratives.boundary_div_admin
 WHERE class = 'provincia' 
    AND adminlevel IS NOT NULL
    AND geometry && bbox
@@ -44,7 +44,7 @@ SELECT icgc_id,
        class,
        rank,
        adminlevel
-FROM icgc_data.boundary_div_admin
+FROM divisions_administratives.boundary_div_admin
 WHERE class = 'vegueria' 
    AND adminlevel IS NOT NULL
    AND geometry && bbox
@@ -57,7 +57,7 @@ SELECT icgc_id,
        class,
        rank,
        adminlevel
-FROM icgc_data.boundary_div_admin
+FROM divisions_administratives.boundary_div_admin
 WHERE class = 'comarca' 
    AND adminlevel IS NOT NULL
    AND geometry && bbox
@@ -70,7 +70,7 @@ SELECT icgc_id,
        class,
        rank,
        adminlevel
-FROM icgc_data.boundary_div_admin
+FROM divisions_administratives.boundary_div_admin
 WHERE class = 'municipi' 
    AND adminlevel IS NOT NULL
    AND geometry && bbox

@@ -96,9 +96,10 @@ layer:
       - 1
     codi_via: Pendent d'informar.
     icgc_id: Identificador únic de l'ICGC.
+    caixes: Identificador de la capa transportation_name_line3_3857
   datasource:
     geometry_field: geometry
     srid: 900913
-    query: (SELECT icgc_id, geometry, name, "name:latin", ref, ref_length, network::text, codi_via, class::text, subclass, brunnel, layer, level, indoor FROM layer_transportation_name(!bbox!, z(!scale_denominator!))) AS t
+    query: (SELECT icgc_id, geometry, name, "name:latin", ref, ref_length, network::text, codi_via, class::text, subclass, brunnel, layer, level, indoor, caixes FROM layer_transportation_name(!bbox!, z(!scale_denominator!))) AS t
 schema:
   - ./transportation_name.sql

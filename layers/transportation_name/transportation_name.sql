@@ -17,7 +17,8 @@ CREATE OR REPLACE FUNCTION layer_transportation_name(bbox geometry, zoom_level i
                 brunnel       text,
                 layer         int,
                 level         int,
-                indoor        int
+                indoor        int,
+                caixes        text
             )
 AS
 $$
@@ -35,7 +36,8 @@ SELECT
       brunnel,
       layer,     
       level,     
-      indoor 
+      indoor,
+      caixes
 FROM (
         -- z_6_8_mtc_vials
         SELECT
@@ -52,7 +54,8 @@ FROM (
             brunnel,
             NULL::INT AS layer,
             NULL::INT AS level,
-            NULL::INT AS indoor
+            NULL::INT AS indoor,
+            NULL::text AS caixes
         FROM contextmaps.z_6_8_mtc_vials
         WHERE zoom_level BETWEEN 6 AND 8
             AND codi_via <> ''
@@ -66,14 +69,15 @@ FROM (
             name AS "name:latin",
             ref,
             ref_length,
-            ''::text AS network,
+            NULL::text AS network,
             name AS codi_via,
             class,
             NULL::text AS subclass,
             NULL::text AS brunnel,
             NULL::INT AS layer,
             NULL::INT AS level,
-            NULL::INT AS indoor
+            NULL::INT AS indoor,
+            'SI' AS caixes
         FROM contextmaps.transportation_name_line3_3857
         WHERE zoom_level >= 10
         UNION ALL
@@ -93,7 +97,8 @@ FROM (
             brunnel,
             layer,
             level,
-            indoor
+            indoor,
+            NULL::text AS caixes
         FROM icgc_test.transportation_name
         WHERE zoom_level BETWEEN 9 AND 12
             AND class in ('motorway', 'primary', 'secondary', 'tertiary')
@@ -115,7 +120,8 @@ FROM (
             brunnel,
             layer,
             level,
-            indoor
+            indoor,
+            NULL::text AS caixes
         FROM icgc_test.transportation_name
         WHERE zoom_level >= 13
             AND name <> ''

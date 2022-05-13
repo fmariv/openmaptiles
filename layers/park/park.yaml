@@ -23,6 +23,6 @@ layer:
           Identificador únic de l'ICGC.
   datasource:
     geometry_field: geometry
-    query: (SELECT geometry, class, name, name_en, name_de, {name_languages}, rank, icgc_id FROM layer_park(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
+    query: (SELECT icgc_id, geometry, class, name FROM layer_park(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
 schema:
   - ./park.sql

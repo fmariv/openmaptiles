@@ -3,7 +3,7 @@ tileset:
     - layers/landcover/landcover.yaml
     - layers/park/park.yaml
     - layers/contour/contour.yaml
-    - layers/mountain_peak/mountain_peak.yaml
+    - layers/transportation/transportation.yaml
   name: ContextMaps
   version: 0.1.0
   id: contextmaps

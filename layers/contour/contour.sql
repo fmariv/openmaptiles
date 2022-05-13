@@ -33,7 +33,7 @@ FROM (
         id AS icgc_id,
         geom AS geometry,
         CAST(annotationclassid AS text) AS class,
-        CAST(text AS int) AS height,
+        CAST(text AS double precision) AS height,
         NULL::text AS name
     FROM admpt.etiquetes_corbes
     UNION ALL
@@ -43,7 +43,7 @@ FROM (
         id AS icgc_id,
         geom AS geometry,
         CAST(símbol AS text) AS class,
-        NULL::int AS height,
+        NULL::double precision AS height,
         null::text as name
     FROM admpt.mtc25m_altimetria_simbol
     UNION ALL
@@ -63,7 +63,7 @@ FROM (
         id AS icgc_id,
         geom AS geometry,
         CAST(tipus_de_corba AS text) AS class,
-        NULL::int AS height,
+        NULL::double precision AS height,
         NULL::text AS name
     FROM admpt.mtc25m_corbes_nivell
      ) as contour

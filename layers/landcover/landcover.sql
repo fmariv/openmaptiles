@@ -2,66 +2,61 @@ DROP FUNCTION IF EXISTS layer_landcover(bbox geometry, zoom_level int);
 CREATE OR REPLACE FUNCTION layer_landcover(bbox geometry, zoom_level int)
     RETURNS TABLE
             (
-                geometry geometry,
-                class    text,
-                subclass text,
-                icgc_id  bigint
+                icgc_id     integer,
+                geometry    geometry,
+                class       text,
+                subclass    text,
+                categoria  bigint
             )
 AS
 $$
-SELECT geom,
+SELECT
+       icgc_id,
+       geometry,
        class,
-       null::text as subclass,
-       NULLIF(icgc_id, 0) AS icgc_id
+       subclass,
+       categoria
 FROM (
+        -- landcover golf
+        SELECT
+            icgc_id,
+            geometry,
+            'golf' AS class,
+            NULL::text AS subclass,
+            NULL::int AS categoria
+        FROM admpt.landcover_golf
+        UNION ALL
 
-         -- landcover_z7_z8
-         SELECT geom,
-                class,
-                icgc_id
-         FROM contextmaps.landcover_z7_z8
-         WHERE (zoom_level BETWEEN 6 AND 8 AND geom && bbox )
-         UNION ALL
- 
-         -- landcover_z9_z10
-         SELECT geom,
-                class,
-                icgc_id
-         FROM contextmaps.landcover_z9_z10
-         WHERE (zoom_level BETWEEN 9 AND 10 AND geom && bbox )
-         UNION ALL
- 
-         -- landcover_z11_z12
-         SELECT geom,
-                class,
-                icgc_id
-         FROM contextmaps.landcover_z11_z12
-         WHERE (zoom_level BETWEEN 11 AND 12 AND geom && bbox )
-         UNION ALL
- 
-         -- landcover_ini
-         SELECT geom,
-                class,
-                icgc_id
-         FROM contextmaps.landcover_ini
-         WHERE (zoom_level BETWEEN 13 AND 14 AND geom && bbox )
-         UNION ALL
- 
-         -- landcover_bt5m
-         SELECT geom,
-                class,
-                icgc_id
-         FROM contextmaps.landcover_bt5m
-         WHERE (zoom_level > 14 AND geom && bbox )
-         UNION ALL
+        -- landcover line
+        SELECT
+            id AS icgc_id,
+            geom AS geometry,
+            class,
+            NULL::text AS subclass,
+            categories AS categoria
+        FROM admpt.landcover_line
+        UNION ALL
 
-         -- landcover ACA
-         SELECT geometry,
-                class,
-                icgc_id
-         FROM contextmaps.landcover_aca
-         WHERE (zoom_level > 12 AND geometry && bbox )
-     ) AS zoom_levels;
+        -- cobertes sol
+        SELECT
+            icgc_id,
+            geometry,
+            NULL::text AS class,
+            NULL::text AS subclass,
+            categoria
+        FROM admpt.cobertes_sol
+        UNION ALL
+
+        -- cobertes sol pattern
+        SELECT
+            id AS icgc_id,
+            geom AS geometry,
+            NULL::text AS class,
+            NULL::text AS subclass,
+            categoria
+        FROM admpt.cobertes_sol_pat
+     ) AS zoom_levels
+WHERE geometry && bbox;
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

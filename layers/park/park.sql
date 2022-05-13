@@ -4,38 +4,54 @@ DROP FUNCTION IF EXISTS layer_park(bbox geometry, zoom_level int, pixel_width nu
 CREATE OR REPLACE FUNCTION layer_park(bbox geometry, zoom_level int, pixel_width numeric)
     RETURNS TABLE
             (
-                icgc_id  bigint,
-                geometry geometry,
-                class    text,
-                name     text,
-                name_en  text,
-                name_de  text,
-                tags     hstore,
-                rank     integer
+                icgc_id     integer,
+                geometry    geometry,
+                name        text,
+                class       text
             )
 AS
 $$
 SELECT icgc_id,
-       geom,
-       class,
-       NULLIF(name, '') AS name,
-       NULLIF(name_en, '') AS name_en,
-       NULLIF(name_de, '') AS name_de,
-       tags,
-       rank
+       geometry,
+       name,
+       class
 FROM (
-         -- icgc park
-         SELECT icgc_id,
-                geom,
-                class,
-                NULL::text AS name,
-                NULL::text AS name_en,
-                NULL::text AS name_de,
-                NULL::hstore AS tags,
-                NULL::int AS rank
-         FROM contextmaps.park
-         WHERE zoom_level >= 6 AND geom && bbox
-     ) AS park_all;
+         -- park enpe
+        SELECT
+            icgc_id,
+            geometry,
+            name,
+            class
+        FROM admpt.park_enpe
+        UNION ALL
+
+        -- park diba
+        SELECT
+            icgc_id,
+            geometry,
+            name,
+            class
+        FROM admpt.park_diba
+        UNION ALL
+
+        -- park xarxa natura
+        SELECT
+            icgc_id,
+            geometry,
+            name,
+            class
+        FROM admpt.park_xarxa_natura
+        UNION ALL
+
+        -- park pein
+        SELECT
+            icgc_id,
+            geometry,
+            name,
+            class
+        FROM admpt.park_pein
+     ) AS park_all
+WHERE geometry && bbox;
 $$ LANGUAGE SQL STABLE
                 PARALLEL SAFE;
 -- TODO: Check if the above can be made STRICT -- i.e. if pixel_width could be NULL

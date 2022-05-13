@@ -12,8 +12,10 @@ layer:
           Use the **class** to differentiate between different contour lines.
     height:
       description: Pendent d'informar.
+    name:
+      description: Pendent.
   datasource:
     geometry_field: geometry
-    query: (SELECT geometry, icgc_id, class, height FROM layer_contour(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
+    query: (SELECT icgc_id, geometry, class, height, name FROM layer_contour(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
 schema:
   - ./contour.sql

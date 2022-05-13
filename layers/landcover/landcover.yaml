@@ -72,8 +72,9 @@ layer:
     icgc_id:
       description: 
         Identificador únic de l'ICGC.
+    categoria: Pendent.
   datasource:
     geometry_field: geometry
-    query: (SELECT geometry, class, subclass, icgc_id FROM layer_landcover(!bbox!, z(!scale_denominator!))) AS t
+    query: (SELECT icgc_id, geometry, class, subclass, categoria FROM layer_landcover(!bbox!, z(!scale_denominator!))) AS t
 schema:
   - ./landcover.sql

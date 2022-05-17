@@ -51,7 +51,8 @@ FROM (
             class
         FROM admpt.park_pein
      ) AS park_all
-WHERE geometry && bbox;
+WHERE geometry && bbox
+    AND zoom_level >= 7;
 $$ LANGUAGE SQL STABLE
                 PARALLEL SAFE;
 -- TODO: Check if the above can be made STRICT -- i.e. if pixel_width could be NULL

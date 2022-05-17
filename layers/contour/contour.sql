@@ -20,32 +20,35 @@ SELECT
 FROM (
     -- cotes 5m
     SELECT
-        id AS icgc_id,
-        geom AS geometry,
+        icgc_id,
+        geometry,
         class,
         CAST(name AS double precision) AS height,
         NULL::text AS name
     FROM admpt.contour_cotes5m
+    WHERE zoom_level >= 14
     UNION ALL
 
     -- etiquetes corbes
     SELECT
-        id AS icgc_id,
-        geom AS geometry,
+        icgc_id,
+        geometry,
         CAST(annotationclassid AS text) AS class,
         CAST(text AS double precision) AS height,
         NULL::text AS name
     FROM admpt.etiquetes_corbes
+    WHERE zoom_level BETWEEN 11 AND 13
     UNION ALL
 
     -- mtc25m_altimetria_simbol
     SELECT
-        id AS icgc_id,
-        geom AS geometry,
+        icgc_id,
+        geometry,
         CAST(símbol AS text) AS class,
         NULL::double precision AS height,
         null::text as name
     FROM admpt.mtc25m_altimetria_simbol
+    WHERE zoom_level BETWEEN 11 AND 13
     UNION ALL
 
     -- mtc25m_codi_vertex
@@ -56,16 +59,18 @@ FROM (
         height,
         text AS name
     FROM admpt.mtc25m_codi_vertex
+    WHERE zoom_level BETWEEN 11 AND 13
     UNION ALL
 
     -- mtc25m_corbes_nivell
     SELECT
-        id AS icgc_id,
-        geom AS geometry,
+        icgc_id,
+        geometry,
         CAST(tipus_de_corba AS text) AS class,
         NULL::double precision AS height,
         NULL::text AS name
     FROM admpt.mtc25m_corbes_nivell
+    WHERE zoom_level BETWEEN 11 AND 13
      ) as contour
 WHERE geometry && bbox;
 $$ LANGUAGE SQL STABLE

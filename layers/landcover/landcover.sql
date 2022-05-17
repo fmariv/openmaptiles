@@ -25,16 +25,18 @@ FROM (
             NULL::text AS subclass,
             NULL::int AS categoria
         FROM admpt.landcover_golf
+        WHERE zoom_level >= 12
         UNION ALL
 
         -- landcover line
         SELECT
-            id AS icgc_id,
-            geom AS geometry,
+            icgc_id,
+            geometry,
             class,
             NULL::text AS subclass,
             categories AS categoria
         FROM admpt.landcover_line
+        WHERE zoom_level >= 14
         UNION ALL
 
         -- cobertes sol
@@ -45,16 +47,18 @@ FROM (
             NULL::text AS subclass,
             categoria
         FROM admpt.cobertes_sol
+        WHERE zoom_level >= 10
         UNION ALL
 
         -- cobertes sol pattern
         SELECT
-            id AS icgc_id,
-            geom AS geometry,
+            icgc_id,
+            geometry,
             NULL::text AS class,
             NULL::text AS subclass,
             categoria
         FROM admpt.cobertes_sol_pat
+        WHERE zoom_level >= 14
      ) AS zoom_levels
 WHERE geometry && bbox;
 $$ LANGUAGE SQL STABLE

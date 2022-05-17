@@ -12,13 +12,14 @@ CREATE OR REPLACE FUNCTION layer_transportation(bbox geometry, zoom_level int)
             )
 AS
 $$
-SELECT id AS icgc_id,
-       geom AS geometry,
+SELECT icgc_id,
+       geometry,
        class,
        classicgc,
        d_categori
 FROM admpt.transportation_path_tourist
-WHERE geom && bbox;
+WHERE geometry && bbox
+    AND zoom_level >= 8;
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

@@ -1,5 +1,6 @@
 -- etldoc: layer_place[shape=record fillcolor=lightpink, style="rounded,filled",
 -- etldoc:     label="layer_place | <z0_3> z0-3|<z4_7> z4-7|<z8_11> z8-11| <z12_14> z12-z14+" ] ;
+DROP FUNCTION IF EXISTS layer_place(bbox geometry, zoom_level int, pixel_width numeric);
 CREATE OR REPLACE FUNCTION layer_place(bbox geometry, zoom_level int, pixel_width numeric)
     RETURNS TABLE
             (
@@ -44,11 +45,11 @@ SELECT
     estat,
     sov_a3,
     NULL::text AS concepte_g
-FROM icgc_data.admin_0_p
+FROM contextmaps.admin_0_p
 WHERE geometry && bbox
 UNION ALL
 
-SELECT 
+SELECT
     -- icgc place
     icgc_id,
     geometry,
@@ -60,7 +61,7 @@ SELECT
     estat,
     sov_a3,
     NULL::text AS concepte_g
-FROM icgc_data.admin_1_p
+FROM contextmaps.admin_1_p
 WHERE geometry && bbox;
 $$ LANGUAGE SQL STABLE
                 PARALLEL SAFE;

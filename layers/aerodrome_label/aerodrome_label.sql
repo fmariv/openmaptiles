@@ -33,7 +33,8 @@ SELECT
     CAST(ele AS int) AS ele,
     CAST(ele AS int) AS ele_ft
 FROM contextmaps.aerodrome_label
-WHERE zoom_level >= 10 AND geometry && bbox;
+WHERE zoom_level >= 10
+  AND geometry && bbox;
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

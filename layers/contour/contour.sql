@@ -1,4 +1,3 @@
--- 
 DROP FUNCTION IF EXISTS layer_contour(bbox geometry, zoom_level int, pixel_width numeric);
 CREATE OR REPLACE FUNCTION layer_contour(bbox geometry, zoom_level int, pixel_width numeric)
     RETURNS TABLE
@@ -6,7 +5,7 @@ CREATE OR REPLACE FUNCTION layer_contour(bbox geometry, zoom_level int, pixel_wi
                 icgc_id     integer,
                 geometry    geometry,
                 class       text,
-                height      double precision,
+                height      text,
                 name        text
             )
 AS
@@ -18,37 +17,15 @@ SELECT
     height,
     name
 FROM (
-    -- cotes 5m
-    SELECT
-        icgc_id,
-        geometry,
-        class,
-        CAST(name AS double precision) AS height,
-        NULL::text AS name
-    FROM admpt.contour_cotes5m
-    WHERE zoom_level >= 14
-    UNION ALL
-
-    -- etiquetes corbes
-    SELECT
-        icgc_id,
-        geometry,
-        CAST(annotationclassid AS text) AS class,
-        CAST(text AS double precision) AS height,
-        NULL::text AS name
-    FROM admpt.etiquetes_corbes
-    WHERE zoom_level BETWEEN 11 AND 13
-    UNION ALL
-
     -- mtc25m_altimetria_simbol
     SELECT
         icgc_id,
         geometry,
-        CAST(símbol AS text) AS class,
-        NULL::double precision AS height,
+        class,
+        NULL::text AS height,
         null::text as name
     FROM admpt.mtc25m_altimetria_simbol
-    WHERE zoom_level BETWEEN 11 AND 13
+    WHERE zoom_level >= 7
     UNION ALL
 
     -- mtc25m_codi_vertex
@@ -56,9 +33,42 @@ FROM (
         icgc_id,
         geometry,
         NULL::text AS class,
-        height,
+        CAST(height AS text) as height,
         text AS name
     FROM admpt.mtc25m_codi_vertex
+    WHERE zoom_level >= 7
+    UNION ALL
+
+    -- cotes 50m
+    SELECT
+        icgc_id,
+        geometry,
+        class,
+        textstring AS height,
+        NULL::text AS name
+    FROM admpt.contour_cotes50m
+    WHERE zoom_level BETWEEN 9 AND 10
+    UNION ALL
+
+    -- mtc50m_corbes_nivell
+    SELECT
+        icgc_id,
+        geometry,
+        class,
+        NULL::text AS height,
+        NULL::text AS name
+    FROM admpt.mtc50m_corbes_nivell
+    WHERE zoom_level BETWEEN 9 AND 10
+    UNION ALL
+
+    -- etiquetes corbes
+    SELECT
+        icgc_id,
+        geometry,
+        class,
+        text AS height,
+        NULL::text AS name
+    FROM admpt.etiquetes_corbes
     WHERE zoom_level BETWEEN 11 AND 13
     UNION ALL
 
@@ -66,12 +76,23 @@ FROM (
     SELECT
         icgc_id,
         geometry,
-        CAST(tipus_de_corba AS text) AS class,
-        NULL::double precision AS height,
+        class,
+        NULL::text AS height,
         NULL::text AS name
     FROM admpt.mtc25m_corbes_nivell
     WHERE zoom_level BETWEEN 11 AND 13
-     ) as contour
+
+    -- cotes 5m
+    SELECT
+        icgc_id,
+        geometry,
+        class,
+        name AS height,
+        NULL::text AS name
+    FROM admpt.contour_cotes5m
+    WHERE zoom_level >= 14
+    UNION ALL
+    ) as contour
 WHERE geometry && bbox;
 $$ LANGUAGE SQL STABLE
                 PARALLEL SAFE;

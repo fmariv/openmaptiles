@@ -21,8 +21,9 @@ layer:
     icgc_id:
       description:
           Identificador únic de l'ICGC.
+    ambit: Pendent.
   datasource:
     geometry_field: geometry
-    query: (SELECT icgc_id, geometry, class, name FROM layer_park(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
+    query: (SELECT icgc_id, geometry, class, name, ambit FROM layer_park(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
 schema:
   - ./park.sql

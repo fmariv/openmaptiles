@@ -22,8 +22,8 @@ FROM (
         icgc_id,
         geometry,
         class,
-        NULL::text AS height,
-        null::text as name
+        height,
+        name
     FROM admpt.mtc25m_altimetria_simbol
     WHERE zoom_level >= 7
     UNION ALL
@@ -58,7 +58,7 @@ FROM (
         NULL::text AS height,
         NULL::text AS name
     FROM admpt.mtc50m_corbes_nivell
-    WHERE zoom_level BETWEEN 9 AND 10
+    WHERE zoom_level BETWEEN 10 AND 12
     UNION ALL
 
     -- etiquetes corbes
@@ -80,7 +80,8 @@ FROM (
         NULL::text AS height,
         NULL::text AS name
     FROM admpt.mtc25m_corbes_nivell
-    WHERE zoom_level BETWEEN 11 AND 13
+    WHERE zoom_level BETWEEN 12 AND 13
+    UNION ALL
 
     -- cotes 5m
     SELECT
@@ -91,7 +92,6 @@ FROM (
         NULL::text AS name
     FROM admpt.contour_cotes5m
     WHERE zoom_level >= 14
-    UNION ALL
     ) as contour
 WHERE geometry && bbox;
 $$ LANGUAGE SQL STABLE

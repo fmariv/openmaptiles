@@ -18,8 +18,8 @@ SELECT
     -- icgc place
     icgc_id,
     geometry,
-    nomcap AS   name,
-    nomcap AS   "name:latin",
+    name,
+    name AS "name:latin",
     nommuni,
     class,
     rank
@@ -28,4 +28,3 @@ WHERE geometry && bbox
     AND zoom_level >= 6;
 $$ LANGUAGE SQL STABLE
                 PARALLEL SAFE;
--- TODO: Check if the above can be made STRICT -- i.e. if pixel_width could be NULL

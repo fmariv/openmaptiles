@@ -10,25 +10,11 @@ layer:
     "name:latin": The name of thhe POI.
     class:
       description: |
-          Original value of the
-          [`place`](http://wiki.openstreetmap.org/wiki/Key:place) tag.
-          Distinguish between continents, countries, states and
-          places like settlements or smaller entities.
+          Distinguish between places like settlements or smaller entities.
           Use **class** to separately style the different places and build
           a text hierarchy according to their importance.
       values:
-      - continent
-      - country
-      - state
-      - province
       - city
-      - town
-      - village
-      - hamlet
-      - suburb
-      - quarter
-      - neighbourhood
-      - isolated_dwelling
     rank:
       description: |
           Countries, states and the most important cities all have a
@@ -47,12 +33,13 @@ layer:
           within a grid for cities that do not have a Natural Earth `scalerank`.
     icgc_id:
       description:
-          Identificador únic de l'ICGC. 
+          Identificador únic de l'ICGC.
+    nommuni: Pendent.
   buffer_size: 256
   datasource:
     geometry_field: geometry
     key_field: icgc_id
     key_field_as_attribute: no
-    query: (SELECT icgc_id, geometry, name, "name:latin", class, rank FROM layer_place(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
+    query: (SELECT icgc_id, geometry, name, "name:latin", nommuni, class, rank FROM layer_place(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
 schema:
   - ./place.sql

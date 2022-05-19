@@ -47,7 +47,62 @@ FROM (
         textstring AS height,
         NULL::text AS name
     FROM admpt.contour_cotes50m
-    WHERE zoom_level BETWEEN 9 AND 10
+    WHERE zoom_level BETWEEN 10 AND 11
+    UNION ALL
+
+    -- altimetria 50
+    SELECT
+        icgc_id,
+        geometry,
+        class,
+        NULL::text AS height,
+        NULL::text AS name
+    FROM admpt.mtc50m_altimetria_simbol
+    WHERE zoom_level BETWEEN 10 AND 11
+    UNION ALL
+
+    -- mtc250_corbes_nivell
+    SELECT
+        icgc_id,
+        geometry,
+        class,
+        NULL::text AS height,
+        NULL::text AS name
+    FROM admpt.mtc250m_corbes_nivell
+    WHERE zoom_level = 9
+    UNION ALL
+
+    -- mtc250m_cota_altimetrica_p_lines
+    SELECT
+        icgc_id,
+        geometry,
+        class,
+        NULL::text AS height,
+        NULL::text AS name
+    FROM admpt.mtc250m_etiquetes_corbes_altimetria_p_lines
+    WHERE zoom_level = 9
+    UNION ALL
+
+    -- mtc250m_cota_batimetrica_p_lines
+    SELECT
+        icgc_id,
+        geometry,
+        class,
+        NULL::text AS height,
+        NULL::text AS name
+    FROM admpt.mtc250m_etiqueta_batimetria_p_lines
+    WHERE zoom_level = 9
+    UNION ALL
+
+    -- mtc250_altimetria_simbol
+    SELECT
+        icgc_id,
+        geometry,
+        class,
+        NULL::text AS height,
+        nom AS name
+    FROM admpt.mtc250m_altimetria_simbol
+    WHERE zoom_level = 9
     UNION ALL
 
     -- mtc50m_corbes_nivell
@@ -58,7 +113,7 @@ FROM (
         NULL::text AS height,
         NULL::text AS name
     FROM admpt.mtc50m_corbes_nivell
-    WHERE zoom_level BETWEEN 10 AND 12
+    WHERE zoom_level BETWEEN 10 AND 11
     UNION ALL
 
     -- etiquetes corbes

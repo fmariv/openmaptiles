@@ -9,7 +9,9 @@ CREATE OR REPLACE FUNCTION layer_boundary(bbox geometry, zoom_level int)
                 name          text,
                 class         text,
                 rank          integer,
-                admin_level   integer
+                admin_level   integer,
+                maritime      integer,
+                mtc25         text
             )
 AS
 $$
@@ -19,24 +21,28 @@ SELECT
     name,
     class,
     rank,
-    adminlevel
+    adminlevel,
+    0 AS maritime,
+    mtc25
 FROM
     (
         -- catalunya
         SELECT icgc_id,
                geometry,
-               nomcat    AS name,
-               'country' AS class,
-               0         AS rank,
-               4         AS adminlevel
+               nomcat     AS name,
+               'country'  AS class,
+               0          AS rank,
+               4          AS adminlevel,
+               NULL::text AS mtc25
         FROM divisions_administratives.catalunya_5000
         UNION ALL
         SELECT icgc_id,
                ST_Boundary(geometry) AS geometry,
-               nomcat    AS name,
-               'country' AS class,
-               0         AS rank,
-               4         AS adminlevel
+               nomcat     AS name,
+               'country'  AS class,
+               0          AS rank,
+               4          AS adminlevel,
+               NULL::text AS mtc25
         FROM divisions_administratives.catalunya_5000
         UNION ALL
 
@@ -46,7 +52,8 @@ FROM
                nomvegue     AS name,
                'vegueria'   AS class,
                0            AS rank,
-               5            AS adminlevel
+               5            AS adminlevel,
+               NULL::text   AS mtc25
         FROM divisions_administratives.vegueries_5000
         UNION ALL
         SELECT icgc_id,
@@ -54,7 +61,8 @@ FROM
                nomvegue     AS name,
                'vegueria'   AS class,
                0            AS rank,
-               5            AS adminlevel
+               5            AS adminlevel,
+               NULL::text   AS mtc25
         FROM divisions_administratives.vegueries_5000
         UNION ALL
 
@@ -64,7 +72,8 @@ FROM
                nomprov      AS name,
                'provincia'  AS class,
                0            AS rank,
-               6            AS adminlevel
+               6            AS adminlevel,
+               NULL::text   AS mtc25
         FROM divisions_administratives.provincies_5000
         UNION ALL
         SELECT icgc_id,
@@ -72,7 +81,8 @@ FROM
                nomprov AS name,
                'provincia'  AS class,
                0            AS rank,
-               6            AS adminlevel
+               6            AS adminlevel,
+               NULL::text   AS mtc25
         FROM divisions_administratives.provincies_5000
         UNION ALL
 
@@ -82,7 +92,8 @@ FROM
                nomcomar     AS name,
                'comarca'    AS class,
                0            AS rank,
-               7            AS adminlevel
+               7            AS adminlevel,
+               NULL::text   AS mtc25
         FROM divisions_administratives.comarques_5000
         UNION ALL
         SELECT icgc_id,
@@ -90,8 +101,18 @@ FROM
                nomcomar     AS name,
                'comarca'    AS class,
                0            AS rank,
-               7            AS adminlevel
+               7            AS adminlevel,
+               NULL::text   AS mtc25
         FROM divisions_administratives.comarques_5000
+        UNION ALL
+        SELECT icgc_id,
+               geometry,
+               NULL::text    AS name,
+               'comarca'    AS class,
+               0            AS rank,
+               admin_level  AS adminlevel,
+               'SI'         AS mtc25
+        FROM divisions_administratives.limits_banda
         UNION ALL
 
         -- municipis
@@ -100,7 +121,8 @@ FROM
                nommuni      AS name,
                'municipi'   AS class,
                0            AS rank,
-               8            AS adminlevel
+               8            AS adminlevel,
+               NULL::text   AS mtc25
         FROM divisions_administratives.municipis_5000
         UNION ALL
         SELECT icgc_id,
@@ -108,8 +130,18 @@ FROM
                nommuni      AS name,
                'municipi'   AS class,
                0            AS rank,
-               8            AS adminlevel
+               8            AS adminlevel,
+               NULL::text   AS mtc25
         FROM divisions_administratives.municipis_5000
+        UNION ALL
+        SELECT icgc_id,
+               geometry,
+               NULL::text    AS name,
+               'municipi'   AS class,
+               0            AS rank,
+               admin_level  AS adminlevel,
+               'SI'         AS mtc25
+        FROM work.limits_administratius
     ) AS boundary
 WHERE geometry && bbox
     AND zoom_level >= 6;

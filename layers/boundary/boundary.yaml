@@ -46,9 +46,11 @@ layer:
         and states and for cities consists out of a shifted
         Natural Earth `scalerank` combined with a local rank
         within a grid for cities that do not have a Natural Earth `scalerank`.
+    mtc25: Pendent.
+    maritime: Pendent.
   buffer_size: 4
   datasource:
     geometry_field: geometry
-    query: (SELECT icgc_id, geometry, name, class, rank, admin_level FROM layer_boundary(!bbox!, z(!scale_denominator!))) AS t
+    query: (SELECT icgc_id, geometry, name, class, rank, admin_level, maritime, mtc25 FROM layer_boundary(!bbox!, z(!scale_denominator!))) AS t
 schema:
   - ./boundary.sql

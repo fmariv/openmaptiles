@@ -18,7 +18,7 @@ FROM (
          SELECT geom,
                 class,
                 icgc_id
-         FROM icgc_data.landcover_z7_z8
+         FROM contextmaps.landcover_z7_z8
          WHERE (zoom_level BETWEEN 6 AND 8 AND geom && bbox )
          UNION ALL
  
@@ -26,7 +26,7 @@ FROM (
          SELECT geom,
                 class,
                 icgc_id
-         FROM icgc_data.landcover_z9_z10
+         FROM contextmaps.landcover_z9_z10
          WHERE (zoom_level BETWEEN 9 AND 10 AND geom && bbox )
          UNION ALL
  
@@ -34,7 +34,7 @@ FROM (
          SELECT geom,
                 class,
                 icgc_id
-         FROM icgc_data.landcover_z11_z12
+         FROM contextmaps.landcover_z11_z12
          WHERE (zoom_level BETWEEN 11 AND 12 AND geom && bbox )
          UNION ALL
  
@@ -42,7 +42,7 @@ FROM (
          SELECT geom,
                 class,
                 icgc_id
-         FROM icgc_data.landcover_ini
+         FROM contextmaps.landcover_ini
          WHERE (zoom_level BETWEEN 13 AND 14 AND geom && bbox )
          UNION ALL
  
@@ -50,12 +50,12 @@ FROM (
          SELECT geom,
                 class,
                 icgc_id
-         FROM icgc_data.landcover_bt5m
+         FROM contextmaps.landcover_bt5m
          WHERE (zoom_level > 14 AND geom && bbox )
      ) AS zoom_levels,
      (SELECT geometry AS muni_geom 
-        FROM icgc_data.boundary_div_admin 
-         WHERE codimuni = '431212'
+        FROM contextmaps.boundary_div_admin
+        WHERE codimuni = '431205'
         AND class = 'municipi' 
         AND adminlevel IS NOT NULL
       ) AS muni;

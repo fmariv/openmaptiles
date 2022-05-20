@@ -17,13 +17,13 @@ FROM (
 
          -- icgc aeroway
          SELECT icgc_id, geom, class AS aeroway, NULL::text AS ref, tipus
-         FROM icgc_data.aeroway
+         FROM contextmaps.aeroway
          WHERE zoom_level >= 10 AND geom && bbox
       ) AS zoom_levels,
       (
         SELECT geometry AS muni_geom 
-        FROM icgc_data.boundary_div_admin 
-         WHERE codimuni = '431212'
+        FROM contextmaps.boundary_div_admin
+        WHERE codimuni = '431205'
         AND class = 'municipi' 
         AND adminlevel IS NOT NULL
         ) AS muni

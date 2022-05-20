@@ -36,16 +36,16 @@ SELECT
         icao,
         CAST(ele AS int) AS ele,
         CAST(ele AS int) AS ele_ft
-FROM icgc_data.aerodrome_label, (
+FROM contextmaps.aerodrome_label, (
                                 SELECT geometry AS muni_geom 
-                                FROM icgc_data.boundary_div_admin
-                                WHERE codimuni = '431212'
+                                FROM contextmaps.boundary_div_admin
+                                WHERE codimuni = '431205'
                                 AND class = 'municipi'
                                 AND adminlevel IS NOT NULL
                                 ) AS muni
 WHERE zoom_level >= 10 
    AND geom && bbox
-   AND ST_Intersects(muni.muni_geom, icgc_data.aerodrome_label.geom);
+   AND ST_Intersects(muni.muni_geom, contextmaps.aerodrome_label.geom);
 $$ LANGUAGE SQL STABLE
                 -- STRICT
                 PARALLEL SAFE;

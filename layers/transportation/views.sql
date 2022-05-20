@@ -14,7 +14,7 @@ CREATE MATERIALIZED VIEW transportation_gen_planet_z6 AS
 		is_tunnel,
 		is_ford,
 		z_order
-	FROM osm_transportation_merge_linestring_gen_z6 otml, icgc_data.catalunya c
+	FROM osm_transportation_merge_linestring_gen_z6 otml, contextmaps.catalunya c
 );
 CREATE INDEX IF NOT EXISTS transportation_gen_planet_z6_idx ON transportation_gen_planet_z6 USING gist (geometry);
 
@@ -31,7 +31,7 @@ CREATE MATERIALIZED VIEW transportation_gen_planet_z7 AS
 		is_tunnel,
 		is_ford,
 		z_order
-	FROM osm_transportation_merge_linestring_gen_z7 otml, icgc_data.catalunya c
+	FROM osm_transportation_merge_linestring_gen_z7 otml, contextmaps.catalunya c
 );
 CREATE INDEX IF NOT EXISTS transportation_gen_planet_z7_idx ON transportation_gen_planet_z7 USING gist (geometry);
 
@@ -48,7 +48,7 @@ CREATE MATERIALIZED VIEW transportation_gen_planet_z8 AS
 		is_tunnel,
 		is_ford,
 		z_order
-	FROM osm_transportation_merge_linestring_gen_z8 otml, icgc_data.catalunya c
+	FROM osm_transportation_merge_linestring_gen_z8 otml, contextmaps.catalunya c
 );
 CREATE INDEX IF NOT EXISTS transportation_gen_planet_z8_idx ON transportation_gen_planet_z8 USING gist (geometry);
 
@@ -65,7 +65,7 @@ CREATE MATERIALIZED VIEW transportation_gen_planet_z9 AS
 			is_tunnel,
 			is_ford,
 			z_order
-	FROM osm_transportation_merge_linestring_gen_z9 otml, icgc_data.catalunya c
+	FROM osm_transportation_merge_linestring_gen_z9 otml, contextmaps.catalunya c
 );
 CREATE INDEX IF NOT EXISTS transportation_gen_planet_z9_idx ON transportation_gen_planet_z9 USING gist (geometry);
 
@@ -82,7 +82,7 @@ CREATE MATERIALIZED VIEW transportation_gen_planet_z10 AS
 			is_tunnel,
 			is_ford,
 			z_order
-	FROM osm_transportation_merge_linestring_gen_z10 otml, icgc_data.catalunya c
+	FROM osm_transportation_merge_linestring_gen_z10 otml, contextmaps.catalunya c
 );
 CREATE INDEX IF NOT EXISTS transportation_gen_planet_z10_idx ON transportation_gen_planet_z10 USING gist (geometry);
 

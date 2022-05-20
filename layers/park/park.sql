@@ -1,5 +1,6 @@
 -- etldoc: layer_park[shape=record fillcolor=lightpink, style="rounded,filled",
 -- etldoc:     label="layer_park |<z4> z4 |<z5> z5 |<z6> z6 |<z7> z7 |<z8> z8 |<z9> z9 |<z10> z10 |<z11> z11 |<z12> z12|<z13> z13|<z14> z14+" ] ;
+DROP FUNCTION IF EXISTS layer_park(bbox geometry, zoom_level int, pixel_width numeric);
 CREATE OR REPLACE FUNCTION layer_park(bbox geometry, zoom_level int, pixel_width numeric)
     RETURNS TABLE
             (
@@ -35,13 +36,13 @@ FROM (
                 NULL::text AS name_de,
                 NULL::hstore AS tags,
                 NULL::int AS rank
-         FROM icgc_data.park
+         FROM contextmaps.park
          WHERE zoom_level >= 6 AND geom && bbox
      ) AS zoom_levels,
      (
         SELECT geometry AS muni_geom 
-        FROM icgc_data.boundary_div_admin 
-         WHERE codimuni = '431212'
+        FROM historic.boundary_div_admin_20220518
+        WHERE codimuni = '431205'
         AND class = 'municipi' 
         AND adminlevel IS NOT NULL
     ) AS muni

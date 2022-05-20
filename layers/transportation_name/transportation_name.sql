@@ -53,7 +53,7 @@ FROM (
             NULL::INT AS layer,
             NULL::INT AS level,
             NULL::INT AS indoor
-        FROM icgc_data.z_6_8_mtc_vials
+        FROM contextmaps.z_6_8_mtc_vials
         WHERE zoom_level BETWEEN 6 AND 8
             AND codi_via <> ''
         UNION ALL
@@ -102,8 +102,8 @@ FROM (
 ) as zoom_levels,
 (
 SELECT geometry AS muni_geom 
-FROM icgc_data.boundary_div_admin 
- WHERE codimuni = '431212'
+FROM contextmaps.boundary_div_admin
+WHERE codimuni = '431205'
 AND class = 'municipi' 
 AND adminlevel IS NOT NULL
 ) AS muni

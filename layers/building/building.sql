@@ -55,7 +55,7 @@ FROM (
              NULL::text AS colour,
              NULL::boolean AS hide_3d,
              building
-         FROM icgc_data.poblament
+         FROM contextmaps.poblament
          WHERE zoom_level = 11 AND geom && bbox
          UNION ALL
 
@@ -135,7 +135,7 @@ FROM (
      ) AS zoom_levels,
      (SELECT geometry AS muni_geom 
         FROM icgc_data.boundary_div_admin 
-         WHERE codimuni = '431212'
+         WHERE codimuni = '431205'
         AND class = 'municipi' 
         AND adminlevel IS NOT NULL
       ) AS muni

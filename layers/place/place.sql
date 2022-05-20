@@ -10,7 +10,7 @@ CREATE OR REPLACE FUNCTION layer_place(bbox geometry, zoom_level int, pixel_widt
                 class          text,
                 "rank"         smallint,
                 codigeo        integer,
-                icgc_id_match  bigint
+                icgc_id_match  bigint,
                 icgc_zoom      smallint
             )
 AS
@@ -26,16 +26,16 @@ SELECT
     codigeo,
     icgc_id_match,
     zoom AS icgc_zoom
-FROM icgc_data.place, (
+FROM contextmaps.place, (
                         SELECT geometry AS muni_geom 
-                        FROM icgc_data.boundary_div_admin 
-                         WHERE codimuni = '431212'
+                        FROM contextmaps.boundary_div_admin
+                        WHERE codimuni = '431205'
                         AND class = 'municipi' 
                         AND adminlevel IS NOT NULL
                         ) AS muni
 WHERE zoom <= zoom_level 
     AND geom && bbox
-    AND ST_Intersects(muni.muni_geom, icgc_data.place.geom);
+    AND ST_Intersects(muni.muni_geom, contextmaps.place.geom);
 $$ LANGUAGE SQL STABLE
                 PARALLEL SAFE;
 -- TODO: Check if the above can be made STRICT -- i.e. if pixel_width could be NULL

@@ -1,14 +1,14 @@
-ALTER TABLE icgc_data.aerodrome_label DROP CONSTRAINT IF EXISTS aerodrome_label_pk;
-ALTER TABLE icgc_data.aerodrome_label ADD CONSTRAINT aerodrome_label_pk PRIMARY KEY (icgc_id);
+ALTER TABLE contextmaps.aerodrome_label DROP CONSTRAINT IF EXISTS aerodrome_label_pk;
+ALTER TABLE contextmaps.aerodrome_label ADD CONSTRAINT aerodrome_label_pk PRIMARY KEY (icgc_id);
 
-ALTER TABLE icgc_data.aeroway DROP CONSTRAINT IF EXISTS aeroway_pk;
-ALTER TABLE icgc_data.aeroway ADD CONSTRAINT aeroway_pk PRIMARY KEY (icgc_id);
+ALTER TABLE contextmaps.aeroway DROP CONSTRAINT IF EXISTS aeroway_pk;
+ALTER TABLE contextmaps.aeroway ADD CONSTRAINT aeroway_pk PRIMARY KEY (icgc_id);
 
-ALTER TABLE icgc_data.ascensors DROP CONSTRAINT IF EXISTS ascensors_pk;
-ALTER TABLE icgc_data.ascensors ADD CONSTRAINT IF NOT EXISTS ascensors_pk PRIMARY KEY (icgc_id);
+ALTER TABLE contextmaps.ascensors DROP CONSTRAINT IF EXISTS ascensors_pk;
+ALTER TABLE contextmaps.ascensors ADD CONSTRAINT IF NOT EXISTS ascensors_pk PRIMARY KEY (icgc_id);
 
-ALTER TABLE icgc_data.contour DROP CONSTRAINT IF EXISTS contour_pk;
-ALTER TABLE icgc_data.contour ADD CONSTRAINT contour_pk PRIMARY KEY (icgc_id);
+ALTER TABLE contextmaps.contour DROP CONSTRAINT IF EXISTS contour_pk;
+ALTER TABLE contextmaps.contour ADD CONSTRAINT contour_pk PRIMARY KEY (icgc_id);
 
 ALTER TABLE icgc_data.boundary DROP CONSTRAINT IF EXISTS boundary_pk;
 ALTER TABLE icgc_data.boundary ADD CONSTRAINT boundary_pk PRIMARY KEY (icgc_id);

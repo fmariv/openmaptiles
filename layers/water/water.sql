@@ -48,7 +48,7 @@ FROM (
                 NULL::BOOLEAN AS is_bridge,
                 null::BOOLEAN as is_tunnel,
                 icgc_id
-         FROM icgc_data.water_z_7_8_carto
+         FROM contextmaps.water_z_7_8_carto
          WHERE (zoom_level <= 8 ) AND geom && bbox
          UNION ALL
 
@@ -60,7 +60,7 @@ FROM (
                 NULL::BOOLEAN AS is_bridge,
                 null::BOOLEAN as is_tunnel,
                 icgc_id
-         FROM icgc_data.water_z_9_10_carto
+         FROM contextmaps.water_z_9_10_carto
          WHERE (zoom_level = 9 ) AND geom && bbox
          UNION ALL
 
@@ -72,7 +72,7 @@ FROM (
                 NULL::BOOLEAN AS is_bridge,
                 null::BOOLEAN as is_tunnel,
                 icgc_id
-         FROM icgc_data.water_z_10_11_carto
+         FROM contextmaps.water_z_10_11_carto
          WHERE (zoom_level BETWEEN 10 AND 11 ) AND geom && bbox
          UNION ALL
 
@@ -84,13 +84,13 @@ FROM (
                 NULL::BOOLEAN AS is_bridge,
                 null::BOOLEAN as is_tunnel,
                 icgc_id
-         FROM icgc_data.water
+         FROM contextmaps.water
          WHERE zoom_level >= 12 AND geom && bbox
      ) AS zoom_levels,
      (
         SELECT geometry AS muni_geom 
-        FROM icgc_data.boundary_div_admin 
-         WHERE codimuni = '431212'
+        FROM contextmaps.boundary_div_admin
+        WHERE codimuni = '431205'
         AND class = 'municipi' 
         AND adminlevel IS NOT NULL
         ) AS muni

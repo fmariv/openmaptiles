@@ -435,6 +435,18 @@ generate-tiles-pg: all start-db
 	$(DOCKER_COMPOSE) run $(DC_OPTS) openmaptiles-tools \
 			mbtiles-tools meta-generate "$(MBTILES_LOCAL_FILE)" $(TILESET_FILE) --auto-minmax --show-ranges
 
+.PHONY: generate-tiles-muni
+generate-tiles-muni: all start-db
+	@rm -rf "$(MBTILES_LOCAL_FILE)"
+	@source venv/bin/activate; python3 utils/municipality_mvt_generator/municipality_mvt_generator.py
+	$(eval include .env-muni)
+	@echo $(MBTILES_FILE_MUNI)
+	$(DOCKER_COMPOSE) run -T $(DC_OPTS) openmaptiles-tools generate-tiles
+	@echo "Updating generated tile metadata ..."
+	$(DOCKER_COMPOSE) run $(DC_OPTS) openmaptiles-tools \
+			mbtiles-tools meta-generate data/$(MBTILES_FILE_MUNI) $(TILESET_FILE) --auto-minmax --show-ranges
+	@rm .env-muni
+
 .PHONY: start-tileserver
 start-tileserver: init-dirs
 	@echo " "

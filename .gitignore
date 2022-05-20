@@ -21,6 +21,3 @@ cache/*
 .idea/
 .vscode/
 .github
-
-# Virtual environment
-venv/

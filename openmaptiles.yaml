@@ -1,7 +1,6 @@
 tileset:
   layers:
     #- layers/water/water.yaml
-    #- layers/waterway/waterway.yaml
     #- layers/landcover/landcover.yaml
     #- layers/park/park.yaml
     #- layers/boundary/boundary.yaml
@@ -21,7 +20,7 @@ tileset:
   attribution: '<a href="https://www.openmaptiles.org/" target="_blank">&copy; OpenMapTiles</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
   center: [0, 0, 1]
   bounds: [2.1874,41.4332,2.2224,41.4735]
-  maxzoom: 7
+  maxzoom: 14
   minzoom: 6
   pixel_scale: 256
   languages:

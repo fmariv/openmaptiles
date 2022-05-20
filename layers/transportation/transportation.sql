@@ -77,7 +77,7 @@ FROM (
             codi_via,
             NULL::text AS surface,
             NULL::text AS observacio
-        FROM icgc_data.z_6_8_mtc_vials 
+        FROM contextmaps.z_6_8_mtc_vials
         WHERE zoom_level BETWEEN 6 AND 8
         UNION ALL
 
@@ -138,8 +138,8 @@ FROM (
 ) AS zoom_levels,
 (
 SELECT geometry AS muni_geom 
-FROM icgc_data.boundary_div_admin 
- WHERE codimuni = '431212'
+FROM contextmaps.boundary_div_admin
+WHERE codimuni = '431205'
 AND class = 'municipi' 
 AND adminlevel IS NOT NULL
 ) AS muni

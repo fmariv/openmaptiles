@@ -26,7 +26,7 @@ FROM (
                 class,
                 name,
                 'GE' AS entorn
-         FROM icgc_data.waterway_z_7_8_carto
+         FROM contextmaps.waterway_z_7_8_carto
          WHERE (zoom_level BETWEEN 7 AND 8) AND geom && bbox
          UNION ALL
 
@@ -36,7 +36,7 @@ FROM (
                 class,
                 name,
                 'GE' AS entorn
-         FROM icgc_data.waterway_z_9_10_carto 
+         FROM contextmaps.waterway_z_9_10_carto
          WHERE (zoom_level = 9) AND geom && bbox
          UNION ALL
 
@@ -46,7 +46,7 @@ FROM (
                 class,
                 name,
                 'GE' AS entorn
-         FROM icgc_data.waterway_z_10_11_carto 
+         FROM contextmaps.waterway_z_10_11_carto
          WHERE (zoom_level BETWEEN 10 AND 11) AND geom && bbox
          UNION ALL
 
@@ -56,7 +56,7 @@ FROM (
                 class,
                 name,
                 entorn
-         FROM icgc_data.waterway_bt5mv30_strahler w
+         FROM contextmaps.waterway_bt5mv30_strahler w
          WHERE 
          (w.entorn <> 'UR' ) AND (
             ((zoom_level BETWEEN 12 AND 13) AND (w.strahler_order > 2 OR w.jsel in ('3A','3B','3C','2A','2B') ) AND w.geom && bbox) OR
@@ -66,7 +66,7 @@ FROM (
      (
         SELECT geometry AS muni_geom 
         FROM icgc_data.boundary_div_admin 
-         WHERE codimuni = '431212'
+         WHERE codimuni = '431205'
         AND class = 'municipi' 
         AND adminlevel IS NOT NULL
         ) AS muni

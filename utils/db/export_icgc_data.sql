@@ -1,33 +1,33 @@
 --
--- Export ICGC data from public schema to icgc_data schema
+-- Export ICGC data from public schema to contextmaps schema
 --
 
-CREATE SCHEMA IF NOT EXISTS icgc_data;
+CREATE SCHEMA IF NOT EXISTS contextmaps;
 
 -- aerodrome label
 SELECT *
-INTO icgc_data.aerodrome_label
+INTO contextmaps.aerodrome_label
 FROM aerodrome_label;
-CREATE INDEX idx_aerodrome_label_geom ON icgc_data.aerodrome_label USING gist (geom);
+CREATE INDEX idx_aerodrome_label_geom ON contextmaps.aerodrome_label USING gist (geom);
 DROP TABLE public.aerodrome_label;
 
 -- aeroway
 SELECT *
-INTO icgc_data.aeroway
+INTO contextmaps.aeroway
 FROM aeroway;
-CREATE INDEX idx_aeroway_geom ON icgc_data.aeroway USING gist (geom);
+CREATE INDEX idx_aeroway_geom ON contextmaps.aeroway USING gist (geom);
 DROP TABLE public.aeroway;
 
 -- ascensors
 SELECT *
-INTO icgc_data.ascensors
+INTO contextmaps.ascensors
 FROM ascensors;
-CREATE INDEX idx_ascensors_20210112_geom ON icgc_data.ascensors USING gist (geom);
+CREATE INDEX idx_ascensors_20210112_geom ON contextmaps.ascensors USING gist (geom);
 DROP TABLE public.ascensors;
 
 -- boundary
 SELECT *
-INTO icgc_data.boundary
+INTO contextmaps.boundary
 FROM boundary;
 CREATE INDEX idx_boundary_geom ON icgc_data.boundary USING gist (geom);
 DROP TABLE public.boundary;

@@ -5,7 +5,7 @@ CREATE MATERIALIZED VIEW osm_poi_point_planet AS
 (
 SELECT opp.*,
        osm_id * 10 AS osm_id_hash
-FROM osm_poi_point opp, icgc_data.catalunya c
+FROM osm_poi_point opp, contextmaps.catalunya c
 WHERE ST_Disjoint(c.geometry, opp.geometry)
     );
 CREATE INDEX IF NOT EXISTS osm_poi_point_planet_idx ON osm_poi_point_planet USING gist (geometry);
@@ -19,7 +19,7 @@ SELECT  opp.*,
             WHEN osm_id < 0 THEN -osm_id * 10 + 4
             ELSE osm_id * 10 + 1
             END AS osm_id_hash
-FROM osm_poi_polygon opp, icgc_data.catalunya c
+FROM osm_poi_polygon opp, contextmaps.catalunya c
 WHERE ST_Disjoint(c.geometry, opp.geometry)
     );
 CREATE INDEX IF NOT EXISTS osm_poi_polygon_planet_idx ON osm_poi_polygon_planet USING gist (geometry);
@@ -30,7 +30,7 @@ DROP MATERIALIZED VIEW IF EXISTS osm_building_block_planet;
 CREATE MATERIALIZED VIEW osm_building_planet AS
 (
 SELECT *
-FROM osm_building_block_gen_z13 obbp, icgc_data.catalunya c
+FROM osm_building_block_gen_z13 obbp, contextmaps.catalunya c
 WHERE ST_DISJOINT(c.geometry, obbp.geometry)
 );
 CREATE INDEX IF NOT EXISTS osm_building_block_planet_idx ON osm_building_block_planet USING gist (geometry);
@@ -53,7 +53,7 @@ SELECT
     nullif(material, '') AS material,
     nullif(colour, '') AS colour,
     FALSE AS hide_3d
-FROM osm_building_relation b, icgc_data.catalunya c
+FROM osm_building_relation b, contextmaps.catalunya c
 WHERE building = ''
   AND ST_GeometryType(b.geometry) = 'ST_Polygon'
   AND ST_Disjoint(c.geometry, b.geometry)
@@ -76,7 +76,7 @@ FROM osm_building_polygon obp
         obp.osm_id >= 0 AND
         obr.member = obp.osm_id AND
         obr.role = 'outline',
-      icgc_data.catalunya c
+      contextmaps.catalunya c
 WHERE ST_GeometryType(obp.geometry) IN ('ST_Polygon', 'ST_MultiPolygon')
    AND ST_Disjoint(c.geometry, obp.geometry)
     );
@@ -90,7 +90,7 @@ CREATE MATERIALIZED VIEW osm_landcover_planet_z7 AS
 SELECT l.geometry, 
        subclass,
        NULL::int as icgc_id
-FROM osm_landcover_gen_z7 ol, icgc_data.catalunya c
+FROM osm_landcover_gen_z7 ol, contextmaps.catalunya c
 WHERE ST_Disjoint(c.geometry, ol.geometry)
     );
 CREATE INDEX IF NOT EXISTS osm_landcover_planet_z7_idx ON osm_landcover_planet_z7 USING gist (geometry);
@@ -101,7 +101,7 @@ CREATE MATERIALIZED VIEW osm_landcover_planet_z8 AS
 SELECT l.geometry, 
        subclass,
        NULL::int as icgc_id
-FROM osm_landcover_gen_z8 ol, icgc_data.catalunya c
+FROM osm_landcover_gen_z8 ol, contextmaps.catalunya c
 WHERE ST_Disjoint(c.geometry, ol.geometry)
     );
 CREATE INDEX IF NOT EXISTS osm_landcover_planet_z8_idx ON osm_landcover_planet_z8 USING gist (geometry);
@@ -112,7 +112,7 @@ CREATE MATERIALIZED VIEW osm_landcover_planet_z9 AS
 SELECT l.geometry, 
        subclass,
        NULL::int as icgc_id
-FROM osm_landcover_gen_z9 ol, icgc_data.catalunya c
+FROM osm_landcover_gen_z9 ol, contextmaps.catalunya c
 WHERE ST_Disjoint(c.geometry, ol.geometry)
     );
 CREATE INDEX IF NOT EXISTS osm_landcover_planet_z9_idx ON osm_landcover_planet_z9 USING gist (geometry);
@@ -123,7 +123,7 @@ CREATE MATERIALIZED VIEW osm_landcover_planet_z10 AS
 SELECT l.geometry, 
        subclass,
        NULL::int as icgc_id
-FROM osm_landcover_gen_z10 ol, icgc_data.catalunya c
+FROM osm_landcover_gen_z10 ol, contextmaps.catalunya c
 WHERE ST_Disjoint(c.geometry, ol.geometry)
     );
 CREATE INDEX IF NOT EXISTS osm_landcover_planet_z10_idx ON osm_landcover_planet_z10 USING gist (geometry);

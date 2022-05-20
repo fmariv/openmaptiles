@@ -9,9 +9,13 @@ municipality of Catalonia
 """
 
 import os
+import shutil
 import subprocess
+import unicodedata
 import psycopg2
 import dotenv
+import json
+from geojson import load
 
 
 class MunicipalityMVTGenerator:
@@ -58,8 +62,13 @@ class MunicipalityMVTGenerator:
 
         :return:
         """
-        self.pg_cur.execute("SELECT nommuni, codimuni FROM icgc_data.boundary_div_admin WHERE class = 'municipi' AND adminlevel IS NOT NULL limit 2;")
-        return self.pg_cur.fetchall()
+        try:
+            self.pg_cur.execute("select codimuni, nommuni, ST_AsGeoJson(ST_Transform(ST_Envelope(geometry), 4326)) "
+                                "as geometry FROM historic.boundary_div_admin_20220518 WHERE class = 'municipi' "
+                                "AND adminlevel IS NOT null limit 1")
+            return self.pg_cur.fetchall()
+        except Exception as e:
+            print(e)
 
     def get_pg_data(self):
         """
@@ -77,15 +86,40 @@ class MunicipalityMVTGenerator:
         if self.pg_conn is not None:
             self.pg_conn.close()
 
-    def edit_dotenv(self, municipality_code):
+    def edit_dotenv(self, municipality_name, bbox):
         """
 
-        :param municipality_code:
+        :param municipality_name:
         :return:
         """
         dotenv_file = dotenv.find_dotenv()
         dotenv.load_dotenv(dotenv_file)
-        dotenv.set_key(dotenv_file, "MBTILES_FILE", f"{municipality_code}.mbtiles")
+
+        dotenv.set_key(dotenv_file, "MBTILES_FILE", f"{municipality_name}.mbtiles")
+        dotenv.set_key(dotenv_file, "BBOX", bbox)
+
+    def copy_dotenv(self):
+        """
+
+        :return:
+        """
+        shutil.copyfile(r'.env', r'.env-muni')
+
+    def edit_muni_dotenv(self):
+        """
+
+        :return:
+        """
+        # Read in the file
+        with open('.env-muni', 'r') as file:
+            env_data = file.read()
+
+        # Replace the target string
+        env_data = env_data.replace('MBTILES_FILE', 'MBTILES_FILE_MUNI')
+
+        # Write the file out again
+        with open('.env-muni', 'w') as file:
+            file.write(env_data)
 
     def edit_sql(self, municipality_code):
         """
@@ -146,22 +180,46 @@ class MunicipalityMVTGenerator:
         """
         return line.count(" ") - 1
 
+    def normalize_municipality_name(self, municipality_name):
+        """
+
+        :param municipality_name:
+        :return:
+        """
+        normalized_name = unicodedata.normalize('NFKD', municipality_name).encode('ascii', 'ignore').decode('utf-8')\
+            .replace("'", "").replace(" ", "_").replace("-", "_").lower()
+        return normalized_name
+
+    def get_bounding_box(self, geometry):
+        """
+
+        :param geometry:
+        :return:
+        """
+        geojson = json.loads(geometry)
+        coordinates = geojson['coordinates'][0]
+        bbox = coordinates[0] + coordinates[2]
+        bbox = str(bbox).replace("[", "").replace("]", "").replace(" ", "")
+        return bbox
+
     def main(self):
         """
 
         :return:
         """
         for record in self.pg_data:
-            municipality_name = record[0]
-            municipality_code = record[1]
-            self.edit_dotenv(municipality_name)
+            municipality_code = record[0]
+            municipality_name = self.normalize_municipality_name(record[1])
+            municipality_bbox = self.get_bounding_box(record[2])
+            self.edit_dotenv(municipality_name,  municipality_bbox)
+            self.copy_dotenv()
+            self.edit_muni_dotenv()
             self.edit_sql(municipality_code)
-            
+
         municipality_mvt_generator.close_pg_conn()
 
 
 if __name__ == '__main__':
-    print('Editing SQL and .env files...')
     municipality_mvt_generator = MunicipalityMVTGenerator()
     municipality_mvt_generator.main()
-    print('SQL and .env files edited')
+    subprocess.call(['chmod', '777', '.env'])

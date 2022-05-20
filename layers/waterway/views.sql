@@ -42,8 +42,8 @@ SELECT NULL::bigint AS icgc_id,
        class,
        name,
        NULL::text AS entorn
-FROM waterway_relation_gen_z6 w, icgc_data.catalunya
-WHERE ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
+FROM waterway_relation_gen_z6 w, contextmaps.catalunya
+WHERE ST_DISJOINT(contextmaps.catalunya.geometry, w.geometry)
     );
 CREATE INDEX IF NOT EXISTS waterway_z6_idx ON waterway_z6 USING gist (geometry);
 
@@ -56,8 +56,8 @@ SELECT NULL::bigint AS icgc_id,
        class,
        name,
        NULL::text AS entorn
-FROM waterway_relation_gen_z7 w, icgc_data.catalunya
-WHERE ST_DISJOINT(icgc_data.catalunya.geometry, w.geometry)
+FROM waterway_relation_gen_z7 w, contextmaps.catalunya
+WHERE ST_DISJOINT(contextmaps.catalunya.geometry, w.geometry)
     );
 CREATE INDEX IF NOT EXISTS waterway_z7_idx ON waterway_z7 USING gist (geometry);
 

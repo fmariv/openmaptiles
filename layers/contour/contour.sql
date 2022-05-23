@@ -69,7 +69,7 @@ FROM (
         NULL::text AS height,
         NULL::text AS name
     FROM admpt.mtc250m_corbes_nivell
-    WHERE zoom_level = 9
+    WHERE zoom_level BETWEEN 7 AND 9
     UNION ALL
 
     -- mtc250m_cota_altimetrica_p_lines
@@ -80,7 +80,7 @@ FROM (
         NULL::text AS height,
         NULL::text AS name
     FROM admpt.mtc250m_etiquetes_corbes_altimetria_p_lines
-    WHERE zoom_level = 9
+    WHERE zoom_level BETWEEN 7 AND 9
     UNION ALL
 
     -- mtc250m_cota_batimetrica_p_lines
@@ -91,7 +91,7 @@ FROM (
         NULL::text AS height,
         NULL::text AS name
     FROM admpt.mtc250m_etiqueta_batimetria_p_lines
-    WHERE zoom_level = 9
+    WHERE zoom_level BETWEEN 7 AND 9
     UNION ALL
 
     -- mtc250_altimetria_simbol
@@ -102,7 +102,7 @@ FROM (
         NULL::text AS height,
         nom AS name
     FROM admpt.mtc250m_altimetria_simbol
-    WHERE zoom_level = 9
+    WHERE zoom_level BETWEEN 7 AND 9
     UNION ALL
 
     -- mtc50m_corbes_nivell

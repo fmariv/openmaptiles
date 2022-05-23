@@ -15,8 +15,7 @@ services:
     image: "${POSTGIS_IMAGE:-openmaptiles/postgis}:${TOOLS_VERSION}"
     # Use "command: postgres -c jit=off" for PostgreSQL 11+ because of slow large MVT query processing
     volumes:
-      - pgdata:/var/lib/postgresql/data
-      #- /dades_entrada/docker/openmaptiles/data:/var/lib/postgresql/data   # sfproces mount
+      - /dades_entrada/docker/openmaptiles/data:/var/lib/postgresql/data   # sfproces mount
     networks:
       - postgres
     ports:

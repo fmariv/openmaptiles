@@ -11,7 +11,9 @@ CREATE OR REPLACE FUNCTION layer_boundary(bbox geometry, zoom_level int)
                 rank          integer,
                 admin_level   integer,
                 maritime      integer,
-                mtc25         text
+                mtc25         text,
+                escala        text,
+                area          double precision
             )
 AS
 $$
@@ -23,27 +25,77 @@ SELECT
     rank,
     adminlevel,
     0 AS maritime,
-    mtc25
+    mtc25,
+    escala,
+    area
 FROM
     (
         -- catalunya
+        SELECT icgc_id,
+               geometry,
+               nomcat      AS name,
+               'country'   AS class,
+               0           AS rank,
+               4           AS adminlevel,
+               NULL::text  AS mtc25,
+               '5m'        AS escala,
+                areaca5000 AS area
+        FROM divisions_administratives.catalunya_5000
+        UNION ALL
         SELECT icgc_id,
                geometry,
                nomcat     AS name,
                'country'  AS class,
                0          AS rank,
                4          AS adminlevel,
-               NULL::text AS mtc25
-        FROM divisions_administratives.catalunya_5000
+               NULL::text AS mtc25,
+               '50m'       AS escala,
+                areaca5000 AS area
+        FROM divisions_administratives.catalunya_50000
         UNION ALL
         SELECT icgc_id,
-               ST_Boundary(geometry) AS geometry,
+               geometry,
                nomcat     AS name,
                'country'  AS class,
                0          AS rank,
                4          AS adminlevel,
-               NULL::text AS mtc25
-        FROM divisions_administratives.catalunya_5000
+               NULL::text AS mtc25,
+               '500m'       AS escala,
+                areaca5000 AS area
+        FROM divisions_administratives.catalunya_500000
+        UNION ALL
+        SELECT icgc_id,
+               geometry,
+               nomcat     AS name,
+               'country'  AS class,
+               0          AS rank,
+               4          AS adminlevel,
+               NULL::text AS mtc25,
+               '100m'       AS escala,
+                areaca5000 AS area
+        FROM divisions_administratives.catalunya_100000
+        UNION ALL
+        SELECT icgc_id,
+               geometry,
+               nomcat     AS name,
+               'country'  AS class,
+               0          AS rank,
+               4          AS adminlevel,
+               NULL::text AS mtc25,
+               '250m'       AS escala,
+                areaca5000 AS area
+        FROM divisions_administratives.catalunya_250000
+        UNION ALL
+        SELECT icgc_id,
+               geometry,
+               nomcat     AS name,
+               'country'  AS class,
+               0          AS rank,
+               4          AS adminlevel,
+               NULL::text AS mtc25,
+               '1M'       AS escala,
+                areaca5000 AS area
+        FROM divisions_administratives.catalunya_1000000
         UNION ALL
 
         -- vegueries
@@ -53,17 +105,65 @@ FROM
                'vegueria'   AS class,
                0            AS rank,
                5            AS adminlevel,
-               NULL::text   AS mtc25
+               NULL::text   AS mtc25,
+               '5m'         AS escala,
+                areav5000 AS area
         FROM divisions_administratives.vegueries_5000
         UNION ALL
         SELECT icgc_id,
-               ST_Boundary(geometry) AS geometry,
+               geometry,
                nomvegue     AS name,
                'vegueria'   AS class,
                0            AS rank,
                5            AS adminlevel,
-               NULL::text   AS mtc25
-        FROM divisions_administratives.vegueries_5000
+               NULL::text   AS mtc25,
+               '50m'         AS escala,
+                areav5000 AS area
+        FROM divisions_administratives.vegueries_50000
+        UNION ALL
+        SELECT icgc_id,
+               geometry,
+               nomvegue     AS name,
+               'vegueria'   AS class,
+               0            AS rank,
+               5            AS adminlevel,
+               NULL::text   AS mtc25,
+               '500m'         AS escala,
+                areav5000 AS area
+        FROM divisions_administratives.vegueries_500000
+        UNION ALL
+        SELECT icgc_id,
+               geometry,
+               nomvegue     AS name,
+               'vegueria'   AS class,
+               0            AS rank,
+               5            AS adminlevel,
+               NULL::text   AS mtc25,
+               '100m'         AS escala,
+                areav5000 AS area
+        FROM divisions_administratives.vegueries_100000
+        UNION ALL
+        SELECT icgc_id,
+               geometry,
+               nomvegue     AS name,
+               'vegueria'   AS class,
+               0            AS rank,
+               5            AS adminlevel,
+               NULL::text   AS mtc25,
+               '250m'         AS escala,
+                areav5000 AS area
+        FROM divisions_administratives.vegueries_250000
+        UNION ALL
+        SELECT icgc_id,
+               geometry,
+               nomvegue     AS name,
+               'vegueria'   AS class,
+               0            AS rank,
+               5            AS adminlevel,
+               NULL::text   AS mtc25,
+               '1M'         AS escala,
+                areav5000 AS area
+        FROM divisions_administratives.vegueries_1000000
         UNION ALL
 
         -- provincies
@@ -73,17 +173,65 @@ FROM
                'provincia'  AS class,
                0            AS rank,
                6            AS adminlevel,
-               NULL::text   AS mtc25
+               NULL::text   AS mtc25,
+               '5m'         AS escala,
+                areap5000 AS area
         FROM divisions_administratives.provincies_5000
         UNION ALL
         SELECT icgc_id,
-               ST_Boundary(geometry) AS geometry,
-               nomprov AS name,
+               geometry,
+               nomprov      AS name,
                'provincia'  AS class,
                0            AS rank,
                6            AS adminlevel,
-               NULL::text   AS mtc25
-        FROM divisions_administratives.provincies_5000
+               NULL::text   AS mtc25,
+               '50m'         AS escala,
+                areap5000 AS area
+        FROM divisions_administratives.provincies_50000
+        UNION ALL
+        SELECT icgc_id,
+               geometry,
+               nomprov      AS name,
+               'provincia'  AS class,
+               0            AS rank,
+               6            AS adminlevel,
+               NULL::text   AS mtc25,
+               '500m'         AS escala,
+                areap5000 AS area
+        FROM divisions_administratives.provincies_500000
+        UNION ALL
+        SELECT icgc_id,
+               geometry,
+               nomprov      AS name,
+               'provincia'  AS class,
+               0            AS rank,
+               6            AS adminlevel,
+               NULL::text   AS mtc25,
+               '100m'         AS escala,
+                areap5000 AS area
+        FROM divisions_administratives.provincies_100000
+        UNION ALL
+        SELECT icgc_id,
+               geometry,
+               nomprov      AS name,
+               'provincia'  AS class,
+               0            AS rank,
+               6            AS adminlevel,
+               NULL::text   AS mtc25,
+               '250m'         AS escala,
+                areap5000 AS area
+        FROM divisions_administratives.provincies_250000
+        UNION ALL
+        SELECT icgc_id,
+               geometry,
+               nomprov      AS name,
+               'provincia'  AS class,
+               0            AS rank,
+               6            AS adminlevel,
+               NULL::text   AS mtc25,
+               '1M'         AS escala,
+                areap5000 AS area
+        FROM divisions_administratives.provincies_1000000
         UNION ALL
 
         -- comarques
@@ -93,17 +241,76 @@ FROM
                'comarca'    AS class,
                0            AS rank,
                7            AS adminlevel,
-               NULL::text   AS mtc25
+               NULL::text   AS mtc25,
+               '5m'         AS escala,
+                areac5000 AS area
         FROM divisions_administratives.comarques_5000
         UNION ALL
         SELECT icgc_id,
-               ST_Boundary(geometry) AS geometry,
+               geometry,
                nomcomar     AS name,
                'comarca'    AS class,
                0            AS rank,
                7            AS adminlevel,
-               NULL::text   AS mtc25
+               NULL::text   AS mtc25,
+               '5m'         AS escala,
+                areac5000 AS area
         FROM divisions_administratives.comarques_5000
+        UNION ALL
+        SELECT icgc_id,
+               geometry,
+               nomcomar     AS name,
+               'comarca'    AS class,
+               0            AS rank,
+               7            AS adminlevel,
+               NULL::text   AS mtc25,
+               '50m'         AS escala,
+                areac5000 AS area
+        FROM divisions_administratives.comarques_50000
+        UNION ALL
+        SELECT icgc_id,
+               geometry,
+               nomcomar     AS name,
+               'comarca'    AS class,
+               0            AS rank,
+               7            AS adminlevel,
+               NULL::text   AS mtc25,
+               '500m'         AS escala,
+                areac5000 AS area
+        FROM divisions_administratives.comarques_500000
+        UNION ALL
+        SELECT icgc_id,
+               geometry,
+               nomcomar     AS name,
+               'comarca'    AS class,
+               0            AS rank,
+               7            AS adminlevel,
+               NULL::text   AS mtc25,
+               '100m'         AS escala,
+                areac5000 AS area
+        FROM divisions_administratives.comarques_100000
+        UNION ALL
+        SELECT icgc_id,
+               geometry,
+               nomcomar     AS name,
+               'comarca'    AS class,
+               0            AS rank,
+               7            AS adminlevel,
+               NULL::text   AS mtc25,
+               '250m'         AS escala,
+                areac5000 AS area
+        FROM divisions_administratives.comarques_250000
+        UNION ALL
+        SELECT icgc_id,
+               geometry,
+               nomcomar     AS name,
+               'comarca'    AS class,
+               0            AS rank,
+               7            AS adminlevel,
+               NULL::text   AS mtc25,
+               '1M'         AS escala,
+                areac5000 AS area
+        FROM divisions_administratives.comarques_1000000
         UNION ALL
         SELECT icgc_id,
                geometry,
@@ -111,7 +318,9 @@ FROM
                'comarca'    AS class,
                0            AS rank,
                admin_level  AS adminlevel,
-               'SI'         AS mtc25
+               'SI'         AS mtc25,
+               NULL::text   AS escala,
+               NULL::numeric   AS area
         FROM divisions_administratives.limits_banda
         UNION ALL
 
@@ -122,25 +331,75 @@ FROM
                'municipi'   AS class,
                0            AS rank,
                8            AS adminlevel,
-               NULL::text   AS mtc25
-        FROM divisions_administratives.municipis_5000
-        UNION ALL
-        SELECT icgc_id,
-               ST_Boundary(geometry) AS geometry,
-               nommuni      AS name,
-               'municipi'   AS class,
-               0            AS rank,
-               8            AS adminlevel,
-               NULL::text   AS mtc25
+               NULL::text   AS mtc25,
+               '5m'         AS escala,
+                aream5000 AS area
         FROM divisions_administratives.municipis_5000
         UNION ALL
         SELECT icgc_id,
                geometry,
-               NULL::text    AS name,
+               nommuni      AS name,
+               'municipi'   AS class,
+               0            AS rank,
+               8            AS adminlevel,
+               NULL::text   AS mtc25,
+               '50m'         AS escala,
+                aream5000 AS area
+        FROM divisions_administratives.municipis_50000
+        UNION ALL
+        SELECT icgc_id,
+               geometry,
+               nommuni      AS name,
+               'municipi'   AS class,
+               0            AS rank,
+               8            AS adminlevel,
+               NULL::text   AS mtc25,
+               '500m'         AS escala,
+                aream5000 AS area
+        FROM divisions_administratives.municipis_500000
+        UNION ALL
+        SELECT icgc_id,
+               geometry,
+               nommuni      AS name,
+               'municipi'   AS class,
+               0            AS rank,
+               8            AS adminlevel,
+               NULL::text   AS mtc25,
+               '100m'         AS escala,
+                aream5000 AS area
+        FROM divisions_administratives.municipis_100000
+        UNION ALL
+        SELECT icgc_id,
+               geometry,
+               nommuni      AS name,
+               'municipi'   AS class,
+               0            AS rank,
+               8            AS adminlevel,
+               NULL::text   AS mtc25,
+               '250m'         AS escala,
+                aream5000 AS area
+        FROM divisions_administratives.municipis_250000
+        UNION ALL
+        SELECT icgc_id,
+               geometry,
+               nommuni      AS name,
+               'municipi'   AS class,
+               0            AS rank,
+               8            AS adminlevel,
+               NULL::text   AS mtc25,
+               '1M'         AS escala,
+                aream5000 AS area
+        FROM divisions_administratives.municipis_1000000
+        UNION ALL
+        SELECT icgc_id,
+               geometry,
+               NULL::text   AS name,
                'municipi'   AS class,
                0            AS rank,
                admin_level  AS adminlevel,
-               'SI'         AS mtc25
+               'SI'         AS mtc25,
+               NULL::text   AS escala,
+               NULL::numeric AS area
         FROM work.limits_administratius
     ) AS boundary
 WHERE geometry && bbox

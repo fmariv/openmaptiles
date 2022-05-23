@@ -10,7 +10,14 @@ CREATE OR REPLACE FUNCTION layer_place(bbox geometry, zoom_level int, pixel_widt
                 "name:latin"   text,
                 nommuni        text,
                 class          text,
-                "rank"         smallint
+                "rank"         smallint,
+                tipuscap       text,
+                capvegue       text,
+                capprov        text,
+                codimuni       text,
+                codicomar      text,
+                codiprov       text,
+                dataalta       text
             )
 AS
 $$
@@ -22,7 +29,14 @@ SELECT
     name AS "name:latin",
     nommuni,
     class,
-    rank
+    rank,
+    tipuscap,
+    capvegue,
+    capprov,
+    codimuni,
+    codicomar,
+    codiprov,
+    dataalta
 FROM divisions_administratives.place_div_admin
 WHERE geometry && bbox
     AND zoom_level >= 6;

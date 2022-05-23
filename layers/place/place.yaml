@@ -35,11 +35,18 @@ layer:
       description:
           Identificador únic de l'ICGC.
     nommuni: Pendent.
+    tipuscap: Pendent.
+    capvegue: Pendent.
+    capprov: Pendent.
+    codimuni: Pendent.
+    codicomar: Pendent.
+    codiprov: Pendent.
+    dataalta: Pendent.
   buffer_size: 256
   datasource:
     geometry_field: geometry
     key_field: icgc_id
     key_field_as_attribute: no
-    query: (SELECT icgc_id, geometry, name, "name:latin", nommuni, class, rank FROM layer_place(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
+    query: (SELECT icgc_id, geometry, name, "name:latin", nommuni, class, rank, tipuscap, capvegue, capprov, codimuni, codicomar, codiprov, dataalta FROM layer_place(!bbox!, z(!scale_denominator!), !pixel_width!)) AS t
 schema:
   - ./place.sql

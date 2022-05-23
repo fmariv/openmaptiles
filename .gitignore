@@ -21,3 +21,6 @@ cache/*
 .idea/
 .vscode/
 .github
+
+# Venv
+venv/

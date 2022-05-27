@@ -35,6 +35,21 @@ WHERE adm_level = 2
 UNION ALL
 
 SELECT icgc_id,
+       geom,
+       name,
+       admin_leve AS adm_level,
+       NULL::text AS adm0_l,
+       NULL::text AS adm0_r,
+       NULL::int AS disputed,
+       NULL::text AS disp_name,
+       NULL::text AS claimed_by,
+       NULL::int AS maritime
+FROM contextmaps.boundary_mon_0_p
+WHERE admin_leve = 2
+    AND geom && bbox
+UNION ALL
+
+SELECT icgc_id,
        geometry,
        name,
        adm_level,
@@ -63,6 +78,21 @@ SELECT icgc_id,
 FROM contextmaps.boundary_mon_1_l
 WHERE adm_level IN ( 3, 4, 5, 6, 7, 8)
     AND maritime = 0
+    AND geometry && bbox
+UNION ALL
+    
+SELECT icgc_id,
+       geometry,
+       name,
+       admin_leve AS adm_level,
+       NULL::text AS adm0_l,
+       NULL::text AS adm0_r,
+       NULL::int AS disputed,
+       NULL::text AS disp_name,
+       NULL::text AS claimed_by,
+       NULL::int AS maritime
+FROM contextmaps.boundary_mon_1_p
+WHERE admin_leve IN ( 3, 4, 5, 6, 7, 8)
     AND geometry && bbox;
 $$ LANGUAGE SQL STABLE
                 -- STRICT
